@@ -1,0 +1,12 @@
+ion-list.table-columns{
+    ion-item{
+        --min-height: 40px;
+        ion-label{
+            font-size: 0.8em;
+        }
+    }
+    .button-wrapper{
+        background-color: #fff;
+        text-align: center;
+    }
+}

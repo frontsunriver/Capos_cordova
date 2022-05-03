@@ -1,0 +1,191 @@
+<app-header [title]="title"></app-header>
+<ion-toolbar>
+	<ion-segment scrollable [(ngModel)]="cur_tab" swipe-gesture>
+		<ion-segment-button value="general">
+			<ion-label>General</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="payment_method">
+			<ion-label>Payment Methods</ion-label>
+		</ion-segment-button>
+		<!-- <ion-segment-button value="sliders">
+			<ion-label>Sliders</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="banners">
+			<ion-label>Banners</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="servcies">
+			<ion-label>Services</ion-label>
+		</ion-segment-button> -->
+		<ion-segment-button value="click_collect">
+			<ion-label>Click & Collect</ion-label>
+		</ion-segment-button>
+	</ion-segment>
+</ion-toolbar>
+<ion-content class="store-settings">
+	<ng-container *ngIf="cur_tab=='general'">
+		<ion-card>	
+			<ion-card-content>
+				<ion-list>
+					<ion-list-header>Store Status</ion-list-header>
+					<ion-item>
+						<ion-label>Your store is currently 
+							<ng-container *ngIf="store.active">online.</ng-container>
+							<ng-container *ngIf="!store.active">offline.</ng-container>
+						</ion-label>
+						<ion-toggle [(ngModel)]="store_active" (ionChange)="setActive()" slot="start"></ion-toggle>
+					</ion-item>
+				</ion-list>
+				<ion-list>
+					<ion-list-header>Current Plan</ion-list-header>
+					<ion-item>
+						<ion-label>{{util.toUppercase(store.plan.id)}}</ion-label>
+						<ion-button slot="end" size="small" (click)="updatePlan()"><ion-icon name="paper-plane-outline" class="mr-2"></ion-icon> Update Plan</ion-button>
+					</ion-item>
+				</ion-list>
+			</ion-card-content>	
+		</ion-card>
+		<ion-card>
+			<ion-card-header>
+				<ion-card-title>Appearance</ion-card-title>			
+			</ion-card-header>
+			<ion-card-content>
+				<ion-list>
+					<ion-list-header>Theme Color</ion-list-header>
+					<ion-item>
+						<ion-icon name="color-palette" [style.color]="theme_color_hex" slot="start"></ion-icon>
+						<ion-input [(ngModel)]="theme_color" (ionInput)="changeColor($event)"></ion-input>
+						<ion-button size="small" slot="end" (click)="pickColor()"><ion-icon name="brush-outline" class="mr-2"></ion-icon> Pick Color</ion-button>
+					</ion-item>
+				</ion-list>
+				<ion-list>
+					<ion-list-header>Store Logo</ion-list-header>
+					<p class="ml-3">Recommended size: 158 x 44</p>
+					<ion-item lines="none">
+						<ion-button size="small" color="primary" (click)="selectImage('logo')"><ion-icon name="cloud-upload-outline" class="mr-2"></ion-icon> Upload Image</ion-button>
+					</ion-item>
+					<ion-item>
+						<div class="preview_images" *ngIf="store.logo">
+							<div class="preview">
+								<img [src]="getImagePath(store.logo)"/> 
+								<ion-button size="small" fill="clear" (click)="removeImage(store.logo, 'logo')"><ion-icon name="trash-outline" slot="icon-only" color="danger"></ion-icon></ion-button>            
+							</div>
+						</div>
+					</ion-item>
+				</ion-list>
+				<ion-list>
+					<ion-list-header>Store Short Description</ion-list-header>
+					<p class="ml-3">It will be displayed on footer.</p>
+					<ion-item>
+						<ion-textarea [(ngModel)]="store.short_description"></ion-textarea>
+					</ion-item>
+				</ion-list>
+				<ion-row class="justify-content-center">
+					<ion-col size-lg="4" size-md="6" size="12">
+						<ion-button expand="block" color="success" (click)="save()">Save</ion-button>
+					</ion-col>
+				</ion-row>
+			</ion-card-content>		
+		</ion-card>
+	</ng-container>
+	<ng-container *ngIf="cur_tab=='payment_method'">
+		<form [formGroup]="frmPayment" (ngSubmit)="savePayment()">
+		<ion-card>
+			<ion-list>
+				<ion-list-header>Store Pickup</ion-list-header>
+				<ion-item>
+					<ion-label>Active</ion-label>
+					<ion-toggle formControlName="store_pickup" slot="start"></ion-toggle>
+				</ion-item>
+			</ion-list>			
+			<ion-list formGroupName="paypal">
+				<ion-list-header>Paypal</ion-list-header>
+				<ion-item>
+					<ion-label>Active</ion-label>
+					<ion-toggle formControlName="active" slot="start"></ion-toggle>
+				</ion-item>
+				<ion-item>
+					<ion-label position="floating">Client ID <span class="require">*</span></ion-label>
+					<ion-textarea formControlName="client_id" placeholder="Enter Client ID" required></ion-textarea>							
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && clientIdInput.invalid">{{clientIdInputError}}</span>
+				<ion-item>
+					<ion-label position="floating">Secret</ion-label>
+					<ion-textarea formControlName="secret" placeholder="Enter Secret" required></ion-textarea>							
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && secretInput.invalid">{{secretInputError}}</span>					
+			</ion-list>				
+			<ion-list formGroupName="stripe">
+				<ion-list-header>Stripe</ion-list-header>
+				<ion-item>
+					<ion-label>Active</ion-label>
+					<ion-toggle formControlName="active" slot="start"></ion-toggle>
+				</ion-item>
+				<ion-item>
+					<ion-label position="floating">Secret Key <span class="require">*</span></ion-label>
+					<ion-textarea formControlName="secret_key" placeholder="Enter Secret Key" required></ion-textarea>							
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && secretKeyInput.invalid">{{secretKeyInputError}}</span>
+				<ion-item>
+					<ion-label position="floating">Publishable Key</ion-label>
+					<ion-textarea formControlName="public_key" placeholder="Enter Publishable Key" required></ion-textarea>							
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && publicKeyInput.invalid">{{publicKeyInputError}}</span>					
+			</ion-list>							
+		</ion-card>
+		<ion-row class="justify-content-center">
+			<ion-col size-lg="4" size-md="6" size="12">
+				<ion-button expand="block" color="success" type="submit">Save</ion-button>
+			</ion-col>
+		</ion-row>
+		</form>
+	</ng-container>
+	<ng-container *ngIf="cur_tab=='click_collect'">
+		<ion-card>
+			<ion-card-header>
+				<ion-card-title>Buy Online, Pick Up In-Store</ion-card-title>
+			</ion-card-header>
+			<ion-card-content>
+				<p>Click & Collect lets your customers buy online and pick up their orders in-store at there own convenience.</p>
+				<div class="text-center">
+					<ion-button (click)="setClickCollect()">
+						<ng-container *ngIf="store.click_collect">Disable</ng-container>
+            <ng-container *ngIf="!store.click_collect">Enable</ng-container>
+						Click & Collect
+					</ion-button>
+				</div>
+			</ion-card-content>			
+		</ion-card>
+		<ion-row>
+			<ion-col size-lg="4" size-md="6" size="12">
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title>Let shoppers make purchases on their own terms.</ion-card-title>
+					</ion-card-header>
+					<ion-card-content>
+						<p>Click & Collect lets your customers pick up purchases at their own convenience — no delivery, no tracking, no waiting!</p>
+					</ion-card-content>
+				</ion-card>
+			</ion-col>
+			<ion-col size-lg="4" size-md="6" size="12">
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title>Get a competitive edge over online sellers.</ion-card-title>
+					</ion-card-header>
+					<ion-card-content>
+						<p>Stack up against ecommerce giants with face-to-face relationships, tailored shopping experiences, and on-the-spot exchanges in-store.</p>
+					</ion-card-content>
+				</ion-card>
+			</ion-col>
+			<ion-col size-lg="4" size-md="6" size="12">
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title>Upsell and cross-sell when customers arrive.</ion-card-title>
+					</ion-card-header>
+					<ion-card-content>
+						<p>Have the perfect additions ready at the counter — whether that’s a matching belt or set of headphones — to go with an online purchase.</p>
+					</ion-card-content>
+				</ion-card>
+			</ion-col>
+		</ion-row>
+	</ng-container>
+</ion-content>

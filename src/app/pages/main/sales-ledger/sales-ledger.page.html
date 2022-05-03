@@ -1,0 +1,19 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+  <app-table 
+    [tb_name]="'sales_ledger'" 
+    [rows]="rows" 
+    [all_columns]="all_columns" 
+    [show_columns]="show_columns"    
+    [show_search]="true"
+    [loading]="loading"
+    [external_sort]="true"
+    [external_page]="true"
+    [page]="page"
+    [summary]="summary"
+    [limit]="10"
+    (searchEvent)="openSearch()"
+    (sortEvent)="onSort($event)"
+    (pageEvent)="onPage($event)"
+  ></app-table>   
+</ion-content>

@@ -1,0 +1,46 @@
+.edit-bundle{
+    ion-card.products{
+        overflow: visible !important;
+    }
+    ion-card-title{
+        font-size: 16px;
+    }
+    ion-item{
+        --min-height: 40px;
+        --padding-start: 0;
+        ion-label{
+            font-size: 14px !important;
+        }
+        ion-input{
+            font-size: 15px;
+        }
+    }
+    ion-row.search{
+        border-bottom: none;
+    }
+    ion-list.products{
+        ion-item{
+            --min-height: 40px;
+            --padding-start: 0;    
+            ion-label{
+                display: flex; 
+                padding-left: 10px;       
+                span{
+                    font-size: 13px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    margin-right: 10px;
+                }        
+            }
+            ion-note{
+                font-size: 13px !important;
+                color: black;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 100%;
+            }
+        }
+    }
+}

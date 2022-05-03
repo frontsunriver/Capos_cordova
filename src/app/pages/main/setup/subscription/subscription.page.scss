@@ -1,0 +1,107 @@
+.capos-plan-card{
+    padding: 0;
+    border: 2px solid #dddddd3f;    
+    display: flex;
+    flex-direction: column;    
+    ion-card-header{        
+        color:white;
+        margin:0;
+        padding: 8px 12px;
+        font-size:24px;
+        font-weight: 600;
+        text-align: center;
+
+        h1, h2, h3{
+            font-family: Mukta Mahee;
+            font-size: 1.3em;
+            margin-bottom: 0;            
+        }
+    }
+    ion-card-content{
+        margin-bottom: 15px;
+        padding: 0;
+        div{
+            border-top: 1px solid #dddddd;
+            background: #efefef;
+            padding: 8px 10px 8px;
+            ul li{
+                text-transform: capitalize;
+            }
+        }
+    
+        div.price{
+            border-top: none;
+            min-height: 112px;
+            background: #ffffff;
+            text-align: center;
+            h1, h2{
+                font-size: 3em;
+                font-weight: 700;
+                width: auto;
+                margin: 20px auto 5px;                
+                color: black;
+    
+                span{
+                    font-size: 16px;
+                    position: relative;
+                    top: 0;
+                }
+            }
+        }
+        ul li{font-size: 0.9em;}
+    }
+
+    div.card-footer{
+        margin-top: auto;
+        display: flex;
+        justify-content: center;
+        background-color: white;
+        ion-button{
+            min-width: 80%;
+        }
+    }
+}
+
+.free{
+    ion-card-header{
+        background: #0b7eca
+    }
+}
+.starter{
+    ion-card-header{
+        background: #08a0bb
+    }
+}
+.advanced{
+    ion-card-header{
+        background: #731e7e
+    }
+}
+.multi_outlet{
+    ion-card-header{
+        background: #d32a2a
+    }
+}
+
+.selected.free{
+    border-color: #3394d4
+}
+.selected.starter{
+    border-color: #08a0bb
+}
+.selected.advanced{
+    border-color: #731e7e
+}
+.selected.multi_outlet{
+    border-color: #d32a2a
+}
+div.renewal_date {
+    padding: 0.25rem 1.25rem;
+    border: 1px solid #1e88e5;
+    border-radius: 10px;
+    min-width: 80%;
+    text-align: center;    
+}
+@media (min-width: 768px) {
+    .capos-plan-card{height: 100%;}
+}

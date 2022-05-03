@@ -1,0 +1,44 @@
+<div class="box">
+  <h4>Search Register Closures</h4>
+  <ion-button fill="clear" class="close-button" size="small" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="search()" class="search-form">    
+    <div class="form-fields">
+      <ion-row>        
+        <ion-col size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">Register</ion-label>
+            <ion-select formControlName="register">
+              <ion-select-option value="">All Registers</ion-select-option>
+              <ion-select-option *ngFor="let s of registers" [value]="s._id">{{s.name}}</ion-select-option>
+            </ion-select>
+          </ion-item> 
+        </ion-col>        
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">From Opening time</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="start"></ion-datetime>
+          </ion-item> 
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">To Opening time</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="end"></ion-datetime>
+          </ion-item> 
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Search</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="button" color="warning" expand="block" (click)="clearFilter()">Clear</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

@@ -1,0 +1,28 @@
+<div class="box chart-settings">
+  <h4>Period Settings</h4>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <ion-list>    
+    <ion-item lines="full">
+      <ion-label position="stacked">Interval</ion-label>
+      <ion-select [(ngModel)]="interval">
+        <ion-select-option *ngFor="let p of intervals" [value]="p.value">{{p.label}}</ion-select-option>
+      </ion-select>
+    </ion-item> 
+    <ion-item lines="full">
+      <ion-label position="stacked">From date</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" [(ngModel)]="date_from"></ion-datetime>
+    </ion-item> 
+    <ion-item lines="full">
+      <ion-label position="stacked">To date</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" [(ngModel)]="date_to"></ion-datetime>
+    </ion-item>        
+  </ion-list>
+  <ion-row>
+    <ion-col>
+      <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button type="button" expand="block" (click)="apply()">Apply</ion-button>
+    </ion-col>
+  </ion-row>
+</div>

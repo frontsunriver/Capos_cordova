@@ -1,0 +1,40 @@
+<div class="box">
+  <h4>{{title}}</h4>
+  <ion-button fill="clear" class="close-button" size="small" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="submit()">  
+    <div class="form-fields">
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Name <span class="require">*</span></ion-label>
+            <ion-input type="text" formControlName="name" required></ion-input>
+          </ion-item>
+          <span class="error" *ngIf="isSubmitted && (duplicate_error || nameInput.invalid)">{{nameInputError}}</span>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Limit</ion-label>
+            <ion-input type="number" formControlName="limit"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <h6 class="ml-3">Point Rates</h6>
+      <ion-row>
+        <ion-col *ngFor="let p of group.point_rates_labels">
+          <ion-item>
+            <ion-label position="floating">{{p.label}}(%)</ion-label>
+            <ion-input type="number" [(ngModel)]="group.point_rate_values[p.code]" [ngModelOptions]="{standalone: true}"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>    
+    </div>  
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

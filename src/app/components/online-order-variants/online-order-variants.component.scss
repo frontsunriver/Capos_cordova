@@ -1,0 +1,47 @@
+div.online-order-list-wrapper{
+    max-height: calc(100vh - 240px);
+    overflow-y: auto;
+    ion-list.order-variants{        
+        ion-checkbox{            
+            padding: 0;
+            margin-top: 0; 
+            margin-bottom: 0;
+            margin-right: 5px;
+            &.ios{
+                width: 20px; height: 20px;            
+            }
+        }
+        ion-item{
+            --padding-start: 10px;
+            &.header{
+                font-weight: 700;
+            }            
+            &.qty{
+                ion-label{
+                    margin-left: 30px;                
+                }
+            }
+        }
+        ion-label{            
+            font-size: 13px;
+            color: black !important;
+            display: flex;
+            justify-content: space-between;
+            span{
+                color: black;
+            }            
+        }
+        ion-note{
+            color: black !important;
+            font-size: 13px;
+            height: 100%;
+            padding: 0;
+            min-width: 60px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }   
+    }
+
+}

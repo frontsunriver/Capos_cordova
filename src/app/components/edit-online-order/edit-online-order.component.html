@@ -1,0 +1,266 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+<ion-content class="edit-online-order">  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Status & Payments</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-list>
+            <ion-list-header>Order Status</ion-list-header>
+            <ion-item *ngFor="let s of order.status_history">
+              <ion-label>{{order.getStatus(s.status)}}</ion-label>
+              <ion-note slot="end">{{util.handleDate(s.created_at)}}</ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-select [(ngModel)]="order.status" [ngModelOptions]="{standalone: true}">
+                <ion-select-option *ngFor="let s of order_status" [value]="s.code">{{s.label}}</ion-select-option>
+              </ion-select>
+              <ion-button slot="end" size="small" color="primary" (click)="updateStatus()">Update</ion-button>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-list>
+            <ion-list-header>Payment Status</ion-list-header>
+            <ion-item *ngFor="let s of order.payment_status_history">
+              <ion-label>{{order.getPaymentStatus(s.status)}}</ion-label>
+              <ion-note slot="end">{{util.handleDate(s.created_at)}}</ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-select [(ngModel)]="order.payment_status" [ngModelOptions]="{standalone: true}">
+                <ion-select-option *ngFor="let s of payment_statuses" [value]="s.code">{{s.label}}</ion-select-option>
+              </ion-select>
+              <ion-button slot="end" size="small" color="primary" (click)="updatePaymentStatus()">Update</ion-button>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-list class="payments">
+        <ion-list-header>Payments ({{order.payments.length}})</ion-list-header>
+        <ion-item *ngFor="let payment of order.payments; let i=index;" ion-long-press [interval]="400" (longPressed)="removePayment(i)">
+          <ion-label>
+            <span>{{util.handleDate(payment.created_at)}}</span>
+            <span>{{order.getPaymentType(payment)}}</span>
+          </ion-label>
+          <ion-note slot="end">{{util.getPriceWithCurrency(payment.amount)}}</ion-note>
+        </ion-item>
+      </ion-list>
+      <form [formGroup]="frmPayment" (ngSubmit)="addPayment()">
+        <ion-row>
+          <ion-col size-md="3" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">Date <span class="require">*</span></ion-label>
+              <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="created_at"></ion-datetime>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted.payment && dateInput.invalid">{{dateInputError}}</span>
+          </ion-col>
+          <ion-col size-md="3" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">Payment Method <span class="require">*</span></ion-label>
+              <ion-select formControlName="type" required>
+                <ion-select-option value="cash">Cash</ion-select-option>
+                <ion-select-option value="credit">Credit Card</ion-select-option>
+                <ion-select-option value="master">Master Card</ion-select-option>
+                <ion-select-option value="store_credit">Store Credit</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted.payment && typeInput.invalid">{{typeInputError}}</span>
+          </ion-col>
+          <ion-col size-md="3" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">Amount($) <span class="require">*</span></ion-label>
+              <ion-input type="number" formControlName="amount" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted.payment && amountInput.invalid">{{amountInputError}}</span>
+          </ion-col>
+          <ion-col size-md="3" size="12">
+            <ion-button size="small" type="submit" color="primary">Add</ion-button>
+          </ion-col>
+        </ion-row>
+      </form>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Customer</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="frmCustomer" (ngSubmit)="submit()">
+        <ion-row>
+          <ion-col size-md="3" size="12">
+            <ion-item>
+              <ion-label position="floating">Name <span class="require">*</span></ion-label>
+              <ion-input formControlName="name" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted.customer && nameInput.invalid">{{nameInputError}}</span>
+          </ion-col>
+          <ion-col size-md="3" size="12">
+            <ion-item>
+              <ion-label position="floating">Email <span class="require">*</span></ion-label>
+              <ion-input type="email" formControlName="email" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted.customer && emailInput.invalid">{{emailInputError}}</span>
+          </ion-col>
+          <ion-col size-md="3" size="12">
+            <ion-item>
+              <ion-label position="floating">Company</ion-label>
+              <ion-input [(ngModel)]="order.customer.company" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size="12">
+            <ion-item>
+              <ion-label position="floating">Mobile</ion-label>
+              <ion-input [(ngModel)]="order.customer.mobile" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="6" size="12">
+            <h6>Billing Address</h6>
+            <ion-item>
+              <ion-label position="floating">City</ion-label>
+              <ion-input [(ngModel)]="order.customer.billing_address.city" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Suburb</ion-label>
+              <ion-input [(ngModel)]="order.customer.billing_address.suburb" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Postcode</ion-label>
+              <ion-input [(ngModel)]="order.customer.billing_address.postcode" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">State</ion-label>
+              <ion-input [(ngModel)]="order.customer.billing_address.state" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Country</ion-label>
+              <ion-select [(ngModel)]="order.customer.billing_address.country" [ngModelOptions]="{standalone: true}">
+                <ion-select-option *ngFor="let country of countries" [value]="country._id">
+                  {{country.country_name}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="6" size="12">
+            <h6>Shipping Address</h6>
+            <ion-item>
+              <ion-label position="floating">City</ion-label>
+              <ion-input [(ngModel)]="order.customer.shipping_address.city" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Suburb</ion-label>
+              <ion-input [(ngModel)]="order.customer.shipping_address.suburb" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Postcode</ion-label>
+              <ion-input [(ngModel)]="order.customer.shipping_address.postcode" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">State</ion-label>
+              <ion-input [(ngModel)]="order.customer.shipping_address.state" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Country</ion-label>
+              <ion-select [(ngModel)]="order.customer.shipping_address.country" [ngModelOptions]="{standalone: true}">
+                <ion-select-option *ngFor="let country of countries" [value]="country._id">
+                  {{country.country_name}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </form>
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="products">
+    <ion-card-header>
+      <ion-card-title>Products ({{order.products.length}})</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="search">
+        <ion-col>
+          <ion-auto-complete 
+            [(model)]="keyword"
+            [multi]="false" 
+            [dataProvider]="providerProduct" 
+            [options]="optionAutoComplete" 
+            [maxResults]="5" 
+            (itemSelected)="selProduct($event)" #searchbar></ion-auto-complete>      
+          <ion-button size="small" fill="clear" (click)="openAddToOrder()"><ion-icon name="list-sharp" color="primary"></ion-icon></ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-list class="products">
+        <ng-container *ngFor="let product of order.products;let p_index=index;">
+          <ion-item class="main">
+            <ion-label (click)="editProduct(product)" button ion-long-press [interval]="400" (longPressed)="removeProduct(p_index)">
+              <span>{{product.product_name}} {{product.variant_name}}</span>
+              <span class="d-none d-sm-block">{{util.getPriceWithCurrency(product.price)}} x {{product.qty}}</span>
+              <span class="d-none d-sm-block" *ngIf="product.discount.value>0">{{product.discountAmount_str}}
+                <span *ngIf="product.discount.mode=='percent'">({{product.discountRate}})</span>
+              </span>
+            </ion-label>
+            <ion-note slot="end" class="d-none d-sm-flex">{{product.discountedTotalWithoutGlobal_str}}</ion-note>
+          </ion-item>
+          <ion-item class="tax d-sm-none" color="light" (click)="editProduct(product)" button>
+            <ion-label>
+              <span>{{util.getPriceWithCurrency(product.price)}} x {{product.qty}}</span>
+              <span *ngIf="product.discount.value>0">{{product.discountAmount_str}}
+                <span *ngIf="product.discount.mode=='percent'">({{product.discountRate}})</span>
+              </span>
+            </ion-label>
+            <ion-note slot="end">{{product.discountedTotalWithoutGlobal_str}}</ion-note>
+          </ion-item>
+          <ion-item class="tax" color="light" *ngIf="product.taxAmount && !order.isOutletTax ">
+            <ion-label>           
+              <span *ngIf="!order.isOutletTax">Tax: {{product.taxAmount}}{{product.taxRate_str}}</span>
+            </ion-label>
+          </ion-item>
+        </ng-container>
+      </ion-list>
+      <ion-list>
+        <ion-list-header>Summary</ion-list-header>
+        <ion-item>
+          <ion-label>Sub Total</ion-label>
+          <ion-note slot="end">{{order.subTotal_str}}</ion-note>
+        </ion-item>
+        <ion-item *ngIf="order.discount.value>0">
+          <ion-label>Discount{{order.discount_rate}}</ion-label>
+          <ion-note slot="end">{{order.discount_str}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tax {{order.taxRate_str}}</ion-label>
+          <ion-note slot="end">{{order.taxAmount_str}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Total</ion-label>
+          <ion-note slot="end">{{order.totalIncl_str}}</ion-note>
+        </ion-item>
+      </ion-list>
+      <ion-row>
+        <ion-col size="12" class="d-flex justify-content-end">
+          <ion-button size="small" color="primary" (click)="addDiscount()">Add Discount</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" (click)="back()" expand="block">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" (click)="submit()" expand="block">Save</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

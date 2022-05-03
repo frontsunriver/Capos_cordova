@@ -1,0 +1,11 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+  <app-edit-order-stock-content #orderContent></app-edit-order-stock-content>
+</ion-content>
+<ion-footer>
+  <ion-row class="justify-content-center">
+    <ion-col size-lg="4" size-md="6" size="12">
+      <ion-button expand="block" color="success" click="submit()">Save</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

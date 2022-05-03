@@ -1,0 +1,212 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+<ion-content class="online-order-detail">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Order Details</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Customer</ion-label>
+          <ion-note slot="end">{{order.customer.name}} <small>{{order.customer.email}}</small></ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Status</ion-label>
+          <ion-note slot="end">{{order.status_str}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Date</ion-label>
+          <ion-note slot="end">{{util.handleDateTime(order.created_at)}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Total</ion-label>
+          <ion-note slot="end">{{order.totalIncl_str}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Products</ion-label>
+          <ion-note slot="end">{{order.products.length}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Status & Payment</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-list>
+            <ion-list-header>Order Status</ion-list-header>
+            <ion-item *ngFor="let s of order.status_history">
+              <ion-label>{{order.getStatus(s.status)}}</ion-label>
+              <ion-note slot="end">{{util.handleDate(s.created_at)}}</ion-note>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-list>
+            <ion-list-header>Payement Status</ion-list-header>
+            <ion-item *ngFor="let s of order.payment_status_history">
+              <ion-label>{{order.getPaymentStatus(s.status)}}</ion-label>
+              <ion-note slot="end">{{util.handleDate(s.created_at)}}</ion-note>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-list class="payments">
+        <ion-list-header>Payments ({{order.payments.length}})</ion-list-header>
+        <ion-item *ngFor="let payment of order.payments; let i=index;">
+          <ion-label>
+            <span>{{util.handleDate(payment.created_at)}}</span>
+            <span>{{order.getPaymentType(payment)}}</span>
+          </ion-label>
+          <ion-note slot="end">{{util.getPriceWithCurrency(payment.amount)}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Customer</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Name</ion-label>
+          <ion-note slot="end">{{order.customer.name}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Email</ion-label>
+          <ion-note slot="end">{{order.customer.email}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Company</ion-label>
+          <ion-note slot="end">{{order.customer.company}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Mobile</ion-label>
+          <ion-note slot="end">{{order.customer.mobile}}</ion-note>
+        </ion-item>
+      </ion-list>
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-list>
+            <ion-list-header>Billing Address</ion-list-header>
+            <ion-item>
+              <ion-label>City</ion-label>
+              <ion-note slot="end">{{order.customer.billing_address.city}}</ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-label>Suburb</ion-label>
+              <ion-note slot="end">{{order.customer.billing_address.suburb}}</ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-label>Postcode</ion-label>
+              <ion-note slot="end">{{order.customer.billing_address.postcode}}</ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-label>State</ion-label>
+              <ion-note slot="end">{{order.customer.billing_address.state}}</ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-label>Country</ion-label>
+              <ion-note slot="end">{{getCountry(order.customer.billing_address.country)}}</ion-note>
+            </ion-item>
+          </ion-list>
+        </ion-col>        
+        <ion-col size-md="6" size="12">
+          <ion-list>
+            <ion-list-header>Shipping Address</ion-list-header>
+            <ion-item>
+              <ion-label>City</ion-label>
+              <ion-note slot="end">{{order.customer.shipping_address.city}}</ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-label>Suburb</ion-label>
+              <ion-note slot="end">{{order.customer.shipping_address.suburb}}</ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-label>Postcode</ion-label>
+              <ion-note slot="end">{{order.customer.shipping_address.postcode}}</ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-label>State</ion-label>
+              <ion-note slot="end">{{order.customer.shipping_address.state}}</ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-label>Country</ion-label>
+              <ion-note slot="end">{{getCountry(order.customer.shipping_address.country)}}</ion-note>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Products ({{order.products.length}})</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list class="products">
+        <ng-container *ngFor="let product of order.products;let p_index=index;">
+          <ion-item class="main">
+            <ion-label>
+              <span>{{product.product_name}} {{product.variant_name}}</span>
+              <span class="d-none d-sm-block">{{util.getPriceWithCurrency(product.price)}} x {{product.qty}}</span>
+            </ion-label>
+            <ion-note slot="end" class="d-none d-sm-flex">{{product.discountedTotalWithoutGlobal_str}}</ion-note>
+          </ion-item>
+          <ion-item class="tax d-sm-none" color="light">
+            <ion-label>{{util.getPriceWithCurrency(product.price)}} x {{product.qty}}</ion-label>
+            <ion-note slot="end">{{product.discountedTotalWithoutGlobal_str}}</ion-note>
+          </ion-item>
+          <ion-item class="tax" color="light" *ngIf="(product.taxAmount && !order.isOutletTax) || product.discount.value>0">
+            <ion-label>
+              <span *ngIf="!order.isOutletTax">Tax: {{product.taxAmount}}{{product.taxRate_str}}</span>
+              <span *ngIf="product.discount.value>0">Discount: {{product.discountAmount_str}}
+                <span *ngIf="product.discount.mode=='percent'">({{product.discountRate}})</span>
+              </span>
+            </ion-label>
+          </ion-item>
+        </ng-container>
+      </ion-list>
+      <ion-list>
+        <ion-list-header>Summary</ion-list-header>
+        <ion-item>
+          <ion-label>Sub Total</ion-label>
+          <ion-note slot="end">{{order.subTotal_str}}</ion-note>
+        </ion-item>
+        <ion-item *ngIf="order.discount.value>0">
+          <ion-label>Discount{{order.discount_rate}}</ion-label>
+          <ion-note slot="end">{{order.discount_str}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tax {{order.taxRate_str}}</ion-label>
+          <ion-note slot="end">{{order.taxAmount_str}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Total</ion-label>
+          <ion-note slot="end">{{order.totalIncl_str}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" (click)="back()" expand="block">Return</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" (click)="edit()" expand="block">Edit</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

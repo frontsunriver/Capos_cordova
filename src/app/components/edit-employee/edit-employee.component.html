@@ -1,0 +1,237 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+<ion-toolbar>
+  <ion-segment [(ngModel)]="cur_tab" swipe-gesture>
+    <ion-segment-button value="bio">
+      <ion-label>Bio & Info</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="timesheet" *ngIf="!add_new">
+      <ion-label>Timesheet</ion-label>
+    </ion-segment-button>    
+  </ion-segment>
+</ion-toolbar>
+<ion-content class="edit-employee">
+  <ng-container *ngIf="cur_tab=='bio'">
+    <div class="box">
+      <form [formGroup]="form" (ngSubmit)="submit()" autocomplete="off" *ngIf="form">
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">First Name <span class="require">*</span></ion-label>
+              <ion-input type="text" formControlName="first_name" required></ion-input>            
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && firstNameInput.invalid">{{firstNameInputError}}</span>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Last Name <span class="require">*</span></ion-label>
+              <ion-input type="text" formControlName="last_name" required></ion-input>            
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && lastNameInput.invalid">{{lastNameInputError}}</span>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Email <span class="require">*</span></ion-label>
+              <ion-input type="email" formControlName="email" required></ion-input>            
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && (duplicate_error || emailInput.invalid)">{{emailInputError}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ng-container *ngIf="add_new">
+              <ion-item lines="full">
+                <ion-label position="floating">Password <span class="require">*</span></ion-label>                                
+                <ion-input [type]="hide?'password':'text'" formControlName="password" required></ion-input>
+                <ion-icon (click)="hide=!hide" name="{{hide?'eye-off-outline':'eye-outline'}}" class="suffix-icon"></ion-icon>
+              </ion-item>
+              <span class="error" *ngIf="isSubmitted && passwordInput.invalid">{{passwordInputError}}</span>
+            </ng-container>
+            <ng-container *ngIf="!add_new">
+              <ion-item lines="full">   
+                <ion-label position="floating">New Password</ion-label>
+                <ion-input [type]="hide?'password':'text'" formControlName="password"></ion-input>
+                <ion-icon (click)="hide=!hide" name="{{hide?'eye-off-outline':'eye-outline'}}" class="suffix-icon"></ion-icon>              
+              </ion-item>
+              <span class="error" *ngIf="isSubmitted && passwordInput.invalid">{{passwordInputError}}</span>
+            </ng-container>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Phone</ion-label>
+              <ion-input type="number" [(ngModel)]="user.phone" [ngModelOptions]="{standalone: true}"></ion-input>            
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Mobile</ion-label>
+              <ion-input type="number" [(ngModel)]="user.mobile" [ngModelOptions]="{standalone: true}"></ion-input>            
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">Birthday</ion-label>
+              <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" [(ngModel)]="user.birthday" [ngModelOptions]="{standalone: true}"></ion-datetime>
+            </ion-item> 
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">Joined Date</ion-label>
+              <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" [(ngModel)]="user.phone" [ngModelOptions]="{standalone: true}"></ion-datetime>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">Role</ion-label>
+              <ion-select [(ngModel)]="role" [ngModelOptions]="{standalone: true}">
+                <ion-select-option *ngFor="let s of roles" [value]="s._id"> {{s.name}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">Outlet</ion-label>
+              <ion-select [(ngModel)]="outlet" [ngModelOptions]="{standalone: true}">
+                <ion-select-option *ngFor="let s of outlets" [value]="s._id"> {{s.name}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Commissions(%)</ion-label>
+              <ion-input type="number" [(ngModel)]="user.commission" [ngModelOptions]="{standalone: true}"></ion-input>            
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Hour Salary</ion-label>
+              <ion-input type="number" [(ngModel)]="user.hour_salary" [ngModelOptions]="{standalone: true}"></ion-input>            
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Street</ion-label>
+              <ion-input [(ngModel)]="user.physical_address.street" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">City</ion-label>
+              <ion-input [(ngModel)]="user.physical_address.city" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Suburb</ion-label>
+              <ion-input [(ngModel)]="user.physical_address.suburb" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Postcode</ion-label>
+              <ion-input [(ngModel)]="user.physical_address.postcode" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">State</ion-label>
+              <ion-input [(ngModel)]="user.physical_address.state" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">Country</ion-label>
+              <ion-select [(ngModel)]="user.physical_address.country" [ngModelOptions]="{standalone: true}">
+                <ion-select-option *ngFor="let country of countries" [value]="country._id">{{country.country_name}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label>Is in training?</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="user.is_in_training" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </form>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="cur_tab=='timesheet'">
+    <div class="ngx-table-controllers">  
+      <ion-button icon-only size="small" color="danger" (click)="openColumns($event)">
+        <ion-icon name="eye-outline"></ion-icon>
+      </ion-button>            
+    </div>
+    <div class="ngx-table-wrapper" *ngIf="availableTable">
+      <ngx-datatable
+        #myTable
+        class="material"
+        [rows]="rows"
+        [columnMode]="ColumnMode.flex"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        rowHeight="auto"
+        [loadingIndicator]="loading"
+        [limit]="10"
+        [selected]="selected"
+        [selectionType]="SelectionType.checkbox"
+        [selectAllRowsOnPage]="false"
+        (select)="onSelect($event)"
+      >        
+        <ngx-datatable-column
+          [width]="30"
+          [sortable]="false"
+          [canAutoResize]="false"
+          [draggable]="false"
+          [resizeable]="false"
+          [headerCheckboxable]="true"
+          [checkboxable]="true"
+        >
+        </ngx-datatable-column>        
+        <ngx-datatable-column *ngFor="let col of columns;let i=index;"
+          [name]="col.name"
+          [prop]="col.prop"
+          [sortable]="col.sortable"
+          [flexGrow]="1">
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </ng-container>
+</ion-content>
+<ion-footer>
+  <ion-row *ngIf="cur_tab=='bio'">
+    <ion-col>
+      <ion-button color="danger" (click)="back()" expand="block">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" (click)="submit()" expand="block">Save</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="cur_tab=='timesheet'">
+    <ion-col>
+      <ion-button color="primary" (click)="insertTimesheet()" expand="block">Insert</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" (click)="updateTimesheet()" expand="block" [disabled]="selected.length!=1">Update</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="danger" (click)="deleteTimesheets()" expand="block" [disabled]="selected.length==0">Delete</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

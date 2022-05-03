@@ -1,0 +1,17 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+  <app-table 
+    [tb_name]="'outlet_registers'" 
+    [rows]="rows" 
+    [all_columns]="all_columns" 
+    [show_columns]="show_columns"
+    [show_details]="true"
+    [add_new]="true"
+    [loading]="loading"
+    [limit]="10"
+    (reloadEvent)="initTable()"
+    (addRowEvent)="addOutlet()"
+    (editRowEvent)="editOutlet($event)"
+    (deleteRowEvent)="deleteOutlet($event)"
+  ></app-table>  
+</ion-content>

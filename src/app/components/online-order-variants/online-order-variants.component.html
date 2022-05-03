@@ -1,0 +1,36 @@
+<div class="box">
+  <h4>Choose variants to add to the order.</h4>
+  <ion-button fill="clear" class="close-button" size="small" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <div class="online-order-list-wrapper">    
+    <ion-list class="order-variants">
+      <ion-item class="header">
+        <ion-label>Product</ion-label>
+        <ion-note slot="end">Inventory</ion-note>
+        <ion-checkbox slot="start" [(ngModel)]="all_check" [indeterminate]="someCheck()" (ionChange)="onAllCheck()"></ion-checkbox>
+      </ion-item>
+      <ng-container *ngFor="let p of table_data">
+        <ion-item>
+          <ion-label><span>{{p.product.product_name}} <small>{{p.product.variant_name}}</small></span></ion-label>
+          <ion-note slot="end">{{p.product.inventory}}</ion-note>
+          <ion-checkbox slot="start" [(ngModel)]="p.checked" (ionChange)="updateAllCheck()"></ion-checkbox>
+        </ion-item>
+        <ion-item color="light" class="qty" button (click)="editQty(p.product)">
+          <ion-label><span>{{p.product.price_str}} x {{p.product.qty}}</span>
+            <span *ngIf="p.product.discount.value>0">{{p.product.discountAmount_str}} 
+              <span *ngIf="p.product.discount.mode=='percent'">({{p.product.discountRate}})</span>
+            </span>
+          </ion-label>
+          <ion-note slot="end">{{p.product.discountedTotalWithoutGlobal_str}}</ion-note>
+        </ion-item>
+      </ng-container>
+    </ion-list>    
+  </div>
+  <ion-row>
+    <ion-col>
+      <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button expand="block" (click)="doAction()">Add to order</ion-button>
+    </ion-col>
+  </ion-row>
+</div>

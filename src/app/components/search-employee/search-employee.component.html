@@ -1,0 +1,35 @@
+<div class="box">
+  <h4>Search User/Employee</h4>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="search()" class="search-form">    
+    <div class="form-fields">
+      <ion-item lines="full">
+        <ion-label position="floating">Name</ion-label>
+        <ion-input formControlName="keyword"></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="stacked">Role</ion-label>
+        <ion-select formControlName="role">
+          <ion-select-option *ngFor="let g of roles" [value]="g._id">{{g.name}}</ion-select-option>              
+        </ion-select>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="stacked">Outlet</ion-label>
+        <ion-select formControlName="outlet">
+          <ion-select-option *ngFor="let g of outlets" [value]="g._id">{{g.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Search</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="button" color="warning" expand="block" (click)="clearFilter()">Clear</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

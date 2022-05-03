@@ -1,0 +1,206 @@
+<app-header [title]="title"></app-header>
+<ng-container *ngIf="!openClose._id">
+  <ion-content>
+    <ion-row class="justify-content-center">
+      <ion-col size-lg="4" size-md="6" size="12">        
+        <form [formGroup]="form" (ngSubmit)="openRegister()">
+          <ion-card class="register">
+            <ion-card-header>
+              <ion-card-title>Register closed</ion-card-title>
+              <ion-card-subtitle>Set an opening float to open the register and make a sale.</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>        
+              <ion-item>
+                <ion-label position="floating">Opening Float <span class="require">*</span></ion-label>
+                <ion-input type="number" formControlName="open_value" required></ion-input>
+              </ion-item>
+              <span class="error" *ngIf="isSubmitted && floatInput.invalid">{{floatInputError}}</span>   
+              <ion-item>
+                <ion-label position="floating">Notes (Optional):</ion-label>
+                <ion-textarea formControlName="open_note" placeholder="Input your note here..."></ion-textarea>
+              </ion-item>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-button type="submit" expand="block">Open Register</ion-button>
+                </ion-col>
+              </ion-row>         
+            </ion-card-content>        
+          </ion-card>
+        </form>
+      </ion-col>
+    </ion-row>	
+  </ion-content>  
+</ng-container>
+<ng-container *ngIf="openClose._id">
+  <ion-row class="sale-status">
+    <ion-col><span>Sale#: <b>{{cart.sale_number}}</b></span></ion-col>
+    <ion-col><span>Sale Status: <b>{{cart.status_label}}</b></span></ion-col>
+  </ion-row>
+  <ion-row class="search">
+    <ion-col size-md="6" size="10">
+      <ion-auto-complete 
+        [(model)]="keyword"
+        [multi]="false" 
+        [dataProvider]="providerProduct" 
+        [options]="optionAutoComplete" 
+        [maxResults]="5" 
+        (itemSelected)="selProduct($event)" #searchbar></ion-auto-complete>      
+      <ion-button size="small" fill="clear" (click)="openAddToCart()"><ion-icon name="list-sharp" color="primary"></ion-icon></ion-button>
+    </ion-col>
+    <ion-col size-md="6" size="2">
+      <div class="customer" [ngClass]="{'hidden': is_mobile}">
+        <div><span class="note">Customer Name</span><span class="label" *ngIf="cart.customer">{{cart.customer.data.name}}</span></div>
+        <div><span class="note">Grade</span><span class="label" *ngIf="cart.customer && cart.customer.data.groupId">{{cart.customer.data.groupId.name}}</span></div>
+      </div>
+      <ion-button size="small" fill="clear" (click)="openCustomer()"><ion-icon name="person-add-sharp" color="primary"></ion-icon></ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-content>    
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th width="20px"></th><th>Item</th><th>Price</th><th>Qty</th><th>Sum</th><th>Tax</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let b of cart.bundle_products">
+          <ng-container *ngFor="let p of b.cart_products">
+            <ng-container *ngIf="!p.voided">
+              <tr (click)="selCartProduct(p)" [ngClass]="{'active':p.checked}">
+                <td (click)="$event.stopPropagation()">
+                  <ion-checkbox [(ngModel)]="p.checked" (ionChange)="deSelectOther(p)"></ion-checkbox>
+                </td>
+                <td class="text-left wrap">{{p.product_name}} <small *ngIf="p.variant_name">{{p.variant_name}}</small></td>
+                <td (click)="$event.stopPropagation()">
+                  <ng-container *ngIf="!p.product.data.has_no_price">
+                    <ng-container *ngIf="!p.product_price">
+                      <a href="javascript:" (click)="changePW(p, 'price')">{{util.getPriceWithCurrency(p.price)}}</a>
+                    </ng-container>
+                    <ng-container *ngIf="p.product_price">
+                      {{util.getPriceWithCurrency(p.price)}}
+                    </ng-container>
+                  </ng-container>
+                </td>
+                <td><span [ngClass]="{'text-decoration':p.void}">{{p.qty}}</span></td>
+                <td>
+                  <span [ngClass]="{'text-decoration':p.void || p.discount.value>0}" *ngIf="!p.product.data.has_no_price">
+                    {{p.totalPrice_str}}
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="!cart.isOutletTax && !cart.isRefund && !p.product.data.has_no_price" [ngClass]="{'text-decoration':p.void}">
+                    {{p.taxAmount}}
+                  </span>
+                </td>
+              </tr>
+              <tr *ngIf="p.discount.value>0" class="discount_tr">
+                <td colspan="4">Discount({{p.discountRate}}): 
+                  <a href="javascript:" (click)="changeDiscountItem(p)">{{p.discountAmount_str}}</a>
+                </td>
+                <td>{{p.discountedTotalWithoutGlobal_str}}</td>
+                <td></td>
+              </tr>
+              <tr *ngIf="p.serial || p.weight>0" class="weight_tr">
+                <ng-container *ngIf="p.serial">
+                  <td colspan="3">Serial: <a href="javascript:" (click)="changePW(p, 'serial')">{{p.serial}}</a></td>
+                </ng-container>
+                <ng-container *ngIf="p.weight>0">
+                  <td colspan="3">Weight: <a href="javascript:" (click)="changePW(p, 'weight')">{{p.weight}}</a> (g or oz)</td>
+                </ng-container>
+                <ng-container *ngIf="!(p.serial && p.weight>0)">
+                  <td></td><td></td><td></td>
+                </ng-container>
+              </tr>                    
+            </ng-container>
+          </ng-container>
+          <tr *ngIf="b.bundle" class="bundle_tr">
+            <td colspan="2">{{b.bundle.name}}</td>
+            <td>{{b.bundle.discount_str}}</td>
+            <td>{{b.qty}}</td>
+            <td>{{util.getPriceWithCurrency(-b.bundle.discount * b.qty)}}</td>
+            <td></td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <ion-list class="cart-list hidden">
+      <ng-container *ngFor="let b of cart.bundle_products">
+        <ng-container *ngFor="let p of b.cart_products">
+          <ng-container *ngIf="!p.voided">
+            <ion-item class="main" lines="none">
+              <ion-checkbox slot="start" [(ngModel)]="p.checked"></ion-checkbox>
+              <ion-label>{{p.product_name}} <small *ngIf="p.variant_name">{{p.variant_name}}</small></ion-label>
+              <ion-note sloat="end">
+                <span [ngClass]="{'text-decoration':p.void || p.discount.value>0}" *ngIf="!p.product.data.has_no_price">
+                  {{p.totalPrice_str}}
+                </span>
+              </ion-note>
+            </ion-item>
+            <ion-item class="secondary" color="light" lines="none">
+              <ion-label>
+                <ng-container *ngIf="!p.product.data.has_no_price">
+                  <ng-container *ngIf="!p.product_price">
+                    <a href="javascript:" matTooltip="Change Price" (click)="changePW(p, 'price')">{{util.getPriceWithCurrency(p.price)}}</a>
+                  </ng-container>
+                  <ng-container *ngIf="p.product_price">
+                    {{util.getPriceWithCurrency(p.price)}}
+                  </ng-container>
+                </ng-container>
+                 x 
+                <span [ngClass]="{'text-decoration':p.void}">{{p.qty}}</span>
+              </ion-label>
+              <ion-note slot="end">
+                <span *ngIf="!cart.isOutletTax && !cart.isRefund && !p.product.data.has_no_price" [ngClass]="{'text-decoration':p.void}">
+                  {{p.taxAmount}}
+                </span>
+              </ion-note>
+            </ion-item>
+          </ng-container>
+        </ng-container>
+        <ion-item *ngIf="b.bundle" class="bundle_tr">
+          <ion-label>
+            <span>{{b.bundle.name}}</span>
+            <span>{{b.bundle.discount_str}} x {{b.qty}}</span>
+          </ion-label>
+          <ion-note slot="end">{{util.getPriceWithCurrency(-b.bundle.discount * b.qty)}}</ion-note>
+        </ion-item>
+      </ng-container>      
+    </ion-list>
+  </ion-content>
+  <ion-row class="summary">
+    <ion-col size-md="6" size="12">
+      <ion-row>
+        <ion-col size-md="12" size="6">
+          <div><span>SubTotal</span><span>{{cart.totalWithoutDiscount_str}}</span></div>        
+        </ion-col>
+        <ion-col size-md="12" size="6" *ngIf="cart.discountItems!=0">
+          <div><span>Discount Items</span><span>{{cart.discountItems_str}}</span></div>        
+        </ion-col>
+        <ion-col size-md="12" size="6" *ngIf="cart.total_discount_sale!=0">
+          <div><span>Discount Sale{{cart.discount_rate}}</span><span>{{cart.discount_str}}</span></div>        
+        </ion-col>
+        <ion-col size-md="12" size="6" *ngIf="cart.total_bundle_discount!=0">
+          <div><span>Discount Bundle</span><span>{{cart.total_bundle_discount_str}}</span></div>        
+        </ion-col>
+        <ion-col size-md="12" size="6">
+          <div><span>Tax{{cart.taxRate_str}}</span><span>{{cart.taxAmount_str}}</span></div>        
+        </ion-col>
+      </ion-row>    
+    </ion-col>
+    <ion-col size-md="6" size="12">
+      <ion-row>
+        <ion-col size-md="12" size="4" class="items-summary">
+          <div><span>Items</span><span>{{cart.total_items}}</span></div>
+        </ion-col>
+        <ion-col size-md="12" size="8" class="total-summary">
+          <div class="total"><span>Total</span><span>{{cart.totalIncl_str}}</span></div>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col><ion-button size="small" expand="block" color="danger" (click)="openActionSheet('sales')">Sales</ion-button></ion-col>
+    <ion-col><ion-button size="small" expand="block" (click)="openActionSheet('items')">Items</ion-button></ion-col>
+    <ion-col><ion-button size="small" expand="block" color="success" (click)="openActionSheet('payment')">Payment</ion-button></ion-col>
+  </ion-row>    
+</ng-container>

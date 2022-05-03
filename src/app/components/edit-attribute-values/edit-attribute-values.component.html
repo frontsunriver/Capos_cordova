@@ -1,0 +1,30 @@
+<div class="box edit-attribute-values">
+  <h4>{{title}}</h4>
+  <ion-button fill="clear" class="close-button" size="small" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="form">  
+    <ion-row>
+      <ng-container *ngFor="let variant of variants;let index1=index">
+        <ion-col>
+          <ion-list>
+            <ion-list-header>Attribute: {{getAttribute(variant.attribute)}}</ion-list-header>
+            <ng-container *ngFor="let value of variant.value;let index2=index">
+              <ion-item>
+                <ion-label position="floating">Value</ion-label>
+                <ion-input type="text" formControlName="{{'value' + index1 + '_' + index2}}" required></ion-input>        
+              </ion-item>
+              <span class="error" *ngIf="isSubmitted && getError(index1,index2)">{{requiredField}}</span>
+            </ng-container>
+          </ion-list>    
+        </ion-col>
+      </ng-container>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

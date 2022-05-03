@@ -1,0 +1,9 @@
+<ion-list class="user-menu">
+  <ion-list-header *ngIf="user">{{user.first_name}} {{user.last_name}}</ion-list-header>  
+  <ng-container *ngFor="let p of menus; let i = index">    
+    <ion-item (click)="doAction(p)">      
+      <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'" *ngIf="p.icon"></ion-icon>
+      <ion-label>{{ p.title }}</ion-label>
+    </ion-item>    
+  </ng-container>
+</ion-list>

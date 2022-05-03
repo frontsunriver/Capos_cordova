@@ -1,0 +1,132 @@
+<app-header [title]="title"></app-header>
+<ion-content class="dashboard">
+    <ion-card class="settings" (click)="openSettings()">
+        <ion-row>
+            <ion-col size="4">{{interval_label}}</ion-col>
+            <ion-col size="8" class="text-right">{{period}}</ion-col>
+        </ion-row>
+    </ion-card>   
+    <ion-card>
+        <ion-card-header> Sales Dashboard </ion-card-header>
+        <ion-card-content>
+            <ion-radio-group [(ngModel)]="sales_mode" (ionChange)="setSalesChartData()">
+                <ion-row>
+                    <ion-col size-md="6" size="12">
+                        <ion-item lines="none" class="sales">
+                            <ion-label>Sales</ion-label>
+                            <ion-radio slot="start" value="sales"></ion-radio>
+                            <ion-note>{{total_sales}} <small>Tax excl.</small></ion-note>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size-md="6" size="12">
+                        <ion-item lines="none" class="orders">
+                            <ion-label>Orders</ion-label>
+                            <ion-radio slot="start" value="orders"></ion-radio>
+                            <ion-note>{{total_orders}}</ion-note>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>                
+            </ion-radio-group>
+          <canvas #salesCanvas></canvas>
+        </ion-card-content>
+    </ion-card>
+    <ion-card>
+        <ion-card-header class="d-flex"> 
+            Product Sale Dashboard 
+            <div class="ml-auto">
+                <ion-button size="small" [routerLink]="['/sel-product']">Add / Remove Product</ion-button>
+            </div>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-radio-group [(ngModel)]="product_mode" (ionChange)="setProductsChartData()">
+                <ion-row>
+                    <ion-col size-md="6" size="12">
+                        <ion-item lines="none" class="sales">
+                            <ion-label>Sales</ion-label>
+                            <ion-radio slot="start" value="sales"></ion-radio>
+                            <ion-note>{{total_product_sales}} <small>Tax excl.</small></ion-note>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size-md="6" size="12">
+                        <ion-item lines="none" class="orders">
+                            <ion-label>Solds</ion-label>
+                            <ion-radio slot="start" value="orders"></ion-radio>
+                            <ion-note>{{total_product_orders}}</ion-note>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>                
+            </ion-radio-group>
+            <canvas #productCanvas></canvas>
+        </ion-card-content>
+    </ion-card> 
+    <ion-row>
+        <ion-col size-md="6" size="12">
+            <ion-card>
+                <ion-card-header> Sales Report </ion-card-header>
+                <ion-card-content>
+                    <ion-list lines="full">
+                        <ion-item>
+                            <ion-label color="medium">Total for this month</ion-label>
+                            <ion-note slot="end" color="primary">{{totalByMonth}}</ion-note>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label color="medium">Total for today</ion-label>
+                            <ion-note slot="end" color="danger">{{totalByDay}}</ion-note>
+                        </ion-item>
+                    </ion-list>
+                </ion-card-content>
+            </ion-card>  
+        </ion-col>
+        <ion-col size-md="6" size="12">
+            <ion-card>
+                <ion-card-header> Stock Report </ion-card-header>
+                <ion-card-content>
+                    <ion-list lines="full">
+                        <ion-item>
+                            <ion-label color="medium">Stock Levels</ion-label>
+                            <ion-note slot="end" color="primary">{{stockLevels}}</ion-note>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label color="medium">Stock on Hand</ion-label>
+                            <ion-note slot="end" color="secondary">{{stockOnHand}}</ion-note>
+                        </ion-item>
+                    </ion-list>
+                </ion-card-content>
+            </ion-card>  
+        </ion-col>
+        <ion-col size-md="6" size="12">
+            <ion-card>
+                <ion-card-header> Product Report </ion-card-header>
+                <ion-card-content>
+                    <ion-list lines="full">
+                        <ion-item>
+                            <ion-label color="medium">Total by User</ion-label>
+                            <ion-note slot="end" color="primary">{{productsByUser}}</ion-note>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label color="medium">Total by Outlet</ion-label>
+                            <ion-note slot="end" color="success">{{productsByOutlet}}</ion-note>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label color="medium">Total by Customer</ion-label>
+                            <ion-note slot="end" color="tertiary">{{productsByCustomer}}</ion-note>
+                        </ion-item>
+                    </ion-list>
+                </ion-card-content>
+            </ion-card>  
+        </ion-col>
+        <ion-col size-md="6" size="12">
+            <ion-card>
+                <ion-card-header> Register Report </ion-card-header>
+                <ion-card-content>
+                    <ion-list lines="full">
+                        <ion-item>
+                            <ion-label color="medium">Register Closures</ion-label>
+                            <ion-note slot="end" color="primary">{{registerClosures}}</ion-note>
+                        </ion-item>                        
+                    </ion-list>
+                </ion-card-content>
+            </ion-card>  
+        </ion-col>
+    </ion-row>  
+</ion-content>

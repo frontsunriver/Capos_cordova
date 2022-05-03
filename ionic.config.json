@@ -1,0 +1,7 @@
+{
+  "name": "capos_app",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

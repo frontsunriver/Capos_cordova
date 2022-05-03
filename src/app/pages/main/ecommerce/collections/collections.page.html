@@ -1,0 +1,35 @@
+<app-header [title]="title"></app-header>
+<ion-toolbar>
+  <ion-buttons slot="end">
+		<ion-button color="primary" (click)="addNew()"><ion-icon name="add-outline"></ion-icon> Add New Collection</ion-button>
+  </ion-buttons>
+</ion-toolbar>
+<ion-content class="collections">
+	<ul class="breadcrumb">
+		<li *ngFor="let b of breadcrumb; let i=index;">
+			<ion-icon name="chevron-forward-outline" *ngIf="i>0"></ion-icon>
+			<a href="javascript:" (click)="gotoParent(b)">{{b.name}}</a>
+		</li>
+	</ul>
+	<ion-list>
+		<ion-item class="header">
+			<ion-label><span>Name</span><span>Products</span></ion-label>
+			<ion-note slot="end">Active</ion-note>
+		</ion-item>
+		<ng-container *ngFor="let t of table_data">
+			<ion-item class="main-collection" (click)="handleAction('edit', t)" ion-long-press [interval]="400" (longPressed)="handleAction('delete', t)">
+				<ion-label>
+					<span>{{t.name}}</span><span>{{t.products.length}}</span>
+				</ion-label>
+				<ion-note slot="end">
+					<ng-container *ngIf="t.active"><ion-icon name="checkmark-circle-outline" color="success"></ion-icon></ng-container>
+					<ng-container *ngIf="!t.active"><ion-icon name="close-circle-outline" color="danger"></ion-icon></ng-container>
+				</ion-note>
+			</ion-item>
+			<ion-item color="light" button class="sub-collection" (click)="handleAction('view', t)">
+				<ion-label>Sub Collections</ion-label>
+				<ion-note slot="end">{{t.children.length}}</ion-note>
+			</ion-item>
+		</ng-container>		
+	</ion-list>
+</ion-content>

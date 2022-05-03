@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+<ion-content class="order-detail">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Order Details</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Order Number</ion-label>
+          <ion-note slot="end">{{order.data.order_number}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Order Status</ion-label>
+          <ion-note slot="end">{{order.status}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Supplier</ion-label>
+          <ion-note slot="end">
+            <ng-container *ngIf="order.data.type!='return' && order.data.supplier">
+              {{order.data.supplier.name}}
+            </ng-container>
+            <ng-container *ngIf="order.data.type=='return' && order.data.deliver_to">
+              {{order.data.deliver_to.name}}
+            </ng-container>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Deliver to</ion-label>
+          <ion-note slot="end">
+            <ng-container *ngIf="order.data.type!='return' && order.data.deliver_to">
+              {{order.data.deliver_to.name}}
+            </ng-container>
+            <ng-container *ngIf="order.data.type=='return' && order.data.supplier">
+              {{order.data.supplier.name}}
+            </ng-container>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Created</ion-label>
+          <ion-note slot="end">{{util.handleDate(order.data.created_at)}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Created by</ion-label>
+          <ion-note slot="end"><span *ngIf="order.data.user_id">{{order.data.user_id.first_name}} {{order.data.user_id.last_name}}</span></ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Deliver due</ion-label>
+          <ion-note slot="end">{{util.handleDate(order.data.delivery_date)}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Supplier Invoice</ion-label>
+          <ion-note slot="end">{{order.data.invoice_number}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Note</ion-label>
+          <ion-note slot="end">{{order.data.note}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>  
+  <ion-card class="products">
+    <ion-card-header>
+      <ion-card-title>Products ({{order.data.products.length}})</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <app-table 
+        [tb_name]="'order_detail_products'" 
+        [rows]="rows" 
+        [all_columns]="all_columns" 
+        [show_columns]="show_columns"        
+        [loading]="loading"
+        [limit]="10"     
+      ></app-table> 
+    </ion-card-content>
+  </ion-card>
+</ion-content>

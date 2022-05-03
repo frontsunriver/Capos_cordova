@@ -1,0 +1,97 @@
+<ion-header [ngClass]="sticky?'back-opacity':'fullscreen-header'">
+  <ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" (ionScroll)="scroll($event)"  [scrollEvents]="true">	
+	<div class="auth-content-wrapper">
+		<div class="box signup">
+			<a routerLink="/home" class="logo">
+				<img src="assets/home/logo.png"/>
+			</a>
+			<h1 class="text-light-blue">Create New Account</h1>
+			<form [formGroup]="form" (ngSubmit)="submit()">
+				<ion-item lines="full">
+					<ion-label position="floating">
+						<ion-icon name="earth-outline"></ion-icon>  Private Web Address <span class="require">*</span>
+					</ion-label>
+					<ion-input type="text" formControlName="private_web_address" required (keydown)="onKeydown('private_web_address')" (keypress)="onKeypress($event)"></ion-input>
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && (privateWebAddressInput.invalid || duplicatedWebAdd)">{{privateWebAddressInputError}}</span>
+				<ion-item lines="full">
+					<ion-label position="floating">
+						<ion-icon name="storefront-outline"></ion-icon>  Store Name <span class="require">*</span>
+					</ion-label>
+					<ion-input type="text" formControlName="store_name" autocomplete="off" required (keydown)="onKeydown('store_name')"></ion-input>
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && (storeNameInput.invalid || duplicatedStoreName)">{{storeNameInputError}}</span>
+				<ion-item lines="full">
+					<ion-label position="floating">
+						<ion-icon name="person-outline"></ion-icon>  First Name <span class="require">*</span>
+					</ion-label>
+					<ion-input type="text" formControlName="first_name" required></ion-input>
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && firstNameInput.invalid">{{firstNameInputError}}</span>
+				<ion-item lines="full">
+					<ion-label position="floating">
+						<ion-icon name="person-outline"></ion-icon> Last Name
+					</ion-label>
+					<ion-input type="text" formControlName="last_name"></ion-input>
+				</ion-item>
+				<ion-item lines="full">
+					<ion-label position="floating">
+						<ion-icon name="mail-outline"></ion-icon> Email <span class="require">*</span>
+					</ion-label>
+					<ion-input type="text" formControlName="email" required></ion-input>
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && (emailInput.invalid || duplicatedEmail)">{{emailInputError}}</span>
+				<ion-item lines="full">
+					<ion-label position="floating">
+						<ion-icon name="key-outline"></ion-icon> Password <span class="require">*</span>
+					</ion-label>
+          <ion-input [type]="hide?'password':'text'" formControlName="password" autocomplete="password" required></ion-input>
+          <ion-icon (click)="hide=!hide" name="{{hide?'eye-off-outline':'eye-outline'}}" class="suffix-icon"></ion-icon>          
+        </ion-item>
+				<span class="error" *ngIf="isSubmitted && passwordInput.invalid">{{passwordInputError}}</span>
+				<ion-item lines="full">
+					<ion-label position="floating">
+						<ion-icon name="call-outline"></ion-icon> Phone Number
+					</ion-label>
+					<ion-input type="tel" formControlName="phone"></ion-input>
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && phoneNumberInput.invalid">{{phoneNumberInputError}}</span>
+				<ion-item lines="full">
+					<ion-label position="stacked">
+						<ion-icon name="globe-outline"></ion-icon> Country
+					</ion-label>
+					<ion-select formControlName="country">
+						<ion-select-option *ngFor="let country of countryList" [value]="country._id">
+							{{country.country_name}}
+						</ion-select-option>
+					</ion-select>
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && countryInput.invalid">{{countryInputError}}</span>
+				<ion-item lines="full">
+					<ion-label position="stacked">
+						<ion-icon name="logo-usd"></ion-icon> Trading Currency
+					</ion-label>
+					<ion-select formControlName="default_currency">
+						<ion-select-option *ngFor="let currency of currencies" [value]="currency._id">
+							{{currency.symbol_native}} - {{currency.code}} ({{currency.name}})
+						</ion-select-option>
+					</ion-select>
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && currencyInput.invalid">{{currencyInputError}}</span>
+				<div class="text-center mt-3 mb-2">
+					<ion-button type="submit" expand="block">Register</ion-button>
+				</div>
+			</form>
+			<div class="mt-2">				
+				Already had account? <a routerLink="/auth/sign-in" routerLinkActive="active-link">Signin</a>
+			</div>			
+		</div>	
+	</div>
+</ion-content>
+  

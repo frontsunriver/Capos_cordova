@@ -1,0 +1,43 @@
+<div class="box choose-customer">
+  <h4>Choose a customer</h4>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <ion-item lines="none">
+    <ion-label position="stacked">Customer</ion-label>
+    <ion-select [(ngModel)]="customer_id">
+      <ion-select-option *ngFor="let c of customers" [value]="c._id">{{c.username}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-list>
+    <ion-item>
+      <ion-label>Name </ion-label>
+      <ion-note slot="end" *ngIf="customer">{{customer.data.name}}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>Grade </ion-label>
+      <ion-note slot="end" *ngIf="customer && customer.data.groupId">{{customer.data.groupId.name}}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>Store Credit </ion-label>
+      <ion-note slot="end" *ngIf="customer">{{customer.credit_str}}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>Balance </ion-label>
+      <ion-note slot="end" *ngIf="customer">{{customer.balance_str}}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>Point </ion-label>
+      <ion-note slot="end" *ngIf="customer">{{customer.point_str}}</ion-note>
+    </ion-item>
+  </ion-list>
+  <ion-row>
+    <ion-col>
+      <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button type="button" expand="block" (click)="choose()">Choose</ion-button>
+    </ion-col>
+    <ion-col *ngIf="is_clear">
+      <ion-button type="button" color="warning" expand="block" (click)="clear()">Clear</ion-button>
+    </ion-col>
+  </ion-row>
+</div>

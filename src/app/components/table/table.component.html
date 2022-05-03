@@ -1,0 +1,94 @@
+<div class="ngx-table-controllers" *ngIf="availableTable">  
+  <ion-button icon-only size="small" color="danger" (click)="openColumns($event)">
+    <ion-icon name="eye-outline"></ion-icon>
+  </ion-button>
+  <ion-button icon-only size="small" color="danger" (click)="toggleExpand($event)">
+    <ion-icon name="chevron-{{expand}}-outline"></ion-icon>
+  </ion-button>  
+  <ion-button icon-only size="small" color="tertiary" (click)="openSearch()" *ngIf="show_search">
+    <ion-icon name="search-outline"></ion-icon>
+  </ion-button>
+  <ion-button size="small" class="ml-auto" (click)="addNew()" *ngIf="add_new">
+    <ion-icon name="add-outline"></ion-icon> {{add_new_button}}
+  </ion-button>
+</div>
+<div class="ngx-table-wrapper {{tb_name}}" *ngIf="availableTable">
+  <ngx-datatable  
+    #myTable    
+    class="material expandable striped"
+    [columnMode]="ColumnMode.flex"    
+    [headerHeight]="50"
+    [footerHeight]="50"
+    [rowHeight]="'auto'"
+    [rows]="rows"    
+    [limit]="limit"
+    [loadingIndicator]="loading"
+    [externalSorting]="external_sort"
+    [externalPaging]="external_page"
+    [count]="page!.totalElements"
+    [offset]="page!.pageNumber"    
+    (page)="onPage($event)"
+    (tableContextmenu)="onTableContextMenu($event)"
+    (activate)="editRow($event)"
+    (sort)="onSort($event)"
+  >
+  <!-- Row Detail Template -->
+    <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow (toggle)="onDetailToggle($event)">
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+        <div class="table-detail">
+          <p *ngFor="let c of hidden_columns"><strong>{{c.name}}: </strong> <span [innerHTML]="row[c.prop]"></span></p>
+        </div>
+        <ng-container *ngIf="tb_name=='outlet_registers'">
+          <app-registers [outlet_id]="row._id" [registers]="row.register" (reloadEvent)="onReloadTable()"></app-registers>
+        </ng-container>
+        <ng-container *ngIf="linked_products.includes(tb_name)">
+          <app-linked-products [row]="row"></app-linked-products>
+        </ng-container>
+        <ng-container *ngIf="tb_name=='product_bundle'">
+          <app-bundle-detail [bundle]="row.bundle"></app-bundle-detail>
+        </ng-container>
+        <ng-container *ngIf="tb_name=='products'">
+          <app-product-detail [product]="row.product"></app-product-detail>
+        </ng-container>
+        <ng-container *ngIf="tb_name=='customers'">
+          <app-customer-detail [customer]="row.customer"></app-customer-detail>
+        </ng-container>
+      </ng-template>      
+    </ngx-datatable-row-detail>
+    <ngx-datatable-column
+        [width]="20"
+        [resizeable]="false"
+        [sortable]="false"
+        [draggable]="false"
+        [canAutoResize]="false"             
+        *ngIf="hidden_columns.length>0 || show_details"
+      >
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+        <a
+          href="javascript:void(0)"
+          [class.datatable-icon-right]="!expanded"
+          [class.datatable-icon-down]="expanded"
+          title="Expand/Collapse Row"
+          (click)="$event.preventDefault();$event.stopPropagation();toggleExpandRow(row)"
+          class="ex-col-row"
+        >
+        </a>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column *ngFor="let col of columns;let i=index;"
+      [name]="col.name"
+      [prop]="col.prop"
+      [sortable]="col.sortable"
+      [flexGrow]="1">
+    </ngx-datatable-column>
+  </ngx-datatable>  
+  <ion-card class="summary" *ngIf="summary && summary.length>0">    
+    <ion-list>
+      <ion-list-header>Summary</ion-list-header>
+      <ion-item *ngFor="let s of summary">
+        <ion-label>{{s.label}}</ion-label>
+        <ion-note slot="end" color="dark">{{s.value}}</ion-note>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</div>

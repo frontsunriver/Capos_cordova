@@ -1,0 +1,205 @@
+<app-header [title]="title"></app-header>
+<ion-toolbar>
+    <ion-scroll scrollX="true">
+        <ion-segment [(ngModel)]="cur_tab" scrollable>
+            <ion-segment-button value="modules">
+                <ion-label>Modules</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="print">
+                <ion-label>Print</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="batch">
+                <ion-label>Batch/Cashier Closing</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="others">
+                <ion-label>Others</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="system">
+                <ion-label>System</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="employee_timesheet">
+                <ion-label>Employee/Timesheet</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </ion-scroll>
+</ion-toolbar>
+<ion-content>
+    <div class="p-3">
+        <div *ngIf="cur_tab=='modules'">
+            <div *ngFor="let s of STORE_POLICY.MODULES">
+                <div class="d-flex align-items-center mt-2 mb-2">
+                    <ion-checkbox [(ngModel)]="store_policy.modules_settings[s.code]"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!permission"></ion-checkbox>
+                    <ion-label class="ml-2">{{s.label}}</ion-label>
+                </div>
+                <ng-container *ngIf="['sale_price_used', 'alt_tab'].includes(s.code)">
+                    <div class="hr mt-3 mb-3"></div>
+                </ng-container>
+            </div>
+        </div>
+        <div *ngIf="cur_tab=='print'">
+            <div *ngFor="let s of STORE_POLICY.PRINTS">
+                <div class="d-flex align-items-center mt-2 mb-2">
+                    <ion-checkbox [(ngModel)]="store_policy.prints_settings[s.code]"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!permission"></ion-checkbox>
+                    <ion-label class="ml-2">{{s.label}}</ion-label>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="cur_tab=='batch'">
+            <div *ngFor="let s of STORE_POLICY.BATCH_CASHIER_CLOSINGS">
+                <div class="d-flex align-items-center mt-2 mb-2">
+                    <ion-checkbox [(ngModel)]="store_policy.batch_settings[s.code]" [disabled]="!permission">
+                    </ion-checkbox>
+                    <ion-label class="ml-2">{{s.label}}</ion-label>
+                </div>
+                <ng-container *ngIf="['email_inventory', 'sales_person', 'kpos'].includes(s.code)">
+                    <div class="hr mt-3 mb-3"></div>
+                </ng-container>
+            </div>
+        </div>
+        <div *ngIf="cur_tab=='others'">
+
+            <div>
+                <div class="d-flex align-items-center mt-2 mb-2">
+                    <ion-checkbox [(ngModel)]="store_policy.others.foreign_currency_used" [disabled]="true">
+                    </ion-checkbox>
+                    <ion-label class="ml-2">Foreign Currency Used</ion-label>
+                </div>
+                <div class="d-flex ml-4 mb-4" *ngIf="store_policy.others.foreign_currency_used">
+                    <ion-label>Foreign Currency Name:</ion-label>
+                    <ion-input type="text" [(ngModel)]="store_policy.others.foreign_currency"></ion-input>
+                    <ion-label class="ml-5">Foreign Currency Rate:</ion-label>
+                    <ion-input type="text" [(ngModel)]="store_policy.others.foreign_currency_rate"></ion-input>
+                    <span>/CAD$</span>
+                </div>
+            </div>
+            <ion-item class="mb-3">
+                <ion-label position="floating">Margin Rate(%):</ion-label>
+                <ion-input type="text" [(ngModel)]="store_policy.others.margin_rate"></ion-input>
+            </ion-item>
+
+            <div class="d-flex align-items-center mt-2 mb-2">
+                <ion-checkbox [(ngModel)]="store_policy.others.vendor_margin_rate_used" [disabled]="!permission">
+                </ion-checkbox>
+                <ion-label class="ml-2">Vendor margin rate used</ion-label>
+            </div>
+
+            <ion-item class="mb-3">
+                <ion-label position="floating">Charge account balance limit($):</ion-label>
+                <ion-input type="text" [(ngModel)]="store_policy.others.charge_limit"></ion-input>
+            </ion-item>
+
+            <div *ngFor="let s of STORE_POLICY.OTHERS">
+                <div class="d-flex align-items-center mt-2 mb-2">
+                    <ion-checkbox [(ngModel)]="store_policy.others_settings[s.code]" [disabled]="!permission">
+                    </ion-checkbox>
+                    <ion-label class="ml-2">{{s.label}}</ion-label>
+                </div>
+                <ng-container *ngIf="['pd_age', 'display_other'].includes(s.code)">
+                    <div class="hr mt-3 mb-3"></div>
+                </ng-container>
+            </div>
+            <div class="mb-3">
+                <ion-label>Scale Weight Unit:</ion-label>
+                <ion-select placeholder="Scale Weight Unit:" [(ngModel)]="store_policy.others.scale_weight_unit">
+                    <ion-select-option value="kg">KG</ion-select-option>
+                    <ion-select-option value="lb">LB</ion-select-option>
+                </ion-select>
+            </div>
+        </div>
+        <div *ngIf="cur_tab=='system'">
+            <div *ngFor="let s of STORE_POLICY.SYSTEMS" [ngClass]="{'ml-5':s.code=='data_collection_email'}">
+                <h5 *ngIf="s.code=='paid_sms'">SMS</h5>
+                <ng-container
+                    *ngIf="(s.code=='data_collection_email' && store_policy.system_settings.data_collection) || s.code!='data_collection_email'">
+                    <div class="d-flex align-items-center mt-2 mb-2">
+                        <ion-checkbox [(ngModel)]="store_policy.system_settings[s.code]" [disabled]="!permission">
+                        </ion-checkbox>
+                        <ion-label class="ml-2">{{s.label}}</ion-label>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="s.code=='send_email' && store_policy.system_settings.send_email">
+                    <ion-item class="mb-3">
+                        <ion-label position="floating">SMTP Server(ssl, 465)</ion-label>
+                        <ion-input type="text" [(ngModel)]="store_policy.system.smtp_server"></ion-input>
+                    </ion-item>
+                    <ion-item class="mb-3">
+                        <ion-label position="floating">Sender Google Email</ion-label>
+                        <ion-input type="email" [(ngModel)]="store_policy.system.sender_google_email"></ion-input>
+                    </ion-item>
+                    <ion-item class="mb-3">
+                        <ion-label position="floating">Sender Password</ion-label>
+                        <ion-input type="text" [(ngModel)]="store_policy.system.sender_pwd"></ion-input>
+                    </ion-item>
+                </ng-container>
+                <ng-container
+                    *ngIf="['customer_db', 'different_price', 'send_email', 'grocery_style'].includes(s.code)">
+                    <div class="hr mt-3 mb-3"></div>
+                </ng-container>
+            </div>
+        </div>
+        <div *ngIf="cur_tab=='employee_timesheet'">
+            <div class="d-flex align-items-center mt-2 mb-2">
+                <ion-checkbox [(ngModel)]="store_policy.employee_timesheet.auto_start_day" [disabled]="!permission">
+                </ion-checkbox>
+                <ion-label class="ml-2">Pay Start Day automatically set</ion-label>
+            </div>
+            <hr />
+            <div class="">
+                <h5>Pay Start Day</h5>
+                <ion-radio-group [(ngModel)]="store_policy.employee_timesheet.pay_start_day.mode" class="radio-group">
+                    <div>
+                        <div>
+                            <ion-radio value="weekly"></ion-radio>
+                            <ion-label class="ml-2">Weely</ion-label>
+                        </div>
+                        <div>
+                            <ion-select [(ngModel)]="weekly_day">
+                                <ion-select-option [value]="i+1" *ngFor="let w of weeks;let i=index;">{{w}}
+                                </ion-select-option>
+                            </ion-select>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <ion-radio value="bi_weekly"></ion-radio>
+                            <ion-label class="ml-2">Bi Weekly</ion-label>
+                        </div>
+                        <div>
+                            <ion-select [(ngModel)]="bi_weekly_day">
+                                <ion-select-option [value]="i+1" *ngFor="let w of weeks;let i=index;">{{w}}
+                                </ion-select-option>
+                            </ion-select>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <ion-radio value="monthly"></ion-radio>
+                            <ion-label class="ml-2">Monthly</ion-label>
+                        </div>
+                        <div>
+                            <ion-select [(ngModel)]="monthly_day">
+                                <ion-select-option [value]="d" *ngFor="let d of days">{{d}}</ion-select-option>
+                            </ion-select>
+                        </div>
+                    </div>
+                </ion-radio-group>
+            </div>
+            <div class="hr mt-3 mb-3"></div>
+            <div class="d-flex align-items-center mt-2 mb-2">
+                <ion-checkbox [(ngModel)]="store_policy.employee_timesheet.round_up" [disabled]="!permission">
+                </ion-checkbox>
+                <ion-label class="ml-2">Round up Timesheet in / out time by quater</ion-label>
+            </div>
+            <div class="d-flex align-items-center mt-2 mb-2">
+                <ion-checkbox [(ngModel)]="store_policy.employee_timesheet.not_print" [disabled]="!permission">
+                </ion-checkbox>
+                <ion-label class="ml-2">Timesheet is not printed</ion-label>
+            </div>
+        </div>
+        <div class="text-center mt-2 mb-2" *ngIf="permission">
+            <ion-button class="mt-4" (click)="save()" expand="block">Save</ion-button>
+        </div>
+    </div>
+</ion-content>

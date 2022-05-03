@@ -1,0 +1,24 @@
+.quantity{
+    .num_pad{
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+        padding: 0.5rem;
+        ion-input.quantity{
+            background-color: #013a4d;
+            color: white;
+            text-align: right;
+            padding: 0.15rem 0.25rem;
+            width: 100%;
+            font-size: 1.2em;
+        }
+        & > div{
+            display: flex;
+            ion-button{
+                flex: 1;
+                font-size: 1.2em;
+                font-weight: 500;
+                &.button-sm{font-size: 0.9em;}    
+            }        
+        }    
+    }
+}

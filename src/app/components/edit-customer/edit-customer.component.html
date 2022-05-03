@@ -1,0 +1,254 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+<ion-content class="edit-customer">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Details</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Name <span class="require">*</span></ion-label>
+            <ion-input formControlName="name" required></ion-input>
+          </ion-item>
+          <span class="error" *ngIf="isSubmitted && (duplicate_error.name || nameInput.invalid)">{{nameInputError}}</span>
+        </ion-col>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Company</ion-label>
+            <ion-input formControlName="company"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Customer Code</ion-label>
+            <ion-input formControlName="code"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">Group <span class="require">*</span></ion-label>
+            <ion-select formControlName="groupId" required>                
+              <ion-select-option *ngFor="let group of groups" [value]="group._id"> {{group.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <span class="error" *ngIf="isSubmitted && groupInput.invalid">{{groupInputError}}</span>
+        </ion-col>      
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">Birthday</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="birthday"></ion-datetime>
+          </ion-item> 
+        </ion-col>     
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">Gender</ion-label>
+            <ion-select formControlName="gender">                
+              <ion-select-option value="Male">Male</ion-select-option>
+              <ion-select-option value="Female">Female</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>       
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Contact Information</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Email <span class="require">*</span></ion-label>
+            <ion-input type="email" formControlName="email" required></ion-input>            
+          </ion-item>
+          <span class="error" *ngIf="isSubmitted && (duplicate_error.email || emailInput.invalid)">{{emailInputError}}</span>
+        </ion-col>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Mobile</ion-label>
+            <ion-input formControlName="mobile"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Phone</ion-label>
+            <ion-input formControlName="phone"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Fax</ion-label>
+            <ion-input formControlName="fax"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Twitter</ion-label>
+            <ion-input formControlName="twitter"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Website</ion-label>
+            <ion-input formControlName="website"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Note</ion-label>
+            <ion-input formControlName="note"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Addresses</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ng-container formGroupName="physical_address">
+        <h6 class="font-weight-bold">Physical Address</h6>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Street</ion-label>
+              <ion-input formControlName="street"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">City</ion-label>
+              <ion-input formControlName="city"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Suburb</ion-label>
+              <ion-input formControlName="suburb"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Postcode</ion-label>
+              <ion-input formControlName="postcode"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">State</ion-label>
+              <ion-input formControlName="state"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">Country</ion-label>
+              <ion-select formControlName="country">
+                <ion-select-option *ngFor="let country of countries" [value]="country._id">{{country.country_name}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-item lines="none">
+          <ion-label>Postal Address different from Physical Address</ion-label>
+          <ion-checkbox [(ngModel)]="customer.data.exist_postal_address" [ngModelOptions]="{standalone: true}" slot="start"></ion-checkbox>
+        </ion-item>
+      </ng-container>
+      <ng-container formGroupName="postal_address" *ngIf="customer.data.exist_postal_address">
+        <h6 class="font-weight-bold">Postal Address</h6>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Street</ion-label>
+              <ion-input formControlName="street"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">City</ion-label>
+              <ion-input formControlName="city"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Suburb</ion-label>
+              <ion-input formControlName="suburb"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Postcode</ion-label>
+              <ion-input formControlName="postcode"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">State</ion-label>
+              <ion-input formControlName="state"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">Country</ion-label>
+              <ion-select formControlName="country" class="w-100">
+                <ion-select-option *ngFor="let country of countries" [value]="country._id">{{country.country_name}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Custom Information</ion-card-title>
+    </ion-card-header>
+    <ion-card-content formGroupName="custom_information">
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Custom Field 1</ion-label>
+            <ion-input formControlName="field1"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Custom Field 2</ion-label>
+            <ion-input formControlName="field2"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  </form>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" (click)="back()" expand="block">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" (click)="submit()" expand="block">Save</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add To Bundle</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="archive-outline" color="primary"></ion-icon>
+        <ion-badge>{{bundle.products.length}}</ion-badge>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-toolbar>
+  <ion-item class="category">
+    <ion-label position="stacked">Category</ion-label>
+    <ion-select [(ngModel)]="selectedCategory" (ionChange)="searchProduct()">
+      <ion-select-option *ngFor="let c of categories" [value]="c">{{c.data.name}} ({{c.data.products}})</ion-select-option>
+    </ion-select>
+  </ion-item>
+</ion-toolbar>
+<ion-toolbar class="search">
+  <ion-searchbar [(ngModel)]="keyword" (ionChange)="searchProduct()" debounce="750" (ionClear)="clearKeyword()" placeholder="Barcode / Name" #search></ion-searchbar>
+</ion-toolbar>
+<ion-content>
+  <ion-list line="full" class="add-to-bundle">
+    <ion-item *ngFor="let p of products" (click)="selProduct(p)">
+      <ion-thumbnail slot="start">
+        <img [src]="p.image"/>
+      </ion-thumbnail>
+      <ion-label>{{p.name}}</ion-label>
+      <ion-note slot="end">{{p.price}}</ion-note>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll *ngIf="!isLastPageReached" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+<ion-footer>
+  <ion-row class="justify-content-center">    
+    <ion-col size-lg="4" size-md="6" size="12">
+      <ion-button color="success" expand="block" (click)="done()">Done</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

@@ -1,0 +1,34 @@
+<div class="box">
+  <h4>{{title}}</h4>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="submit()">    
+    <ion-item lines="full">
+      <ion-label position="floating">Reasons <span class="require">*</span></ion-label>
+      <ion-input type="text" formControlName="reasons" required></ion-input>
+    </ion-item>
+    <span class="error" *ngIf="isSubmitted && (reasonsInput.invalid)">{{reasonsInputError}}</span>
+    <ion-radio-group formControlName="is_credit">
+      <ion-item>
+        <ion-label>Credit</ion-label>
+        <ion-radio value="1" slot="start"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Debit</ion-label>
+        <ion-radio value="0" slot="start"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+    <ion-item lines="full">
+      <ion-label position="floating">Transaction($) <span class="require">*</span></ion-label>
+      <ion-input type="number" formControlName="transaction" required></ion-input>
+    </ion-item>
+    <span class="error" *ngIf="isSubmitted && (transactionInput.invalid)">{{transactionInputError}}</span>
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

@@ -1,0 +1,435 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+<ion-content class="edit-product">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>General</ion-card-title>
+        <ion-card-subtitle>Change general information for this product.</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Name <span class="require">*</span></ion-label>
+              <ion-input type="text" formControlName="name" required debounce="700" (ionChange)="onChangeName()"></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && nameInput.invalid">{{nameInputError}}</span>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Handle <span class="require">*</span></ion-label>
+              <ion-input type="text" formControlName="handle" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && handleInput.invalid">{{handleInputError}}</span>
+          </ion-col> 
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Barcode <span class="require">*</span></ion-label>
+              <ion-input type="number" formControlName="barcode" required></ion-input>
+              <ion-button slot="end" fill="clear" size="small" class="suffix" (click)="getNewBarcode()"><ion-icon name="shuffle-outline" color="primary"></ion-icon></ion-button>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && barcodeInput.invalid">{{barcodeInputError}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item>
+              <ion-label position="floating">Description</ion-label>
+              <ion-textarea formControlName="description" rows="3"></ion-textarea>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="6" size="12">
+            <ion-item>
+              <ion-label position="stacked">Category <span class="require">*</span></ion-label>
+              <ion-select formControlName="type" required (ionChange)="addItem('type')">
+                <ion-select-option *ngFor="let item of ctrl_values.type" [value]="item._id">{{item.name}}</ion-select-option>
+                <ion-select-option value="addNew" *ngIf="permission.type">Add new category</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && typeInput.invalid">{{typeInputError}}</span>            
+          </ion-col>
+          <ion-col size-md="6" size="12">
+            <ion-item>
+              <ion-label position="stacked">Brand <span class="require">*</span></ion-label>
+              <ion-select formControlName="brand" required (ionChange)="addItem('brand')">
+                <ion-select-option *ngFor="let item of ctrl_values.brand" [value]="item._id">{{item.name}}</ion-select-option>
+                <ion-select-option value="addNew" *ngIf="permission.brand">Add new brand</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && brandInput.invalid">{{brandInputError}}</span>            
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item>              
+              <tag-input [(ngModel)]="tags" [ngModelOptions]="{standalone: true}" [separatorKeyCodes]="[32]">
+                <tag-input-dropdown [autocompleteItems]="all_tags" [minimumTextLength]="0"></tag-input-dropdown>
+              </tag-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="6" size="12">
+            <ion-item>
+              <ion-label class="with-hint"><span>Sell on Point -of -Sale</span><small>Make this product active for sale in-store</small></ion-label>
+              <ion-toggle [(ngModel)]="product.data.enabled" [ngModelOptions]="{standalone: true}" slot="start"></ion-toggle>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="6" size="12">
+            <ion-item>
+              <ion-label class="with-hint"><span>Touch</span><small>Make this product touchable</small></ion-label>
+              <ion-toggle [(ngModel)]="product.data.touch" [ngModelOptions]="{standalone: true}" slot="start"></ion-toggle>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="3" size="12">
+            <ion-item>
+              <ion-label>Featured</ion-label>
+              <ion-toggle [(ngModel)]="product.data.feature.featured" [ngModelOptions]="{standalone: true}" slot="start"></ion-toggle>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size="12">
+            <ion-item>
+              <ion-label>New Product</ion-label>
+              <ion-toggle [(ngModel)]="product.data.feature.new_product" [ngModelOptions]="{standalone: true}" slot="start"></ion-toggle>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size="12">
+            <ion-item>
+              <ion-label>On Sale</ion-label>
+              <ion-toggle [(ngModel)]="product.data.feature.on_sale" [ngModelOptions]="{standalone: true}" slot="start"></ion-toggle>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size="12">
+            <ion-item>
+              <ion-label>Hot Offer</ion-label>
+              <ion-toggle [(ngModel)]="product.data.feature.hot_offer" [ngModelOptions]="{standalone: true}" slot="start"></ion-toggle>
+            </ion-item>
+          </ion-col>
+        </ion-row>      
+        <ion-row>
+          <ion-col size="12">
+            <ion-button size="small" color="primary" (click)="selectImage()"><ion-icon name="cloud-upload-outline" class="mr-2"></ion-icon> Upload Images</ion-button>
+          </ion-col>
+        </ion-row>
+        <div class="preview_images" *ngIf="images.length>0">
+          <div class="preview" *ngFor="let path of images">
+            <img [src]="getImagePath(path)"/> 
+            <ion-button size="small" fill="clear" (click)="removeImage(path)"><ion-icon name="trash-outline" slot="icon-only" color="danger"></ion-icon></ion-button>            
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Supply & Inventory</ion-card-title>
+        <ion-card-subtitle>The type of product we choose determines how we manage inventory and reporting.</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label class="with-hint text-wrap"><span>Product with Variants</span>
+            <small>These are products that have different versions, like size or color.
+            Turn this on to specify up to three attributes (like color),
+            and unlimited values for each attribute (like green, blue, black).</small>
+          </ion-label>
+          <ion-toggle [(ngModel)]="product.data.variant_inv" [ngModelOptions]="{standalone: true}" slot="start"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label class="with-hint text-wrap"><span>Tracking Inventory</span>
+            <small>Leave this on if you want to keep track of your inventory quantities.
+              You'll be able to report on cost of goods sold, product performance,
+              and projected weeks cover, as well as manage your store using inventory orders,
+              transfers and rolling inventory counts.</small>
+          </ion-label>
+          <ion-toggle [(ngModel)]="product.data.tracking_inv" [ngModelOptions]="{standalone: true}" slot="start" (ionChange)="getVariantColumns()"></ion-toggle>
+        </ion-item>
+        <ion-row  *ngIf="!product.data.variant_inv">
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Stock Keeping Unit (SKU)</ion-label>
+              <ion-input type="text" formControlName="sku"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">              
+              <ion-label position="stacked">Supplier <span class="require">*</span></ion-label>
+              <ion-select formControlName="supplier" required (ionChange)="addItem('supplier')">
+                <ion-select-option *ngFor="let item of ctrl_values.supplier" [value]="item._id">{{item.name}}</ion-select-option>
+                <ion-select-option value="addNew" *ngIf="permission.supplier">Add new supplier</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && supplierInput.invalid">{{supplierInputError}}</span>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Supplier Code <span class="require">*</span></ion-label>
+              <ion-input type="text" formControlName="supplier_code" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && supplierCodeInput.invalid">{{supplierCodeInputError}}</span>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Supply Price($) <span class="require">*</span></ion-label>
+              <ion-input type="number" formControlName="supply_price" required debounce="700" (ionChange)="setPrice('supply_price')"></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && supplyPriceInput.invalid">{{supplyPriceInputError}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="product.data.tracking_inv && !product.data.variant_inv">
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Current Inventory</ion-label>
+              <ion-input type="number" formControlName="inventory"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Reorder Point</ion-label>
+              <ion-input type="number" formControlName="reorder_point"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Reorder Amount($)</ion-label>
+              <ion-input type="number" formControlName="reorder_amount"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Tax</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row>
+          <ion-col size-md="6" size="12">
+            <ion-item lines="full">              
+              <ion-label position="stacked">Outlet <span class="require">*</span></ion-label>
+              <ion-select formControlName="outlet" required>
+                <ion-select-option *ngFor="let item of ctrl_values.outlet" [value]="item._id">{{item.name}}</ion-select-option>                
+              </ion-select>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && outletInput.invalid">{{outletInputError}}</span>
+          </ion-col>
+          <ion-col size-md="6" size="12">
+            <ion-item lines="full">              
+              <ion-label position="stacked">Tax <span class="require">*</span></ion-label>
+              <ion-select formControlName="tax" required>
+                <ion-select-option *ngFor="let item of ctrl_values.tax" [value]="item._id">{{item.name}} ({{item.rate}}%)</ion-select-option>                
+              </ion-select>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && taxInput.invalid">{{taxInputError}}</span>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Price</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Supply Price($)</ion-label>
+              <ion-input type="number" [(ngModel)]="supply_price" [ngModelOptions]="{standalone: true}" readonly></ion-input>
+            </ion-item>            
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Markup(%)</ion-label>
+              <ion-input type="number" formControlName="markup" debounce="700" (ionChange)="setPrice('markup')"></ion-input>
+            </ion-item>            
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Retail Price($)</ion-label>
+              <ion-input type="number" formControlName="retail_price" debounce="700" (ionChange)="setPrice('retail_price')"></ion-input>
+            </ion-item>            
+            <small>Excluding Tax</small>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="product.data.variant_inv">
+      <ion-card-header>
+        <ion-card-title>Variants</ion-card-title>
+        <ion-card-subtitle>These are products that have different variants, like size or color. Turn this on to specify up to three attributes (like color), and unlimited values for each attribute (like green, blue, black).</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>        
+        <ion-row *ngFor="let variant of variants;let attrIndex=index">
+          <ion-col size-md="3" size="12">
+            <ion-item>
+              <ion-label position="stacked">Choose a attribute</ion-label>
+              <ion-select [(ngModel)]="variant.attribute" [ngModelOptions]="{standalone: true}" (ionChange)="addAttribute(attrIndex)">
+                <ion-select-option *ngFor="let item of ctrl_values.attribute" [value]="item._id" [disabled]="checkSelected(item._id)">{{item.name}}</ion-select-option>
+                <ion-select-option value="addNew">Add new attribute</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="7" size="12">
+            <ion-item class="attr_values">              
+              <tag-input [(ngModel)]="variant.value" [ngModelOptions]="{standalone: true}" [separatorKeyCodes]="[32]"
+              (onAdd)="addAttrValue($event, attrIndex)" (onRemove)="removeAttrValue($event, attrIndex)" [secondaryPlaceholder]="'Enter attribute value'" placeholder="+Value"></tag-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="2" size="12">
+            <ion-button size="small" fill="clear" (click)="removeVariant(attrIndex)" *ngIf="attrIndex!==0"><ion-icon name="trash-outline" color="danger"></ion-icon></ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col *ngIf="variants.length<3">
+            <ion-button size="small" (click)="newVariant()" color="primary"><ion-icon name="add-outline"></ion-icon> Add new variant</ion-button>
+          </ion-col>
+          <ion-col *ngIf="variants[0].attribute && variants[0].value.length>0">
+            <ion-button size="small" (click)="editAttributeValues()" color="success"><ion-icon name="create-outline"></ion-icon> Edit values name</ion-button>
+          </ion-col>
+        </ion-row>
+        <div class="variants-desc">This product has {{variant_products.length}} variant(s).</div>
+        <app-table 
+          [tb_name]="'variant_products'" 
+          [rows]="rows" 
+          [all_columns]="columns" 
+          [show_columns]="show_columns"
+          [loading]="loading"     
+          (editRowEvent)="editVariantProduct($event)" 
+          (deleteRowEvent)="removeVariantProduct($event)"                
+        ></app-table>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Other Options</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Price Prompt</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.price_prompt" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Food Stamp Item</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.food_stamp_item" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Serial Required</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.serial_required" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>None Discount Item</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.none_discount_item" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Minus Price</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.minus_price" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Scale Product</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.scale_product" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col *ngIf="product.data.scale_product">
+            <ion-item>
+              <ion-label>Blank Cup Weight (g or oz):</ion-label>
+              <ion-input type="number" [(ngModel)]="product.data.blank_cup_weight" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Has No Price</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.has_no_price" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Refill PD</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.refill_pd" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Customer Info Req</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.customer_info_req" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Cash Back</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.cash_back" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Point Available</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.point_available" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Age Check Required</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.age_check_required" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col *ngIf="product.data.age_check_required">
+            <ion-item>
+              <ion-label>Required Age:</ion-label>
+              <ion-input type="number" [(ngModel)]="product.data.required_age" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Package Style</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.package_style" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Discount Type</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.discount_type" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Deposit Return</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="product.data.deposit_return" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" (click)="back()" expand="block">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" (click)="submit()" expand="block">Save</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

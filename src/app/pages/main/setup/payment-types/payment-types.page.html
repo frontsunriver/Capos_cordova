@@ -1,0 +1,22 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+  <ion-list class="chk_payments">
+    <ng-container *ngFor="let p of chk_payments">
+      <ion-item>
+        <ion-checkbox slot="start" [(ngModel)]="payment.chk_payments[p]" [disabled]="!permission"></ion-checkbox>
+        <ion-label class="ion-text-wrap">{{getPaymentLabel(p)}}</ion-label>
+      </ion-item>
+      <div *ngIf="p=='others' && payment.chk_payments[p]">
+        <label>Others name:</label>
+        <input type="text" [(ngModel)]="payment.others_name"/>
+      </div>
+      <div *ngIf="p=='others2' && payment.chk_payments[p]">
+        <label>Others name2:</label>
+        <input type="text" [(ngModel)]="payment.others_name2"/>
+      </div>
+    </ng-container>
+  </ion-list>    
+</ion-content>
+<ion-footer class="text-center">
+  <ion-button (click)="save()">Save</ion-button>
+</ion-footer>

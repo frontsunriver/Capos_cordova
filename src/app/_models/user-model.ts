@@ -1,0 +1,23 @@
+export class UserModel {
+    _id: string = '';
+    private_web_address: string = '';
+    user_id: number = 0;
+    first_name: string = '';
+    last_name: string = '';
+    email: string = '';
+    password: string = '';
+    birthday: number = 0;
+    phone: string = '';
+    mobile: string = '';
+    email_verify: number = 0;
+    outlet: string = '';
+    commission: number = 0;
+    hour_salary: number = 0;
+    is_in_training: number = 0;
+    ip_address: string = '';
+    role_id: string = '';
+    joined_date: number = 0;
+    is_new: number = 0;
+    is_update: number = 0;
+    is_delete: number = 0;
+}

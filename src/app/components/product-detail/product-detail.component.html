@@ -1,0 +1,21 @@
+<div class="product-detail">
+  <ion-row>
+    <ion-col size-lg="2" size-md="3" size="12">
+      <h6>Description: </h6>
+    </ion-col>
+    <ion-col size-lg="10" size-md="9" size="12" *ngIf="product && product.data.description">
+      <div [innerHTML]="product.data.description" class="description"></div>
+    </ion-col>
+  </ion-row>
+  <ion-list *ngIf="product && product.data.variant_products.length>0">
+    <ion-list-header>Variant Products</ion-list-header>
+    <ion-item class="header">
+      <ion-label><span>Name</span><span>Inventory</span></ion-label>
+      <ion-note slot="end">Retail Price</ion-note>
+    </ion-item>
+    <ion-item *ngFor="let v of product.data.variant_products">
+      <ion-label><span>{{v.name}}</span><span>{{v.inventory}}</span></ion-label>
+      <ion-note slot="end">{{util.getPriceWithCurrency(v.retail_price)}}</ion-note>
+    </ion-item>
+  </ion-list>
+</div>

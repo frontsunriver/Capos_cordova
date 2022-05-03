@@ -1,0 +1,93 @@
+<div class="box sale_details">
+  <h4>Sale Details</h4>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <div class="detail-wrapper">
+    <ion-list>
+      <ng-container *ngFor="let p of cart.products">
+        <ion-item>
+          <ion-label>{{p.product_name}}
+            <ng-container *ngIf="p.variant_name">/{{p.variant_name}}</ng-container>
+          </ion-label>
+        </ion-item>
+        <ion-item color="light">
+          <ion-label>
+            <span [ngClass]="{'text-decoration':p.voided}">{{util.getPriceWithCurrency(p.price)}} 
+              <ng-container *ngIf="!cart.isOutletTax && !cart.isRefund">+Tax {{p.taxAmount}}{{p.taxRate_str}}</ng-container>
+            </span>
+            <span [ngClass]="{'text-decoration':p.voided}"> x {{p.qty}}</span>
+          </ion-label>
+          <ion-note slot="end">
+            <span [ngClass]="{'text-decoration':p.voided}">{{p.discountedTotalWithoutGlobal_str}}</span>
+          </ion-note>
+        </ion-item>
+      </ng-container>
+      <ion-item>
+        <ion-label>Subtotal</ion-label>
+        <ion-note slot="end">{{cart.subTotal_str}}</ion-note>
+      </ion-item>
+      <ion-item *ngIf="cart.discount.value<0">
+        <ion-label>Discount{{cart.discount_rate}}</ion-label>
+        <ion-note slot="end">{{cart.discount_str}}</ion-note>
+      </ion-item>
+      <ion-item *ngIf="!cart.isRefund">
+        <ion-label>Total Tax{{cart.taxRate_str}}</ion-label>
+        <ion-note slot="end">{{cart.taxAmount_str}}</ion-note>
+      </ion-item>
+      <ion-item class="font-weight-bold">
+        <ion-label>Sale Total</ion-label>
+        <ion-note slot="end">{{cart.totalIncl_str}}</ion-note>
+      </ion-item>
+      <ion-item *ngFor="let payment of cart.payments">
+        <ion-label>
+          <span class="mr-3">{{cart.getPaymentType(payment)}}</span>
+          <span>{{util.handleDate(payment.created_at)}}</span>
+        </ion-label>      
+        <ion-note slot="end">{{util.getPriceWithCurrency(payment.amount)}}</ion-note>
+      </ion-item>
+      <ion-item *ngIf="cart.voidedAmount>0">
+        <ion-label>Voided</ion-label>
+        <ion-note slot="end">{{cart.voidedAmount_str}}</ion-note>
+      </ion-item>
+      <ion-item *ngIf="cart.change>0">
+        <ion-label>Change</ion-label>
+        <ion-note slot="end">{{util.getPriceWithCurrency(cart.change)}}</ion-note>
+      </ion-item>
+      <ion-item *ngIf="!cart.isRefund" class="font-weight-bold">
+        <ion-label>Balance</ion-label>
+        <ion-note slot="end">{{util.getPriceWithCurrency(cart.total_to_pay)}}</ion-note>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div class="buttons">
+    <ng-container *ngIf="cart.returned">
+      <span>Returned Sale</span>
+    </ng-container>
+    <ng-container *ngIf="cart.voided">
+      <span>Voided Sale</span>
+    </ng-container>
+    <ng-container *ngIf="!cart.voided">
+      <ng-container *ngIf="cart.voided_payments.length==0">
+        <ion-button (click)="handleAction(cart)" fill="clear" size="small"
+          *ngIf="!cart.returned && (completed_status.includes(cart.sale_status) 
+              || continue_status.includes(cart.sale_status) 
+              || unfulfilled_status.includes(cart.sale_status))">
+            <ng-container *ngIf="continue_status.includes(cart.sale_status)"><ion-icon name="arrow-redo-outline"></ion-icon> {{getTooltip(cart)}}</ng-container>
+            <ng-container *ngIf="completed_status.includes(cart.sale_status)"><ion-icon name="arrow-undo-outline"></ion-icon> {{getTooltip(cart)}}</ng-container>
+            <ng-container *ngIf="unfulfilled_status.includes(cart.sale_status)"><ion-icon name="checkmark-outline"></ion-icon> {{getTooltip(cart)}}</ng-container>
+          </ion-button>
+      </ng-container>
+      <ion-button fill="clear" size="small" (click)="viewOriginalSale(cart.origin_sale_number)" *ngIf="cart.cart_mode=='return'">
+        <ion-icon name="list-outline"></ion-icon> View Original Sale
+      </ion-button>	
+      <ion-button fill="clear" size="small">
+        <ion-icon name="print-outline"></ion-icon> Print Receipt
+      </ion-button>
+      <ion-button fill="clear" size="small" (click)="voidSale(cart)" *ngIf="cart.voided_payments.length==0">
+        <ion-icon name="ban-outline"></ion-icon> Void Sale
+      </ion-button>
+      <ion-button fill="clear" size="small" (click)="voidItems(cart)">
+        <ion-icon name="ban-outline"></ion-icon> Void Items
+      </ion-button>
+    </ng-container>
+  </div>
+</div>

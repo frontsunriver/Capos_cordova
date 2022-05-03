@@ -1,0 +1,189 @@
+<app-header [title]="title[mode]"></app-header>
+<ion-content>
+	<ng-container *ngIf="mode=='open'">
+		<ion-row class="justify-content-center">
+			<ion-col size-lg="4" size-md="6" size="12">
+				<form [formGroup]="form" (ngSubmit)="save()">
+					<ion-card>
+						<ion-card-content>        
+							<ion-item>
+								<ion-label position="floating">Opening Float <span class="require">*</span></ion-label>
+								<ion-input type="number" formControlName="open_value" required></ion-input>
+							</ion-item>
+							<span class="error" *ngIf="isSubmitted && floatInput.invalid">{{floatInputError}}</span>   
+							<ion-item>
+								<ion-label position="floating">Notes (Optional):</ion-label>
+								<ion-textarea formControlName="open_note" placeholder="Input your note here..."></ion-textarea>
+							</ion-item>
+							<ion-row>
+								<ion-col size="12">
+									<ion-button type="submit" expand="block">Open Register</ion-button>
+								</ion-col>
+							</ion-row>         
+						</ion-card-content>        
+					</ion-card>
+				</form>
+			</ion-col>
+		</ion-row>	
+		<ion-card *ngIf="lastClose">
+			<ion-card-header class="d-flex">
+				<ion-card-title>Last Closure Details</ion-card-title>				
+			</ion-card-header>
+			<ion-card-content>
+				<ion-list>
+					<ion-item>
+						<ion-label>Outlet</ion-label>
+						<ion-note slot="end" *ngIf="lastClose.outlet">{{lastClose.outlet.name}}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label>Register</ion-label>
+						<ion-note slot="end" *ngIf="lastClose.register">{{lastClose.register.name}}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label>ID #</ion-label>
+						<ion-note slot="end">{{lastClose.uid}}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label>Opening Time</ion-label>
+						<ion-note slot="end" *ngIf="lastClose.opening_time">{{util.handleDateTime(lastClose.opening_time)}}</ion-note>
+					</ion-item>
+				</ion-list>
+			</ion-card-content>			
+		</ion-card>	
+		<ion-card *ngIf="lastClose">
+			<ion-card-header>
+				<ion-card-title>Last Payments Summary</ion-card-title>				
+			</ion-card-header>
+			<ion-card-content>
+				<ion-list>
+					<ion-item class="font-weight-bold">
+						<ion-label>Payment type</ion-label>
+						<ion-note slot="end">Expected</ion-note>
+					</ion-item>
+					<ion-item lines="none">
+						<ion-label>Cash</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(lastClose.expectedCash)}}</ion-note>
+					</ion-item>
+					<ion-item button lines="none" color="light" (click)="openCashDetail(lastClose)">
+						<ion-label color="primary">View Cash Payments, Floats and Movements</ion-label>
+					</ion-item>
+					<ion-item lines="none">
+						<ion-label>Credit Card</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(lastClose.receivedCreditCard)}}</ion-note>
+					</ion-item>
+					<ion-item lines="none">
+						<ion-label>Debit Card</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(lastClose.receivedDebitCard)}}</ion-note>
+					</ion-item>
+					<ion-item lines="none">
+						<ion-label>Store Credit</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(lastClose.receivedStoreCredit)}}</ion-note>
+					</ion-item>					
+					<ion-item lines="none">
+						<ion-label>Refunds</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(lastClose.totalReturns)}}</ion-note>
+					</ion-item>					
+					<ion-item lines="full">
+						<ion-label>Voided</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(lastClose.totalVoided)}}</ion-note>
+					</ion-item>					
+					<ion-item class="font-weight-bold">
+						<ion-label>Total</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(lastClose.totalExpected)}}</ion-note>
+					</ion-item>
+				</ion-list>
+			</ion-card-content>
+		</ion-card>		
+	</ng-container>
+	<ng-container *ngIf="mode=='close'">
+		<ion-card>
+			<ion-card-header class="d-flex">
+				<ion-card-title>Register Details</ion-card-title>
+				<div class="ml-auto">
+					<ion-button size="small" (click)="closeRegister()">Close Register</ion-button>
+				</div>
+			</ion-card-header>
+			<ion-card-content>
+				<ion-list>
+					<ion-item>
+						<ion-label>Outlet</ion-label>
+						<ion-note slot="end" *ngIf="openClose.outlet">{{openClose.outlet.name}}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label>Register</ion-label>
+						<ion-note slot="end" *ngIf="openClose.register">{{openClose.register.name}}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label>ID #</ion-label>
+						<ion-note slot="end">{{openClose.uid}}</ion-note>
+					</ion-item>
+					<ion-item>
+						<ion-label>Opening Time</ion-label>
+						<ion-note slot="end">{{util.handleDateTime(openClose.opening_time)}}</ion-note>
+					</ion-item>
+				</ion-list>
+			</ion-card-content>			
+		</ion-card>		
+		<ion-card>
+			<ion-card-header>
+				<ion-card-title>Payments Summary</ion-card-title>
+				<p class="note">Balance your register by entering the amount counted from the till and other payment terminals into the	empty fields here.</p>
+			</ion-card-header>
+			<ion-card-content>
+				<ion-list>
+					<ion-item class="font-weight-bold">
+						<ion-label>Payment type</ion-label>
+						<ion-note slot="end">Expected</ion-note>
+					</ion-item>
+					<ion-item lines="none">
+						<ion-label>Cash</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(openClose.expectedCash)}}</ion-note>
+					</ion-item>
+					<ion-item button lines="none" color="light" (click)="openCashDetail(openClose)">
+						<ion-label color="primary">View Cash Payments, Floats and Movements</ion-label>
+					</ion-item>
+					<ion-item lines="none">
+						<ion-label>Credit Card</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(openClose.receivedCreditCard)}}</ion-note>
+					</ion-item>
+					<ion-item lines="none">
+						<ion-label>Debit Card</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(openClose.receivedDebitCard)}}</ion-note>
+					</ion-item>
+					<ion-item lines="none">
+						<ion-label>Store Credit</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(openClose.receivedStoreCredit)}}</ion-note>
+					</ion-item>					
+					<ion-item lines="none">
+						<ion-label>Refunds</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(openClose.totalReturns)}}</ion-note>
+					</ion-item>					
+					<ion-item lines="full">
+						<ion-label>Voided</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(openClose.totalVoided)}}</ion-note>
+					</ion-item>					
+					<ion-item class="font-weight-bold">
+						<ion-label>Total</ion-label>
+						<ion-note slot="end">{{util.getPriceWithCurrency(openClose.totalExpected)}}</ion-note>
+					</ion-item>
+				</ion-list>
+			</ion-card-content>
+		</ion-card>
+		<ion-card>
+			<ion-card-header>
+				<ion-card-title>Closing Summary</ion-card-title>
+			</ion-card-header>
+			<ion-card-content>
+				<ion-item class="summary-note">
+					<ion-label position="stacked">Note</ion-label>
+					<ion-textarea [(ngModel)]="openClose.close_note" placeholder="Type to add a register closure note..."></ion-textarea>
+				</ion-item>
+			</ion-card-content>
+		</ion-card>
+		<ion-row class="justify-content-center pl-2 pr-2">
+			<ion-col size-lg="4" size-md="6" size="12">
+				<ion-button (click)="closeRegister()" expand="block">Close Register</ion-button>
+			</ion-col>
+		</ion-row>
+	</ng-container>
+</ion-content>

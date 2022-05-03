@@ -1,0 +1,61 @@
+<div class="box">
+  <h4>Search Sales Ledger</h4>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="search()" class="search-form">    
+    <div class="form-fields">
+      <ion-row>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">Customers</ion-label>
+            <ion-select formControlName="customer">
+              <ion-select-option value="">All Customers</ion-select-option>
+              <ion-select-option *ngFor="let s of customers" [value]="s._id">{{s.name}} ({{s.email}})</ion-select-option>
+            </ion-select>
+          </ion-item>    
+        </ion-col>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">User</ion-label>
+            <ion-select formControlName="user_id">
+              <ion-select-option value="">All Users</ion-select-option>
+              <ion-select-option *ngFor="let s of users" [value]="s._id">{{s.first_name}} {{s.last_name}}</ion-select-option>
+            </ion-select>         
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="4" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">Status</ion-label>
+            <ion-select formControlName="sale_status">								
+              <ion-select-option *ngFor="let s of statuses" [value]="s.value">{{s.label}}</ion-select-option>
+            </ion-select>        
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>        
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">From date</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="start"></ion-datetime>
+          </ion-item> 
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">To date</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="end"></ion-datetime>
+          </ion-item> 
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Search</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="button" color="warning" expand="block" (click)="clearFilter()">Clear</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

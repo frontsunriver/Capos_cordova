@@ -1,0 +1,16 @@
+form{ 
+    padding: 0.75rem;
+    ion-item{
+        --padding-start: 0;
+    }
+    ion-label{
+        color: var(--ion-color-medium) !important;  
+        span{color: red;}
+    }  
+    ion-card{
+        margin-top: 0;        
+    }  
+}
+ion-card{
+    margin: 20px 0;
+}

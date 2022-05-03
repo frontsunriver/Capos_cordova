@@ -1,0 +1,65 @@
+.edit-collection{
+    ion-card-header{
+        padding-bottom: 0;
+        ion-card-title{
+            font-size: 16px;        
+        }
+    }
+    ion-item{
+        --min-height: 40px;
+    }
+    ion-label{
+        font-size: 13px;
+    }
+    ion-note{
+        font-size: 13px !important;
+        color: black !important;
+        height: 100%;
+        display: flex;
+        padding: 0;
+        flex-direction: column;
+        justify-content: center;
+    }
+    ion-card.products{
+        overflow: visible;   
+        ion-item{
+            --padding-start: 0;
+            ion-label{
+                display: flex;
+                justify-content: space-between;
+            }  
+        }   
+    }
+    .search{
+        margin-top: 0.75rem;
+    }
+    ion-card.sub-collections{
+        ion-card-header{
+            display: flex;
+            ion-button{
+                margin-left: auto;
+            }
+        }                
+        ion-item{
+            ion-label{
+                display: flex;
+                justify-content: space-between;
+            }
+            &.header{
+                font-weight: 700;
+            }
+            &.main-collection{
+                ion-note{
+                    min-width: 40px;
+                    ion-icon{font-size: 16px;}
+                }
+            }
+            &.sub-collection{
+                ion-label{
+                    padding-left: 20px;
+                }
+            }
+        }
+        
+    }
+}

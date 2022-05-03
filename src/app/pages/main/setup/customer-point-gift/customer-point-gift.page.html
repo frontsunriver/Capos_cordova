@@ -1,0 +1,49 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-list class="chk_payments">
+        <ng-container *ngFor="let p of chk_settings">
+          <ion-item>
+            <ion-checkbox slot="start" [(ngModel)]="store.customer_point_gift_settings[p.code]" [disabled]="!permission"></ion-checkbox>
+            <ion-label class="ion-text-wrap">{{p.label}}</ion-label>                      
+          </ion-item>
+          <ng-container *ngIf="p.code!='complex_point_used'">            
+            <div *ngIf="p.code=='dealer_point_used' && store.customer_point_gift_settings[p.code]">
+              <label>Dealer Rate(%):</label>
+              <input type="number" [(ngModel)]="store.dealer_rate"/>
+            </div>
+            <div *ngIf="p.code=='gift_bonus_added' && store.customer_point_gift_settings[p.code]">
+              <label>Gift Bonus Rate(%):</label>
+              <input type="number" [(ngModel)]="store.gift_rate"/>
+            </div>               
+          </ng-container>
+        </ng-container>
+      </ion-list>      
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="point_rates">
+    <ion-card-header>Point Rates</ion-card-header>
+    <ion-card-content>
+      <table>
+        <thead>
+          <tr>
+              <th></th>
+              <th *ngFor="let g of groups">{{g.name}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of active_payments">                        
+              <td>{{getPaymentLabel(p)}}</td>
+              <td *ngFor="let g of groups">
+                  <input type="number" [(ngModel)]="g.point_rate_values[p]"/> %
+              </td>
+          </tr>
+        </tbody>
+      </table>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ion-footer class="text-center">  
+  <ion-button (click)="save()">Save</ion-button>
+</ion-footer>

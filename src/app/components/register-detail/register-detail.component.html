@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Register Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="register-detail" id="register-detail">
+  <ion-card *ngIf="openClose">
+    <ion-card-header>
+      <ion-card-title>Register Details</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Outlet</ion-label>
+          <ion-note slot="end" *ngIf="openClose.outlet">{{openClose.outlet.name}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Register</ion-label>
+          <ion-note slot="end" *ngIf="openClose.register">{{openClose.register.name}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>ID #</ion-label>
+          <ion-note slot="end">{{openClose.uid}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Opening Time</ion-label>
+          <ion-note slot="end">{{util.handleDateTime(openClose.opening_time)}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Closing Time</ion-label>
+          <ion-note slot="end">{{util.handleDateTime(openClose.closing_time)}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="openClose">
+
+    <div id="report-print-summary">
+      <div class="m-2">
+        <h3 class="font-weight-bold">Payments Summary</h3>
+        <p class="note">Balance your register by entering the amount counted from the till and other payment terminals
+          into the empty fields here.</p>
+
+        <ion-list>
+          <ion-item class="font-weight-bold" style="display: flex; align-items: center; justify-content: space-between; font-weight: bold;">
+            <ion-label>Payment type</ion-label>
+            <p>Expected</p>
+          </ion-item>
+          <ion-item lines="none" style="display: flex; align-items: center; justify-content: space-between;">
+            <ion-label>Cash</ion-label>
+            <p>{{util.getPriceWithCurrency(openClose.expectedCash)}}</p>
+          </ion-item>
+          <ion-item lines="none" style="display: flex; align-items: center; justify-content: space-between;">
+            <ion-label>Credit Card</ion-label>
+            <p>{{util.getPriceWithCurrency(openClose.receivedCreditCard)}}</p>
+          </ion-item>
+          <ion-item lines="none" style="display: flex; align-items: center; justify-content: space-between;">
+            <ion-label>Debit Card</ion-label>
+            <p>{{util.getPriceWithCurrency(openClose.receivedDebitCard)}}</p>
+          </ion-item>
+          <ion-item lines="none" style="display: flex; align-items: center; justify-content: space-between;">
+            <ion-label>Store Credit</ion-label>
+            <p>{{util.getPriceWithCurrency(openClose.receivedStoreCredit)}}</p>
+          </ion-item>
+          <ion-item lines="none" style="display: flex; align-items: center; justify-content: space-between;">
+            <ion-label>Refunds</ion-label>
+            <p>{{util.getPriceWithCurrency(openClose.totalReturns)}}</p>
+          </ion-item>
+          <ion-item lines="full" style="display: flex; align-items: center; justify-content: space-between;">
+            <ion-label>Voided</ion-label>
+            <p>{{util.getPriceWithCurrency(openClose.totalVoided)}}</p>
+          </ion-item>
+          <ion-item lines="none" class="font-weight-bold" style="display: flex; align-items: center; justify-content: space-between; font-weight: bold;">
+            <ion-label>Total</ion-label>
+            <p>{{util.getPriceWithCurrency(openClose.totalExpected)}}</p>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </ion-card>
+
+  <ion-row class="justify-content-center mt-2 mb-4">
+    <ion-col size-lg="3" size-md="6" size="12">
+      <ion-button (click)="printSummary()" expand="block">PRINT SUMMARY</ion-button>
+    </ion-col>
+  </ion-row>
+  <!-- <img id="print-image" [src]="printImage" /> -->
+</ion-content>

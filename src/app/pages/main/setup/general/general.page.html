@@ -1,0 +1,244 @@
+<app-header [title]="title"></app-header>
+<ion-toolbar>
+  <ion-segment [(ngModel)]="cur_tab">
+    <ion-segment-button value="store">
+      <ion-label>Store Settings</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="contact">
+      <ion-label>Contact Info</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="address">
+      <ion-label>Address</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
+<ion-content>
+  <div *ngIf="cur_tab=='store'">
+    <form [formGroup]="frmStore" (ngSubmit)="submit_store()">
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item>
+            <ion-label position="floating">Private Web Address</ion-label>
+            <ion-input type="text" formControlName="private_web_address" readonly></ion-input>
+          </ion-item>          
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item>
+            <ion-label position="floating">Store Name <span class="require">*</span></ion-label>
+            <ion-input type="text" formControlName="store_name" required></ion-input>
+          </ion-item>
+          <span class="error" *ngIf="is_submitted.store && (storeNameInput.invalid || duplicate_error.store_name)">{{storeNameInputError}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item>
+            <ion-label position="floating">Domain Name <span class="require">*</span></ion-label>
+            <ion-input type="text" formControlName="domain_name" required></ion-input>
+          </ion-item>
+          <span class="error" *ngIf="is_submitted.store && (domainNameInput.invalid || duplicate_error.domain_name)">{{domainNameInputError}}</span>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item>
+            <ion-label position="floating">Receipt Template</ion-label>
+            <ion-input type="text" formControlName="template"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item>
+            <ion-label position="stacked">Default Sales Tax</ion-label>
+            <ion-select formControlName="default_tax">
+              <ion-select-option value="outlet">Tax for outlet</ion-select-option>
+              <ion-select-option value="product">Tax of each product</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <span class="error" *ngIf="is_submitted.store && taxInput.invalid">{{taxInputError}}</span>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item>
+            <ion-label position="stacked">Default Sales Tax</ion-label>
+            <ion-select formControlName="default_currency">
+              <ion-select-option *ngFor="let currency of currencies" [value]="currency._id">
+                {{currency.symbol_native}} - {{currency.code}} ({{currency.name}})
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <span class="error" *ngIf="is_submitted.store && currencyInput.invalid">{{currencyInputError}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="stacked">User Switch Security</ion-label>
+            <ion-select formControlName="user_switch_security" class="text-wrap">
+              <ion-select-option *ngFor="let s of securities" [value]="s.id">
+                  {{s.name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row class="justify-content-center">
+        <ion-col size-lg="3" size-md="6" size="12">
+          <ion-button type="submit" expand="block">Save</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+  <div *ngIf="cur_tab=='contact'">
+    <form [formGroup]="frmContact" (ngSubmit)="submit_contact()">
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item>
+            <ion-label position="floating">First Name <span class="require">*</span></ion-label>
+            <ion-input type="text" formControlName="first_name" required></ion-input>
+          </ion-item>          
+          <span class="error" *ngIf="is_submitted.contact && firstNameInput.invalid">{{firstNameInputError}}</span>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item>
+            <ion-label position="floating">Last Name <span class="require">*</span></ion-label>
+            <ion-input type="text" formControlName="last_name" required></ion-input>
+          </ion-item>
+          <span class="error" *ngIf="is_submitted.contact && lastNameInput.invalid">{{lastNameInputError}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item>
+            <ion-label position="floating">Email <span class="require">*</span></ion-label>
+            <ion-input type="email" formControlName="email" required></ion-input>
+          </ion-item>          
+          <span class="error" *ngIf="is_submitted.contact && (emailInput.invalid || duplicate_error.email)">{{emailInputError}}</span>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item>
+            <ion-label position="floating">Phone Number</ion-label>
+            <ion-input type="text" formControlName="phone"></ion-input>
+          </ion-item>          
+        </ion-col>
+      </ion-row>
+      <ion-item-group class="mt-3">
+        <ion-item-divider>
+          <ion-label>Social Link</ion-label>
+        </ion-item-divider>
+        <ion-row>
+          <ion-col size-md="6" size="12">
+            <ion-item>
+              <ion-label position="floating"><ion-icon name="logo-facebook"></ion-icon> Facebook</ion-label>
+              <ion-input type="text" formControlName="facebook"></ion-input>
+            </ion-item>                      
+          </ion-col>
+          <ion-col size-md="6" size="12">
+            <ion-item>
+              <ion-label position="floating"><ion-icon name="logo-twitter"></ion-icon> Twitter</ion-label>
+              <ion-input type="text" formControlName="twitter"></ion-input>
+            </ion-item>          
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="6" size="12">
+            <ion-item>
+              <ion-label position="floating"><ion-icon name="logo-linkedin"></ion-icon> LinkedIn</ion-label>
+              <ion-input type="text" formControlName="linkedin"></ion-input>
+            </ion-item>                      
+          </ion-col>
+          <ion-col size-md="6" size="12">
+            <ion-item>
+              <ion-label position="floating"><ion-icon name="logo-youtube"></ion-icon> Youtube</ion-label>
+              <ion-input type="text" formControlName="youtube"></ion-input>              
+            </ion-item>          
+          </ion-col>
+        </ion-row>
+      </ion-item-group>
+      <ion-row class="justify-content-center">
+        <ion-col size-lg="3" size-md="6" size="12">
+          <ion-button type="submit" expand="block">Save</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+  <div *ngIf="cur_tab=='address'">
+    <form [formGroup]="frmAddress" (ngSubmit)="submit_address()">
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-card formGroupName="physical_address">
+            <ion-card-header>Physical Address</ion-card-header>
+            <ion-card-content>
+              <ion-item>
+                <ion-label position="floating">Street</ion-label>
+                <ion-input type="text" formControlName="street"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">City</ion-label>
+                <ion-input type="text" formControlName="city"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Suburb</ion-label>
+                <ion-input type="text" formControlName="suburb"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Post Code</ion-label>
+                <ion-input type="text" formControlName="postcode"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">State</ion-label>
+                <ion-input type="text" formControlName="state"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Country</ion-label>
+                <ion-select formControlName="country">
+                  <ion-select-option *ngFor="let country of countries" [value]="country._id">
+                      {{country.country_name}}
+                  </ion-select-option>
+              </ion-select> 
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-card formGroupName="postal_address">
+            <ion-card-header>Postal Address</ion-card-header>
+            <ion-card-content>
+              <ion-item>
+                <ion-label position="floating">Street</ion-label>
+                <ion-input type="text" formControlName="street"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">City</ion-label>
+                <ion-input type="text" formControlName="city"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Suburb</ion-label>
+                <ion-input type="text" formControlName="suburb"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Post Code</ion-label>
+                <ion-input type="text" formControlName="postcode"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">State</ion-label>
+                <ion-input type="text" formControlName="state"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Country</ion-label>
+                <ion-select formControlName="country">
+                  <ion-select-option *ngFor="let country of countries" [value]="country._id">
+                      {{country.country_name}}
+                  </ion-select-option>
+              </ion-select> 
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row class="justify-content-center">
+        <ion-col size-lg="3" size-md="6" size="12">
+          <ion-button type="submit" expand="block">Save</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+</ion-content>

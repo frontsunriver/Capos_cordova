@@ -1,0 +1,27 @@
+<div class="box">
+  <h4>Search Inventory Report</h4>
+  <ion-button fill="clear" class="close-button" size="small" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="search()" class="search-form">    
+    <div class="form-fields">
+      <ion-row>        
+        <ion-col size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Product Name / Barcode</ion-label>
+            <ion-input formControlName="product"></ion-input>
+          </ion-item> 
+        </ion-col>        
+      </ion-row>
+    </div>
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Search</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="button" color="warning" expand="block" (click)="clearFilter()">Clear</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

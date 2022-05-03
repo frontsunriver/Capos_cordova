@@ -1,0 +1,24 @@
+export class OnlineorderModel {
+    _id: string = '';
+    private_web_address: string = '';
+    outlet: string = '';
+    register: string = '';
+    reference: string = '';
+    customer_name: string = '';
+    customer_company: string = '';
+    customer_email: string = '';
+    customer_mobile: string = '';
+    payment_status: string = '';
+    status: string = '';
+    note: string = '';
+    total: number = 0;
+    subtotal: number = 0;
+    tax: number = 0;
+    discount_mode: string = '';
+    discount_value: number = 0;
+    change: number = 0;
+    created_at: number = 0;
+    is_new: number = 0;
+    is_update: number = 0;
+    is_delete: number = 0;
+}

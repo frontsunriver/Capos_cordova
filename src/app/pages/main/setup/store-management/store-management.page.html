@@ -1,0 +1,328 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+
+    <ion-toolbar>
+      <ion-segment [(ngModel)]="cur_tab">
+        <ion-segment-button value="payment">
+          <ion-label>Payment</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="receipter">
+          <ion-label>Receipter</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+
+    <div class="ion-padding">
+      <div *ngIf="cur_tab=='payment'">
+        <div *ngFor="let p of chk_payments">
+          <ion-row>
+            <ion-col size-md="4" size="12">
+              <ion-item>
+                <div class="d-flex align-items-center">
+                  <ion-checkbox [(ngModel)]="payment.chk_payments[p]" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label class="ml-1">{{getPaymentLabel(p)}}{{subStatus(p) ? '' : 'Accepted'}}</ion-label>
+                </div>
+              </ion-item>
+            </ion-col>
+            <ion-col size-md="4" size="12" *ngIf="p=='others' && payment.chk_payments[p]">
+              <ion-item>
+                <ion-label>Others name:</ion-label>
+                <ion-input type="text"  [(ngModel)]="payment.others_name" required></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size-md="4" size="12" *ngIf="p=='others' && payment.chk_payments[p]">
+              <ion-item>
+                <ion-label>Others name2:</ion-label>
+                <ion-input type="text" [(ngModel)]="payment.others_name2" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+        <div *ngIf="permission">
+          <ion-row class="justify-content-center mt-4">
+            <ion-col size-lg="3" size-md="6" size="12">
+              <ion-button (click)="save()" expand="block"><ion-icon name="save-outline" class="mr-2"></ion-icon>Update</ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+      <div *ngIf="cur_tab=='receipter'">
+        <ion-toolbar>
+          <ion-segment [(ngModel)]="cur_receipter_tab">
+            <ion-segment-button value="header">
+              <ion-label>Header</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="policy">
+              <ion-label>Policy</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="marketing">
+              <ion-label>Marketing</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="ticket_policy">
+              <ion-label>Ticket Policy</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-toolbar>
+
+        <div class="ion-padding">
+          <div *ngIf="cur_receipter_tab=='header'">
+            <ion-row class="mt-4 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">1st Line(BOLD)</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="header1Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="header1" [ngModelOptions]="{standalone: true}" placeholder="1st line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">2nd Line(BOLD)</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="header2Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="header2" [ngModelOptions]="{standalone: true}" placeholder="2nd line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">3rd Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="header3Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="header3" [ngModelOptions]="{standalone: true}" placeholder="3rd line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">4th Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="header4Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="header4" [ngModelOptions]="{standalone: true}" placeholder="4th line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">5th Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="header5Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="header5" [ngModelOptions]="{standalone: true}" placeholder="5th line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div *ngIf="cur_receipter_tab=='policy'">
+            <ion-row class="mt-4 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">1st Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="policy1Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="policy1" [ngModelOptions]="{standalone: true}" placeholder="1st line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">2nd Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="policy2Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="policy2" [ngModelOptions]="{standalone: true}" placeholder="2nd line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">3rd Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="policy3Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="policy3" [ngModelOptions]="{standalone: true}" placeholder="3rd line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">4th Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="policy4Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="policy4" [ngModelOptions]="{standalone: true}" placeholder="4th line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">5th Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="policy5Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="policy5" [ngModelOptions]="{standalone: true}" placeholder="5th line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div *ngIf="cur_receipter_tab=='marketing'">
+            <ion-row class="mt-4 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">1st Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="marketing1Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="marketing1" [ngModelOptions]="{standalone: true}" placeholder="1st line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">2nd Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="marketing2Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="marketing2" [ngModelOptions]="{standalone: true}" placeholder="2nd line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">3rd Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="marketing3Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="marketing3" [ngModelOptions]="{standalone: true}" placeholder="3rd line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">4th Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="marketing4Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="marketing4" [ngModelOptions]="{standalone: true}" placeholder="4th line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="mt-3 w-100">
+              <ion-col size-sm="8" size-md="4" size-lg="2" size="8">
+                  <ion-label class="pl-3">5th Line</ion-label>
+              </ion-col>
+              <ion-col size-sm="4" size-md="2" size-lg="1" size="4">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="marketing5Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="6" size-lg="6" size="12">
+                <ion-item>
+                  <ion-input [(ngModel)]="marketing5" [ngModelOptions]="{standalone: true}" placeholder="5th line" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div *ngIf="cur_receipter_tab=='ticket_policy'">
+            <ion-row class="mt-4 w-100">
+              <ion-col size-sm="12" size-md="2" size-lg="1" size="12">
+                  <ion-checkbox class="m-0 mr-1" [(ngModel)]="ticketPolicyStatus" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                  <ion-label>Used</ion-label>
+              </ion-col>
+              <ion-col size-sm="12" size-md="10" size-lg="11" size="12">
+                <ion-item>
+                  <ion-textarea class="w=100" [(ngModel)]="ticketPolicy" [ngModelOptions]="{standalone: true}" placeholder="..." rows="1"></ion-textarea>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+
+        <div class="mt-5">
+          <ion-row class="mt-4 w-100">
+            <ion-col size="12">
+                <ion-label class="pl-3">Pole Display Line1: </ion-label>
+            </ion-col>
+            <ion-col size="12">
+              <ion-item>
+                <ion-input [(ngModel)]="pole1" [ngModelOptions]="{standalone: true}" placeholder="pole display line1" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row class="mt-3 w-100">
+            <ion-col size="12">
+              <ion-label class="pl-3">Pole Display Line2: </ion-label>
+            </ion-col>
+            <ion-col size="12">
+              <ion-item>
+                <ion-input type="text" [(ngModel)]="pole2" [ngModelOptions]="{standalone: true}" placeholder="pole display line2" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+        <ion-row class="justify-content-center mt-4">
+          <ion-col size-lg="3" size-md="6" size="12">
+            <ion-button (click)="onSave()" expand="block"><ion-icon name="save-outline" class="mr-2"></ion-icon>Update</ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+</ion-content>

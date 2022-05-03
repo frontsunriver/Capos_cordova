@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+<ion-content class="edit-order-stock">
+  <app-edit-order-stock-content #orderContent></app-edit-order-stock-content>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" (click)="back()" expand="block">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="primary" (click)="submit()" expand="block">Save</ion-button>
+    </ion-col>
+    <ion-col *ngIf="isEdit">
+      <ion-button color="success" (click)="saveAndReceive()" expand="block">Save and Receive</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

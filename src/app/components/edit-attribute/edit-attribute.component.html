@@ -1,0 +1,23 @@
+<div class="box">
+  <h4>{{title}}</h4>
+  <ion-button fill="clear" class="close-button" size="small" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="submit()">    
+    <ion-item lines="full">
+      <ion-label position="floating">Name <span class="require">*</span></ion-label>
+      <ion-input type="text" formControlName="name" required></ion-input>
+    </ion-item>
+    <span class="error" *ngIf="isSubmitted && (nameInput.invalid || dup_error)">{{nameInputError}}</span>    
+    <ion-item lines="full">
+      <ion-label position="floating">Description</ion-label>
+      <ion-input type="text" formControlName="description"></ion-input>
+    </ion-item>
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

@@ -1,0 +1,67 @@
+<app-header [title]="title"></app-header>
+
+<ion-content [fullscreen]="true">
+  <ion-row class="title-wrapper">
+    <ion-col size-md="4" size="12">
+      <div class="img-wrapper"><img src="assets/support/support1.png"/></div>
+    </ion-col>
+    <ion-col size-md="4" size="12" class="d-flex flex-column justify-content-center">        
+      <h1 class="text-light-blue">Contact Us</h1>
+    </ion-col>
+    <ion-col size-md="4" size="12">
+      <div class="img-wrapper"><img src="assets/contact/247.png"/></div>
+    </ion-col>
+  </ion-row>  
+  <ion-row class="mt-4"> 
+    <ion-col size-md="8" size="12">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <ion-row>
+          <ion-col size-md="6" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Name <span class="require">*</span></ion-label>
+              <ion-input type="text" formControlName="name" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && nameInput.invalid">{{nameInputError}}</span>
+          </ion-col>
+          <ion-col size-md="6" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Company <span class="require">*</span></ion-label>
+              <ion-input type="text" formControlName="company" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && companyInput.invalid">{{companyInputError}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="6" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Email <span class="require">*</span></ion-label>
+              <ion-input type="email" formControlName="email" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && emailInput.invalid">{{emailInputError}}</span>
+          </ion-col>
+          <ion-col size-md="6" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Phone</ion-label>
+              <ion-input formControlName="phone" type="text"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-item lines="full">
+          <ion-label position="floating">Enquiry <span class="require">*</span></ion-label>
+          <ion-textarea required formControlName="enquiry" rows="5"></ion-textarea>
+        </ion-item>
+        <span class="error" *ngIf="isSubmitted && enquiryInput.invalid">{{enquiryInputError}}</span>
+        <div class="text-center mt-3">
+          <ion-button type="submit">Send</ion-button>
+        </div>
+      </form>
+    </ion-col>   
+    <ion-col size-md="4" size="12" class="contact-us">
+      <h2 class="mb-4">CaPOS</h2>
+      <div><span>Address:</span> <span>1088 Bloor Street West. Toronto, ON, M6H 1M6, Canada</span></div>
+      <div><span>Email:</span> <span>sales@genius-tech.ca</span></div>
+      <div><span>Phone:</span> <span>+1-647-951-8664</span></div>
+      <div><span>Whatsapp:</span> <span>647 624 2501</span></div>
+    </ion-col>
+  </ion-row>  
+</ion-content>

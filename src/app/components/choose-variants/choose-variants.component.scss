@@ -1,0 +1,37 @@
+.choose-variants{
+    .variants_container{
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    ion-item{      
+        --min-height: 40px;  
+        --padding-start: 0;    
+        ion-checkbox{
+            &.ios{
+                --size: 20px
+            };
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        ion-label{
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: black !important;
+            span{
+                color: black;
+            }
+        }
+        ion-note{
+            color: black;
+            font-size: 13px;
+            height: 100%;
+            padding: 0;
+            min-width: 60px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }   
+    }
+}

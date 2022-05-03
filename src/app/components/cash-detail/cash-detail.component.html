@@ -1,0 +1,30 @@
+<div class="box cash-detail">
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <div class="cash-wrapper">
+    <ion-list>
+      <ion-list-header>Cash Movements</ion-list-header>
+      <ion-item class="font-weight-bold">
+        <ion-label class="main"><span>Time</span><span>User</span></ion-label>
+        <ion-note slot="end">Amount</ion-note>
+      </ion-item>
+      <ng-container *ngFor="let c of openClose.cash_movements">
+        <ion-item lines="none">
+          <ion-label class="main">
+            <span><span>{{c.date}}</span><small>{{c.time}}</small></span>
+            <span>{{c.user}}</span>
+          </ion-label>
+          <ion-note slot="end">{{util.getPriceWithCurrency(c.amount)}}</ion-note>
+        </ion-item>
+        <ion-item lines="full" color="light">
+          <ion-label class="ion-text-wrap"><b>Reasons:</b> {{c.reason}}</ion-label>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+  </div>
+  <ion-list>
+    <ion-list-header>Cash Payments Received</ion-list-header>
+    <ion-item>
+      <ion-label class="font-weight-bold">{{util.getPriceWithCurrency(openClose.receivedCash)}}</ion-label>
+    </ion-item>
+  </ion-list>  
+</div>

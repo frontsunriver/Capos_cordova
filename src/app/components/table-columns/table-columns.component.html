@@ -1,0 +1,15 @@
+<ion-list class="table-columns">
+  <ion-item>
+    <ion-label>All</ion-label>
+    <ion-checkbox slot="start" [(ngModel)]="all_check" [indeterminate]="someCheck()" (ionChange)="onAllCheck()"></ion-checkbox>
+  </ion-item>
+  <ion-reorder-group id="reorder" disabled="false" (ionItemReorder)="reorderColumns($event)">
+    <ion-item *ngFor="let c of all_columns">
+      <ion-label>{{c.name}}</ion-label>
+      <ion-checkbox slot="start" [(ngModel)]="c.checked" (ionChange)="updateAllCheck()"></ion-checkbox>
+      <ion-reorder slot="end">
+        <ion-icon name="repeat"></ion-icon>
+      </ion-reorder>
+    </ion-item>
+  </ion-reorder-group>
+</ion-list>

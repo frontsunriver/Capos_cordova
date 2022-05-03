@@ -1,0 +1,9 @@
+<ion-list class="bundle-detail">
+  <ion-list-header>Products ({{bundle.products.length}})</ion-list-header>
+  <ion-item *ngFor="let p of bundle.products">
+    <ion-label>
+      <span [innerHTML]="bundle.getProductName(p)"></span><span class="barcode">{{p.product.data.barcode}}</span>
+    </ion-label>
+    <ion-note slot="end">{{bundle.getProductPrice(p)}}</ion-note>
+  </ion-item>
+</ion-list>

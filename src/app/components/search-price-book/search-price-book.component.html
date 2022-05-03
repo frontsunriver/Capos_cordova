@@ -1,0 +1,59 @@
+<div class="box">
+  <h4>Search Price Book</h4>
+  <ion-button fill="clear" class="close-button" size="small" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="search()" class="search-form">    
+    <div class="form-fields">
+      <ion-row>
+        <ion-item lines="full">
+          <ion-label position="floating">Name</ion-label>
+          <ion-input type="text" formControlName="name" required></ion-input>
+        </ion-item>
+      </ion-row>
+      <ion-row>        
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">Customer Group</ion-label>
+            <ion-select formControlName="group">
+              <ion-select-option value="">All Customers</ion-select-option>
+              <ion-select-option *ngFor="let s of groups" [value]="s._id">{{s.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">Outlet</ion-label>
+            <ion-select formControlName="outlet">
+              <ion-select-option value="">All Outlets</ion-select-option>
+              <ion-select-option *ngFor="let s of outlets" [value]="s._id">{{s.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>      
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">From Opening time</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="start"></ion-datetime>
+          </ion-item> 
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">To Opening time</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="end"></ion-datetime>
+          </ion-item> 
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Search</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="button" color="warning" expand="block" (click)="clearFilter()">Clear</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

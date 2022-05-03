@@ -1,0 +1,52 @@
+<ion-header [ngClass]="sticky?'back-opacity':'fullscreen-header'">
+  <ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" (ionScroll)="scroll($event)"  [scrollEvents]="true">	
+	<div class="auth-content-wrapper">
+		<div class="box">
+			<a routerLink="/home" class="logo">
+				<img src="assets/home/logo.png"/>
+			</a>
+			<h1 class="text-light-blue">Welcome to <span class="text-black">Ca</span>POS</h1>
+			<form [formGroup]="form" (ngSubmit)="submit()">
+				<ion-item lines="full">
+					<ion-label position="floating">
+						<ion-icon name="earth-outline"></ion-icon> Private Web Address <span class="require">*</span></ion-label>
+					<ion-input type="text" formControlName="private_web_address" required></ion-input>
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && (storeNameInput.invalid || signin_error.private_web_address)">{{storeNameInputError}}</span>
+				<ion-item lines="full">
+					<ion-label position="floating">
+						<ion-icon name="mail-outline"></ion-icon>
+						Email <span class="require">*</span>
+					</ion-label>
+					<ion-input type="email" formControlName="email" required></ion-input>
+				</ion-item>
+				<span class="error" *ngIf="isSubmitted && (emailInput.invalid || signin_error.email)">{{emailInputError}}</span>
+				<ion-item lines="full">
+					<ion-label position="floating">
+						<ion-icon name="key-outline"></ion-icon> Password <span class="require">*</span>
+					</ion-label>
+          <ion-input [type]="hide?'password':'text'" formControlName="password" autocomplete="password" required></ion-input>
+          <ion-icon (click)="hide=!hide" name="{{hide?'eye-off-outline':'eye-outline'}}" class="suffix-icon"></ion-icon>          
+        </ion-item>
+				<span class="error" *ngIf="isSubmitted && (passwordInput.invalid || signin_error.password)">{{passwordInputError}}</span>
+				<div class="forgot-wrapper">				
+					<a routerLink="/auth/forgot-password" routerLinkActive="active-link">Forgot Password?</a>
+				</div>
+				<div class="text-center mt-3 mb-2">
+					<ion-button type="submit" expand="block">Log in</ion-button>
+				</div>
+			</form>
+			<div class="mt-2">				
+				Don't have account? <a routerLink="/auth/sign-up" routerLinkActive="active-link">Signup</a>
+			</div>
+			
+		</div>	
+	</div>
+</ion-content>
+  

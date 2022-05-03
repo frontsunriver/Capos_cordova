@@ -1,0 +1,63 @@
+.edit-order-stock{
+    ion-card.products{
+        overflow: visible !important;        
+    }
+    ion-card-title{
+        font-size: 16px;
+    }
+    ion-card-subtitle{
+        font-size: 13px;
+        text-transform: inherit;
+        line-height: 1.2;
+    }
+    ion-item{
+        --min-height: 40px;
+        --padding-start: 0;
+        ion-label{
+            font-size: 14px !important;
+        }
+        ion-input{
+            font-size: 15px;
+        }
+        &.header{
+            font-weight: 700;
+        }            
+        &.qty{
+            ion-label{
+                margin-left: 20px;                
+            }
+        }
+    }
+    ion-label{            
+        font-size: 13px;
+        color: black !important;
+        span{
+            color: black;
+        }            
+    }
+    ion-note{
+        color: black !important;
+        font-size: 13px;
+        height: 100%;
+        padding: 0;
+        min-width: 60px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }   
+    ion-list.order-variants{        
+        ion-checkbox{            
+            padding: 0;
+            margin-top: 0; 
+            margin-bottom: 0;
+            margin-right: 5px;
+            &.ios{
+                width: 20px; height: 20px;            
+            }
+        }
+        ion-item{
+            --padding-start: 10px;
+        }       
+    }    
+}

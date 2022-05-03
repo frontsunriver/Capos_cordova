@@ -1,0 +1,21 @@
+export class SupplierModel {
+    _id: string = '';
+    private_web_address: string = '';
+    name: string = '';
+    markup: number = 0;
+    description: string = '';
+    first_name: string = '';
+    last_name: string = '';
+    company: string = '';
+    email: string = '';
+    phone: string = '';
+    mobile: string = '';
+    fax: string = '';
+    website: string = '';
+    twitter: string = '';
+    exist_postal_address: number = 0;
+    created_at: number = 0;
+    is_new: number = 0;
+    is_update: number = 0;
+    is_delete: number = 0;
+}

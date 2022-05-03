@@ -1,0 +1,36 @@
+.box.cash-detail{    
+    position: relative;
+    .close-button{
+        position: absolute;
+        top: 5px; right: 5px;
+        z-index: 1;
+    }
+    .cash-wrapper{
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+    }
+    ion-list-header{
+        font-size: 1.1em;
+    }
+    ion-item{    
+        --min-height: 40px;
+        ion-note{    
+            font-size: 14px;
+            color: #000;
+            padding: 10px 0;
+            font-weight: 700;
+        }
+        ion-label{
+            font-size: 14px;
+            &.main{
+                display: flex;
+                justify-content: space-between;
+                span:first-child{
+                    display: flex;
+                    flex-direction: column;
+                    line-height: 1;            
+                }
+            }
+        }
+    }
+}

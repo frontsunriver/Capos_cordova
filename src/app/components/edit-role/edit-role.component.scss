@@ -1,0 +1,49 @@
+.edit-role{
+    ion-card-title{
+        font-size: 18px;
+    }
+    ion-item.select_all{
+        --min-height: 10px;
+        ion-label{
+            color: black !important;
+            font-weight: 700;
+            font-size: 14px;
+            margin: 0;
+        }
+        ion-checkbox{
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-right: 10px;
+            &.ios{width: 20px; height: 20px;}
+        }
+    }
+    h6.group_label{
+        padding-left: 0.75rem;
+        padding-bottom: 0.25rem;    
+        margin-bottom: 0.25rem;
+        margin-top: 0.75rem;
+        border-bottom: 1px solid #ddd;
+        color: black;
+        font-weight: 700;    
+    }
+    ion-row.permissions {
+        ion-item{
+            --min-height: 25px;
+            ion-label{
+                font-size: 13px;
+                display: flex;
+                flex-direction: column;
+                margin: 0;
+                span{
+                    color: black;
+                }
+            }
+            ion-checkbox{
+                margin-top: 0;
+                margin-bottom: 0;
+                margin-right: 10px;
+                &.ios{width: 20px; height: 20px;}
+            }
+        }
+    }
+}

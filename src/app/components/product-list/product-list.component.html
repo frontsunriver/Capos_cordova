@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Choose Products</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-toolbar class="search">
+  <ion-searchbar [(ngModel)]="keyword" (ionChange)="searchProduct()" debounce="800" (ionClear)="clearKeyword()" #search></ion-searchbar>
+</ion-toolbar>
+<ion-content>
+  <ion-list line="full">
+    <ion-item *ngFor="let p of products">
+      <ion-thumbnail slot="start">
+        <img [src]="p.image"/>
+      </ion-thumbnail>
+      <ion-label>{{p.name}}</ion-label>
+      <ion-checkbox slot="end" [(ngModel)]="p.is_check" (ionChange)="selProduct(p)"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll *ngIf="!isLastPageReached" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" expand="block" (click)="back()">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" expand="block" (click)="save()">Apply</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

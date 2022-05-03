@@ -1,0 +1,83 @@
+<div class="box edit-variant">
+  <h4>{{title}}</h4>
+  <ion-button fill="clear" class="close-button" size="small" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="submit()">    
+    <ion-row>
+      <ion-col size-md="4" size="12">
+        <ion-item lines="full">
+          <ion-label position="floating">SKU</ion-label>
+          <ion-input type="text" formControlName="sku"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="4" size="12">
+        <ion-item lines="full">
+          <ion-label position="floating">Supplier Code</ion-label>
+          <ion-input type="text" formControlName="supplier_code"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="4" size="12">
+        <ion-item lines="full">
+          <ion-label>Active</ion-label>
+          <ion-checkbox [(ngModel)]="enabled" [ngModelOptions]="{standalone: true}" slot="start"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="4" size="12">
+        <ion-item lines="full">
+          <ion-label position="floating">Supply Price($)</ion-label>
+          <ion-input type="number" formControlName="supply_price" debounce="700" (ionChange)="setPrice('supply_price')"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="4" size="12">
+        <ion-item lines="full">
+          <ion-label position="floating">Markup(%)</ion-label>
+          <ion-input type="number" formControlName="markup" debounce="700" (ionChange)="setPrice('markup')"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="4" size="12">
+        <ion-item lines="full">
+          <ion-label position="floating">Retail Price($)</ion-label>
+          <ion-input type="number" formControlName="retail_price" debounce="700" (ionChange)="setPrice('retail_price')"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row [ngClass]="{'hidden':!isTracking_inv}">
+      <ion-col size-md="4" size="12">
+        <ion-item lines="full">
+          <ion-label position="floating">Inventory</ion-label>
+          <ion-input type="number" formControlName="inventory"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="4" size="12">
+        <ion-item lines="full">
+          <ion-label position="floating">Reorder Point</ion-label>
+          <ion-input type="number" formControlName="reorder_point"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="4" size="12">
+        <ion-item lines="full">
+          <ion-label position="floating">Reorder Amount($)</ion-label>
+          <ion-input type="number" formControlName="reorder_amount"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button size="small" color="primary" (click)="selectImage()"><ion-icon name="cloud-upload-outline"></ion-icon> Upload Images</ion-button>
+      </ion-col>
+    </ion-row>    
+    <div class="preview" *ngIf="image">
+      <img [src]="getImagePath(image)"/> 
+      <ion-button size="small" fill="clear" (click)="removeImage(image)"><ion-icon name="trash-outline" slot="icon-only" color="danger"></ion-icon></ion-button>            
+    </div>    
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

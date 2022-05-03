@@ -1,0 +1,15 @@
+.unfulfilled-sale{
+    p.hint{
+        font-size: 13px;
+        color: #666;
+        padding-left: 20px;
+        line-height: 1.125;
+    }
+    ion-list-header{
+        ion-label{margin-top: 0;}
+    }
+    .customer{
+        padding: 0 0.75rem;
+        h5{margin: 0;}
+    }
+}

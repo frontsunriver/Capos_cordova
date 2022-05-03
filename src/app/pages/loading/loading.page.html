@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>CaPOS</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="loading-content-wrapper">
+    <img src="assets/home/logo.png"/>
+    <h5>Loading data <span *ngIf="progress_value>0">({{progress_percent}})</span></h5>
+    <ion-progress-bar color="primary" [value]="progress_value"></ion-progress-bar>
+  </div>
+</ion-content>

@@ -1,0 +1,79 @@
+.dashboard{
+    ion-card.settings{
+        margin-top: 10px;
+        padding: 0 5px;
+        color: #3880ff;
+    }
+    ion-row {
+        ion-card{
+            margin-top: 0;
+            ion-item{            
+                --inner-padding-start:0;
+                --padding-start: 0;
+                --padding-end: 0;
+                --inner-padding-end:0;
+                ion-label{
+                    font-size: 0.9em;
+                }
+                ion-note{
+                    font-size: 1.1em;
+                }
+            }
+        }
+    }
+    ion-radio-group{
+        ion-col{
+            padding: 0;
+        }
+        ion-item{   
+            --inner-padding-start:0;
+            --padding-start: 0;                
+            --min-height: unset;     
+            ion-label{
+                font-size: 0.8em;
+                margin: 5px;
+            }
+            ion-radio{
+                margin: 5px 10px;
+            }
+            ion-note{
+                font-size: 1.1em;
+                line-height: 30px;
+            }
+            &.sales{
+                ion-label, ion-note{
+                    color: #1e88e5;
+                }
+            }
+            &.orders{
+                ion-label, ion-note{
+                    color: rgba(75,192,192,1);
+                }
+            }
+        }
+        ::slotted(ion-label) {
+            margin: 5px 0px 5px;
+        }
+    }
+    .chart_mode {
+        display: flex;    
+        .legend{
+            border: 1px solid #999;
+            padding: 10px;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            div.h5{margin-top: 10px;}
+            small{font-size: 0.6em;}
+        }
+        .sales.active{
+            background-color: #1e88e5;
+            color: white;
+        }
+        .orders.active {
+            background-color: #2ca121;
+            color: white;
+        }    
+    }
+}

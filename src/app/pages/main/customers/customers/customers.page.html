@@ -1,0 +1,20 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+  <app-table 
+    [tb_name]="'customers'" 
+    [rows]="rows" 
+    [all_columns]="all_columns" 
+    [show_columns]="show_columns"
+    [show_details]="true"
+    [show_search]="true"
+    [loading]="loading"  
+    [add_new]="true" 
+    [limit]="10"
+    [show_details]="true"
+    (searchEvent)="openSearch()"
+    (reloadEvent)="initTable()"
+    (addRowEvent)="addNew()"
+    (editRowEvent)="edit($event)"
+    (deleteRowEvent)="delete($event)"        
+  ></app-table>  
+</ion-content>

@@ -1,0 +1,18 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+  <app-table 
+    [tb_name]="'online_orders'" 
+    [rows]="rows" 
+    [all_columns]="all_columns" 
+    [show_columns]="show_columns"
+    [show_search]="true"
+    [loading]="loading"
+    [external_sort]="true"    
+    [limit]="10"
+    (searchEvent)="openSearch()"
+    (reloadEvent)="initTable()"
+    (sortEvent)="onSort($event)"
+    (editRowEvent)="edit($event)"
+    (deleteRowEvent)="delete($event)"
+  ></app-table> 
+</ion-content>

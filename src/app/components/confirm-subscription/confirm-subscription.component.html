@@ -1,0 +1,19 @@
+<div class="box">
+  <h4>Confrim Payment</h4>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <div class="box-content">
+    <h4>New Plan: {{plan.label}}</h4>
+    <h5>Price: 
+      <ng-container *ngIf="plan.id!='free'">
+        {{util.getPriceWithCurrency(plan.price)}} per month
+      </ng-container>
+      <ng-container *ngIf="plan.id=='free'">Free</ng-container>
+    </h5>
+  </div>   
+  <div class="d-flex flex-column justify-content-center p-2 mt-3">
+    <div #paypal></div>  
+    <div *ngIf="plan.id=='free'" class="d-flex justify-content-end">
+      <ion-button color="primary" (click)="doAction()" expand="block">Downgrade</ion-button>
+    </div>
+  </div>  
+</div>

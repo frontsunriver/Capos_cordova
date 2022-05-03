@@ -1,0 +1,36 @@
+<div class="box product-variants">
+  <h4>Choose variant products</h4>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <h6>{{data.cart_products[0].product_name}}</h6>
+  <form [formGroup]="form" (submit)="doAction()" *ngIf="form">
+    <div class="variants_container">  
+      <ion-list>
+        <ion-item class="head">
+          <ion-label>
+            <span>Name</span><span>Price</span>
+          </ion-label>
+          <ion-note slot="end">Inventory</ion-note>
+        </ion-item>
+        <ng-container *ngFor="let product of data.cart_products; let c_index=index;">
+          <ion-item lines="none">
+            <ion-checkbox formControlName="{{'checked' + c_index}}" (ionChange)="selProduct(c_index)" *ngIf="isInStock(product)" slot="start"></ion-checkbox>
+            <ion-label><span>{{product.variant_name}}</span><span>{{product.price_str}}</span></ion-label>
+            <ion-note slot="end">{{inventory_str(product)}}</ion-note>
+          </ion-item>
+          <ion-item lines="none" class="qty" *ngIf="form.get('checked' + c_index).value">
+            <ion-label>Qty: <input type="number" formControlName="{{'qty' + c_index}}" min="1"></ion-label>
+          </ion-item>
+          <span class="error" *ngIf="isSubmitted && form.get('qty'+c_index).hasError('max')">{{getError(c_index)}}</span>
+        </ng-container>
+      </ion-list>      
+    </div>
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" expand="block" color="danger" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Add to Cart</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

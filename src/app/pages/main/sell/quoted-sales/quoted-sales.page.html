@@ -1,0 +1,20 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+  <app-table 
+    [tb_name]="'quoted_sales'" 
+    [rows]="rows" 
+    [all_columns]="all_columns" 
+    [show_columns]="show_columns"
+    [show_search]="true"
+    [loading]="loading"
+    [external_sort]="true"
+    [external_page]="true"
+    [page]="page"
+    [limit]="10"
+    (searchEvent)="openSearch()"
+    (reloadEvent)="search()"
+    (editRowEvent)="openDetail($event)"
+    (sortEvent)="onSort($event)"
+    (pageEvent)="onPage($event)"
+  ></app-table>
+</ion-content>

@@ -1,0 +1,33 @@
+<app-header [title]="title"></app-header>
+<ion-toolbar>
+  <ion-segment [(ngModel)]="cur_tab" (ionChange)="onChangeTab()">
+    <ion-segment-button value="all">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="process">
+      <ion-label>Process Return</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="continue">
+      <ion-label>Continue Sale</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
+<ion-content>
+  <app-table 
+    [tb_name]="'sales_history'" 
+    [rows]="rows" 
+    [all_columns]="all_columns" 
+    [show_columns]="show_columns"
+    [show_search]="true"
+    [loading]="loading"
+    [external_sort]="true"
+    [external_page]="true"
+    [page]="page"
+    [limit]="10"
+    (searchEvent)="openSearch()"
+    (reloadEvent)="search()"
+    (editRowEvent)="openDetail($event)"
+    (sortEvent)="onSort($event)"
+    (pageEvent)="onPage($event)"
+  ></app-table> 
+</ion-content>

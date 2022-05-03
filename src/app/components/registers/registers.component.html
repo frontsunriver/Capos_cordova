@@ -1,0 +1,10 @@
+<ion-list class="registers">
+  <ion-list-header>
+    <ion-label>Registers</ion-label>
+    <ion-button (click)="addNew()"><ion-icon name="add-outline"></ion-icon> Add New</ion-button>
+  </ion-list-header>
+  <ion-item *ngFor="let r of registers; let i=index;" ion-long-press [interval]="400" (longPressed)="delete(r, i)">
+    <ion-label>{{r.name}}</ion-label>
+    <ion-button slot="end" fill="clear" icon-only (click)="edit(r)"><ion-icon name="create-outline" color="primary"></ion-icon></ion-button>
+  </ion-item>
+</ion-list>

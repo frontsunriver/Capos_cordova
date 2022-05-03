@@ -1,0 +1,181 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+<div class="ion-padding">
+  <ngx-datatable 
+    class="material station-table"
+    [limit]="5" 
+    [rows]="rows" 
+    [rowHeight]="50" 
+    [columns]="columns"
+    [columnMode]="ColumnMode.force" 
+    [selectionType]="SelectionType.single"
+    [selected]="selected"
+    [sortType]="'multi'" 
+    [headerHeight]="50" 
+    [footerHeight]="80"
+    (select)='onSelect($event)'
+    >
+  </ngx-datatable>
+  <ion-row class="justify-content-center mt-2 mb-1">
+    <ion-col size-lg="3" size-md="6" size="12">
+      <ion-button (click)="confirmAlert('add')" expand="block">ADD STATION</ion-button>
+    </ion-col>
+  </ion-row>
+</div>
+<ion-toolbar>
+  <ion-segment [(ngModel)]="cur_tab">
+    <ion-segment-button value="general">
+      <ion-label>General</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="printer">
+      <ion-label>Printer</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="scale">
+      <ion-label>Scale</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="ion-padding">
+      <div *ngIf="cur_tab=='general'">
+        
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item>
+              <ion-label position="floating">Station ID <span class="require">*</span></ion-label>
+              <ion-input type="text" formControlName="stationID" required></ion-input>
+            </ion-item>    
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item>
+              <ion-label position="floating">Station Name <span class="require">*</span></ion-label>
+              <ion-input type="text" formControlName="stationName" required></ion-input>
+            </ion-item>    
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item>
+              <ion-label position="floating">Store ID <span class="require">*</span></ion-label>
+              <ion-input type="text" formControlName="storeID" required></ion-input>
+            </ion-item>    
+          </ion-col>
+        </ion-row>
+        <ion-row class="mt-2">
+          <ion-col size-md="6" size="12">
+            <div class="d-flex align-items-center">
+              <ion-checkbox [(ngModel)]="receipterPrinter1Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>          
+              <ion-label class="ml-1">Receipter Printer</ion-label>
+            </div>
+            <ion-select placeholder="Receipter Printer" [(ngModel)]="receipterPrinter1" [ngModelOptions]="{standalone: true}" disabled="{{!receipterPrinter1Status}}" multiple="false">
+              <ion-select-option *ngFor="let printer of printers" [value]="printer.id">{{printer.name}}</ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size-md="6" size="12">
+            <div class="d-flex align-items-center">
+              <ion-checkbox [(ngModel)]="windowsFontUsed" [ngModelOptions]="{standalone: true}"></ion-checkbox>          
+              <ion-label class="ml-1">Windows Font Used</ion-label>
+            </div>
+            <ion-select placeholder="Font" [(value)]="font" disabled="{{!windowsFontUsed}}" multiple="false">
+              <ion-select-option  [value]=""></ion-select-option>
+            </ion-select>
+            <ion-item>
+              <ion-label position="floating">Width</ion-label>
+              <ion-input type="number" [(value)]="width" min="0" (ionInput)="width=$event.target.value"></ion-input>
+            </ion-item> 
+          </ion-col>
+        </ion-row>
+        <ion-row class="mt-2">
+          <ion-col size-md="6" size="12">
+            <div class="d-flex align-items-center">
+              <ion-checkbox [(ngModel)]="receipterPrinter2Status" [ngModelOptions]="{standalone: true}"></ion-checkbox>          
+              <ion-label class="ml-1">Receipter Printer2</ion-label>
+            </div>
+            <ion-select placeholder="Receipter Printer2" [(ngModel)]="receipterPrinter2" [ngModelOptions]="{standalone: true}" disabled="{{!receipterPrinter2Status}}" multiple="false">
+              <ion-select-option *ngFor="let printer of printers" [value]="printer.id">{{printer.name}}</ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+        <ion-row class="mt-2">
+          <ion-col size-md="6" size="12">
+            <div class="d-flex align-items-center">
+              <ion-checkbox [(ngModel)]="cashDrawerStatus" [ngModelOptions]="{standalone: true}"></ion-checkbox>          
+              <ion-label class="ml-1">Cash Drawer</ion-label>
+            </div>
+            <ion-select placeholder="Cash Drawer" [(ngModel)]="cashDrawer" [ngModelOptions]="{standalone: true}" disabled="{{!cashDrawerStatus}}" multiple="false">
+              <ion-select-option ></ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size-md="6" size="12">
+            <div class="d-flex align-items-center">
+              <ion-checkbox [(ngModel)]="lowVoltageUsed" [ngModelOptions]="{standalone: true}"></ion-checkbox>          
+              <ion-label class="ml-1">Low Voltage Used</ion-label>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="mt-2">
+          <ion-col size-md="6" size="12">
+            <div class="d-flex align-items-center">
+              <ion-checkbox [(ngModel)]="barcodeReaderStatus" [ngModelOptions]="{standalone: true}"></ion-checkbox>          
+              <ion-label class="ml-1">Barcode Reader</ion-label>
+            </div>
+            <ion-select placeholder="Barcode Reader" [(ngModel)]="barcodeReader" [ngModelOptions]="{standalone: true}" disabled="{{!barcodeReaderStatus}}" multiple="false">
+              <ion-select-option ></ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="cur_tab=='printer'">
+        <ion-row class="mt-2">
+          <ion-col size-md="6" size="12">
+            <div class="d-flex align-items-center">
+              <ion-checkbox [(ngModel)]="reportPrinterStatus" [ngModelOptions]="{standalone: true}"></ion-checkbox>          
+              <ion-label class="ml-1">Report Printer</ion-label>
+            </div>
+            <ion-select placeholder="Report Priter" [(value)]="ngModel" [ngModelOptions]="{standalone: true}" disabled="{{!reportPrinterStatus}}" multiple="false">
+              <ion-select-option *ngFor="let printer of printers" [value]="printer.id">{{printer.name}}</ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+        <ion-row class="mt-2">
+          <ion-col size-md="6" size="12">
+            <div class="d-flex align-items-center">
+              <ion-checkbox [(ngModel)]="barcodeWriterStatus" [ngModelOptions]="{standalone: true}"></ion-checkbox>          
+              <ion-label class="ml-1">Barcode Writer</ion-label>
+            </div>
+            <ion-select placeholder="Barcode Writer" [(ngModel)]="barcodeWriter" [ngModelOptions]="{standalone: true}" disabled="{{!barcodeWriterStatus}}" multiple="false">
+              <ion-select-option ></ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size-md="6" size="12">
+            <ion-select placeholder="Media Type" [(value)]="mediaType" disabled="{{!barcodeWriterStatus}}" multiple="false">
+              <ion-select-option ></ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="cur_tab=='scale'">
+        <ion-row class="mt-2">
+          <ion-col size-md="6" size="12">
+            <div class="d-flex align-items-center">
+              <ion-checkbox [(ngModel)]="scaleStatus" [ngModelOptions]="{standalone: true}"></ion-checkbox>          
+              <ion-label class="ml-1">Barcode Writer</ion-label>
+            </div>
+            <ion-select placeholder="Scale" [(ngModel)]="scale" [ngModelOptions]="{standalone: true}" disabled="{{!scaleStatus}}" multiple="false">
+              <ion-select-option ></ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </div>
+      <ion-row class="justify-content-center mt-2 mb-1">
+        <ion-col size-lg="3" size-md="6" size="12">
+          <ion-button type="submit" disabled="{{submitDisabled}}" expand="block">Save</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="justify-content-center mt-2 mb-5">
+        <ion-col size-lg="3" size-md="6" size="12">
+          <ion-button (click)="confirmAlert('delete')" disabled="{{submitDisabled}}" expand="block">Delete</ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </form>
+</ion-content>

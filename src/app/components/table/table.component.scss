@@ -1,0 +1,76 @@
+.ngx-table-controllers{
+    display: flex;
+    padding: 0.5rem;
+}
+.ngx-table-wrapper{
+    width: 100%;
+    padding: 0.25rem 0.75rem 0.75rem;
+    overflow: auto;
+    &.variant_products, &.order_detail_products{
+        padding: 0;
+    }
+}
+.table-detail{
+    padding: 0.25rem 0.75rem;
+    p{
+        font-size: 0.8em;
+        margin-bottom: 0.25rem;
+        & > span {
+            span {
+                margin-right: 5px;
+            }
+        }
+    }
+}
+a.ex-col-row{
+    text-decoration: none !important;
+}
+.ngx-datatable {    
+    .datatable-body-cell{
+        line-height: 1 !important;        
+    }
+    .datatable-body-cell-label {
+        & > span{
+            display: flex;
+            flex-direction: column;
+        }
+    }    
+    .datatable-footer{
+        min-height: 50px;
+        display: flex !important;
+        .page-count{
+            line-height: 1 !important;
+            height: auto !important;
+            padding: 0 0.5rem !important;
+        }
+        .datatable-footer-inner{
+            height: auto !important;
+        }
+    } 
+    .datatable-row-detail{
+        height: auto !important;
+    }
+}
+.credit{
+    color: #43A047;
+}
+.debit{
+    color: #D84315;
+}
+ion-card.summary {    
+    margin: 1rem 0;    
+    ion-list-header{
+        font-weight: 700;
+        font-size: 1.2em;
+    }
+    ion-note{
+        font-size: 1em;
+        color: black;
+        font-weight: 700 !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0;
+        height: 100%;
+    }
+}

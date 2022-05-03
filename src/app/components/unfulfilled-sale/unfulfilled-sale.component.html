@@ -1,0 +1,98 @@
+<div class="box unfulfilled-sale">
+  <h4>{{titles[step]}}</h4>
+  <ion-button fill="clear" class="close-button" size="small" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="gotoStep2()">
+    <p>{{descriptions[step]}}</p>
+    <ng-container *ngIf="step==0">
+      <ion-list>
+        <ion-radio-group [(ngModel)]="fulfillment.mode" [ngModelOptions]="{standalone: true}">
+          <ion-list-header>
+            <ion-label>Fulfillment</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>Delivery</ion-label>
+            <ion-radio slot="start" value="delivery"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Pickup</ion-label>
+            <ion-radio slot="start" value="pickup"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+      <ion-row>
+        <ion-col>
+          <ion-button color="medium" (click)="dismiss()" expand="block">Don't Mark</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button expand="block" (click)="step=1">Next</ion-button>
+        </ion-col>
+      </ion-row>      
+    </ng-container>
+    <ng-container *ngIf="step==1">
+      <ion-item>
+        <ion-label position="stacked">Customer</ion-label>
+        <ion-select [(ngModel)]="fulfillment.customer" [ngModelOptions]="{standalone: true}" (ionChange)="selCustomer()">
+          <ion-select-option *ngFor="let customer of customers" [value]="customer">{{customer.username}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Contact Number</ion-label>
+        <ion-select [(ngModel)]="contact_number_mode" [ngModelOptions]="{standalone: true}">
+          <ion-select-option value="mobile">Mobile</ion-select-option>
+          <ion-select-option value="phone">Phone</ion-select-option>
+          <ion-select-option value="fax">Fax</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="contact_number_mode=='mobile'">
+        <ion-label position="floating">Mobile</ion-label>
+        <ion-input [(ngModel)]="fulfillment.mobile" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="contact_number_mode=='phone'">
+        <ion-label position="floating">Phone</ion-label>
+        <ion-input [(ngModel)]="fulfillment.phone" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="contact_number_mode=='fax'">
+        <ion-label position="floating">Tax</ion-label>
+        <ion-input [(ngModel)]="fulfillment.fax" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+      <span class="error" *ngIf="isSubmitted && emailInput.invalid">{{emailInputError}}</span>
+      <ion-row>
+        <ion-col>
+          <ion-button color="medium" (click)="step=0" expand="block">Back</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button expand="block" type="submit" [disabled]="!checkContact()">Next</ion-button>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+    <ng-container *ngIf="step==2">
+      <div class="customer">
+        <h5>Customer</h5>
+        <ng-container *ngIf="fulfillment.customer">
+          <div class="d-flex justify-content-between">
+            <div>{{fulfillment.customer.username}}
+              <div><small><span *ngIf="fulfillment.customer.contact">{{fulfillment.customer.data.contact}} | </span><span *ngIf="getContactInfo()">{{getContactInfo()}}</span></small></div>
+            </div>
+          </div>         
+        </ng-container>      
+      </div>
+      <ion-item>
+        <ion-label position="floating">Sale Note</ion-label>
+        <ion-textarea [(ngModel)]="note" [ngModelOptions]="{standalone: true}"></ion-textarea>        
+      </ion-item>
+      <p class="hint">Customers will be able to see this note on their receipt.</p>      
+      <ion-row>
+        <ion-col>
+          <ion-button color="medium" (click)="step=1" expand="block">Back</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button expand="block" (click)="doAction()">Mark</ion-button>
+        </ion-col>
+      </ion-row>                  
+    </ng-container>
+  </form>
+</div>

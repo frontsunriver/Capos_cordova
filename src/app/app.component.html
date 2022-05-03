@@ -1,0 +1,53 @@
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>
+        <ion-list id="inbox-list">          
+          <ion-item>
+            <ion-img src="assets/home/logo.png"></ion-img>
+          </ion-item>
+          <ng-container *ngIf="!isLoggedIn">
+            <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+              <ion-item routerDirection="root" [routerLink]="[p.link]" lines="none" detail="false" routerLinkActive="selected">
+                <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'" *ngIf="p.icon"></ion-icon>
+                <ion-label>{{ p.label }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ng-container>
+          <ng-container *ngIf="isLoggedIn">
+            <ng-container *ngFor="let p of appPages; let i=index;">
+              <ng-container *ngIf="p.items">
+                <ion-item class="custom" (click)="cur_item==p.label?cur_item='':cur_item=p.label">
+                  <ion-thumbnail slot="start" *ngIf="p.imageIcon">
+                    <div><img [src]="p.imageIcon"/></div>
+                  </ion-thumbnail>
+                  <ion-label>{{p.label}}</ion-label>
+                  <ion-icon slot="end" [name]="cur_item==p.label?'chevron-down-outline':'chevron-forward-outline'"></ion-icon>                  
+                </ion-item>
+                <ion-list lines="none" class="sub-menu" [ngClass]="{'hidden':cur_item!==p.label}">
+                  <ion-menu-toggle auto-hide="false" *ngFor="let pp of p.items">
+                    <ion-item class="custom" routerDirection="root" [routerLink]="['main/' + pp.link]" 
+                      lines="none" detail="false" routerLinkActive="selected">
+                      <ion-label>{{ pp.label }}</ion-label>
+                    </ion-item>
+                  </ion-menu-toggle>
+                </ion-list>
+              </ng-container>
+              <ng-container *ngIf="!p.items">
+                <ion-menu-toggle auto-hide="false">
+                  <ion-item class="custom" routerDirection="root" [routerLink]="['main/' + p.link]" lines="none" detail="false" routerLinkActive="selected">
+                    <ion-thumbnail slot="start" *ngIf="p.imageIcon">
+                      <div><img [src]="p.imageIcon"/></div>
+                    </ion-thumbnail>
+                    <ion-label>{{p.label}}</ion-label>
+                  </ion-item>
+                </ion-menu-toggle>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

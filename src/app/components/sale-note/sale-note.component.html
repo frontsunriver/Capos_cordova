@@ -1,0 +1,17 @@
+<div class="box sale-note">
+  <h4>Add a note to the sale</h4>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <p *ngIf="data.msg" class="msg">{{data.msg}}</p>
+  <form [formGroup]="form" (ngSubmit)="doAction()">
+    <ion-item>
+      <ion-label position="floating">Add a note</ion-label>
+      <ion-input type="text" formControlName="note"></ion-input>      
+    </ion-item>  
+    <p class="hint">Notes can be used to identify a sale in the future, and can contain information that can help complete the sale.</p>
+    <ion-row class="justify-content-center">      
+      <ion-col size-lg="4" size-md="6" size="12">
+        <ion-button type="submit" expand="block">{{button_label}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

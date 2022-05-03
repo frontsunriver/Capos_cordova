@@ -1,0 +1,29 @@
+<app-header [title]="title"></app-header>
+
+<ion-content [fullscreen]="true">
+  <ng-container *ngIf="blog">
+  <ion-row class="title-wrapper">
+    <ion-col size-md="3" size="12">
+      <div class="img-wrapper"><img [src]="blog.banner1"/></div>
+    </ion-col>
+    <ng-container *ngIf="blog.banner2">
+      <ion-col size-md="6" size="12" class="d-flex flex-column justify-content-center">        
+        <h1 class="text-light-blue">{{blog.title}}</h1>
+      </ion-col>
+    </ng-container>
+    <ng-container *ngIf="!blog.banner2">
+      <ion-col size-md="9" size="12" class="d-flex flex-column justify-content-center">        
+        <h1 class="text-light-blue">{{blog.title}}</h1>
+      </ion-col>
+    </ng-container>
+    <ion-col size-md="3" size="12" *ngIf="blog.banner2">
+      <div class="img-wrapper"><img [src]="blog.banner2"/></div>
+    </ion-col>
+  </ion-row>    
+  <ion-row class="mt-4">
+    <ion-col size="12">
+      <div class="p-3" [innerHTML]="blog.content"></div>
+    </ion-col>    
+  </ion-row>  
+  </ng-container>  
+</ion-content>

@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+<ion-content class="edit-role">
+  <form [formGroup]="form" (ngSubmit)="submit()">    
+    <ion-row>
+      <ion-col size="12">
+        <ion-item lines="full">
+          <ion-label position="floating">Role Name <span class="require">*</span></ion-label>
+          <ion-input type="text" formControlName="name" required></ion-input>
+        </ion-item>
+        <span class="error" *ngIf="isSubmitted && (nameInput.invalid || duplicate_error)">{{nameInputError}}</span>    
+      </ion-col>
+    </ion-row>
+    <ion-card>
+      <ion-card-header class="d-flex">
+        <ion-card-title>Permissions</ion-card-title>
+        <ion-item lines="none" class="select_all">
+          <ion-label>Select All</ion-label>
+          <ion-checkbox [(ngModel)]="select_all" [indeterminate]="someCheck()" [ngModelOptions]="{standalone: true}" slot="start" (ionChange)="selectAll()"></ion-checkbox>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <ng-container *ngFor="let group of util.rolePermissionGroups">
+          <h6 class="group_label">{{group.label}}</h6>          
+          <ion-row class="permissions">
+            <ng-container *ngFor="let p of rolePermissions">
+              <ion-col size-md="6" size="12" *ngIf="p.group==group.uid">
+                <ion-item lines="none">
+                  <ion-label class="text-wrap"><span>{{p.label}}</span><small *ngIf="p.desc">{{p.desc}}</small></ion-label>
+                  <ion-checkbox slot="start" [(ngModel)]="permissions[p.uid]" [ngModelOptions]="{standalone: true}" (ionChange)="updateAllCheck()"></ion-checkbox>
+                </ion-item>
+              </ion-col>
+            </ng-container>
+          </ion-row>
+        </ng-container>
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" (click)="back()" expand="block">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" (click)="submit()" expand="block">Save</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

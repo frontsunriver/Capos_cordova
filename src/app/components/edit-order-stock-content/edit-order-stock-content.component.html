@@ -1,0 +1,108 @@
+<div class="edit-order-stock">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Order Details</ion-card-title>
+      <ion-card-subtitle>{{order_card_desc[order.data.type]}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">{{supplier_label[order.data.type]}} <span class="require">*</span></ion-label>
+              <ion-select formControlName="supplier" required>                    
+                <ion-select-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && supplierInput.invalid">{{supplierInputError}}</span>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">{{deliver_label[order.data.type]}} <span class="require">*</span></ion-label>
+              <ion-select formControlName="deliver_to" required>                    
+                <ion-select-option *ngFor="let outlet of outlets" [value]="outlet._id">{{outlet.name}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && deliverToInput.invalid">{{deliverToInputError}}</span>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Supplier Invoice Number</ion-label>
+              <ion-input formControlName="invoice_number"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Delivery Date</ion-label>
+              <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="delivery_date"></ion-datetime>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">{{order_number_label[order.data.type]}} <span class="require">*</span></ion-label>
+              <ion-input formControlName="order_number" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && orderNumberInput.invalid">{{orderNumberInputError}}</span>
+          </ion-col>        
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="stacked">Note</ion-label>
+              <ion-textarea formControlName="note" rows="1"></ion-textarea>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </form>
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="products">
+    <ion-card-header>
+      <ion-card-title>Products ({{order.data.products.length}})</ion-card-title>
+      <ion-card-subtitle>{{product_card_desc[order.data.type]}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="search">
+        <ion-col size="12">
+          <ion-auto-complete 
+            [(model)]="keyword"
+            [multi]="false" 
+            [dataProvider]="providerProduct" 
+            [options]="optionAutoComplete" 
+            [maxResults]="5" 
+            (itemSelected)="selProduct($event)" #searchbar></ion-auto-complete>      
+          <ion-button size="small" fill="clear" (click)="openAddToOrder()"><ion-icon name="list-sharp" color="primary"></ion-icon></ion-button>
+        </ion-col>
+      </ion-row>      
+      <ion-list class="order-variants" *ngIf="order.data.products.length>0">
+        <ion-item class="header">
+          <ion-label>Product</ion-label>
+          <ion-note slot="end">Inventory</ion-note>          
+        </ion-item>
+        <ng-container *ngFor="let product of order.data.products; let i=index;">
+          <ion-item ion-long-press [interval]="400" (longPressed)="removeProduct(i)">
+            <ion-label>{{product.product_name}} <small>{{product.variant_name}}</small></ion-label>
+            <ion-note slot="end">{{getProductInventory(product)}}</ion-note>            
+          </ion-item>
+          <ion-item color="light" class="qty" button (click)="editQty(product)">
+            <ion-label>{{util.getPriceWithCurrency(product.supply_price)}} x {{product.qty}}</ion-label>
+            <ion-note slot="end">{{order.getProductTotal_str(product)}}</ion-note>
+          </ion-item>
+        </ng-container>
+      </ion-list>
+      <ion-list *ngIf="order.data.type=='purchase'">
+        <ion-item>
+          <ion-button slot="end" size="small" (click)="purchaseByReorder()" color="primary">
+            Add Products from Reorder Points 
+          </ion-button>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-item class="header">
+          <ion-label>Total</ion-label>
+          <ion-note slot="end">{{order.total_str}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</div>

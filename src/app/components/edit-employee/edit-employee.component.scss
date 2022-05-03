@@ -1,0 +1,15 @@
+.edit-employee{
+    form{
+        padding: 1rem;
+    }
+    ion-item{
+        --min-height: 40px;
+        --padding-start: 0;
+        ion-label{
+            font-size: 14px !important;
+        }
+        ion-input{
+            font-size: 15px;
+        }
+    }
+}

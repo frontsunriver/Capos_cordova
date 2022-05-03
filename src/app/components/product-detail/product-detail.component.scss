@@ -1,0 +1,38 @@
+.product-detail{
+    h6{
+        font-size: 14px;
+        font-weight: 700;
+        margin: 0;
+    }
+    .description{
+        font-size: 13px;
+        line-height: 1.125;
+    }
+    ion-list{
+        ion-list-header{
+            font-size: 15px;
+        }
+        ion-item{
+            --min-height: 40px;
+            --padding-start: 0;
+            ion-label{
+                padding-left: 10px;
+                font-size: 13px;
+                display: flex;
+                justify-content: space-between;
+            }        
+            ion-note{
+                min-width: 70px;
+                font-size: 13px;
+                color: black;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            &.header{
+                font-weight: 700;       
+            }
+        }
+    }
+}

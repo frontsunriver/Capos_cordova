@@ -1,0 +1,14 @@
+.choose-customer{
+    ion-item{
+        font-size: 13px;
+        --min-height: 40px;
+        ion-note{
+            font-size: 14px;			
+            color: var(--ion-color-primary);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+        }	
+    }
+}

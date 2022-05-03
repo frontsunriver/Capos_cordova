@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Retrieve Sale</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="retrieve-sale">
+  <ion-list>
+    <ion-item class="head">
+      <ion-label>Parked Sale</ion-label>
+      <ion-note slot="end">Customer</ion-note>      
+    </ion-item>
+    <ion-item *ngIf="parked_sales.length==0">
+      <ion-label>No Parked Sales</ion-label>
+    </ion-item>
+    <ng-container *ngFor="let sale of parked_sales">
+      <ion-item button (click)="retrieveSale(sale)">
+        <ion-label>          
+          <div *ngFor="let p of getParkedSalelabel(sale)" [innerHTML]="p"></div>
+          <div><small>{{util.handleDateTime(sale.created_at)}}</small></div>
+          <div *ngIf="sale.note"><small>Note: {{sale.note}}</small></div>
+        </ion-label>        
+        <ion-note slot="end">
+          <div *ngIf="sale.customer">{{sale.customer.name}}</div>
+          <div *ngIf="!sale.customer">-</div>
+        </ion-note>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</ion-content>

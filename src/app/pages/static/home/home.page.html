@@ -1,0 +1,81 @@
+<app-header [title]="title"></app-header>
+
+<ion-content [fullscreen]="true">
+  <ion-row class="title-wrapper">
+    <ion-col size-md="4" size="12">
+      <div class="img-wrapper"><img src="assets/home/welcome-left.png"/></div>
+    </ion-col>
+    <ion-col size-md="4" size="12" class="d-flex flex-column justify-content-center">        
+      <h1 class="text-light-blue">Welcome to <span class="text-black">Ca</span>POS</h1>
+      <h5>We are here to <span class="text-light-blue">change</span> the game</h5>
+    </ion-col>
+    <ion-col size-md="4" size="12">
+      <div class="img-wrapper"><img src="assets/home/welcome-right.png"/></div>
+    </ion-col>
+  </ion-row>
+  <ion-row class="mt-4">
+    <ion-col size="12">
+      <h1>How it works?</h1>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <div class="main-node">
+      <div><img src="assets/home/implement.png"/></div>
+      <h6>Implement</h6>
+    </div>
+    <div class="arrow-node">
+      <div><img src="assets/home/arrow.png"/></div>
+    </div>
+    <div class="main-node">
+      <div><img src="assets/home/train.png"/></div>
+      <h6>Train</h6>
+    </div>
+    <div class="arrow-node">
+      <div><img src="assets/home/arrow.png"/></div>
+    </div>
+    <div class="main-node">
+      <div><img src="assets/home/supports.png"/></div>
+      <h6>Support</h6>
+    </div>
+  </ion-row>
+  <ion-row class="mt-4">
+    <p class="pl-3 pr-3 text-center">
+      If you're still wondering if CaPOS is the system for you, take a test drive, and then ask yourself these questions we already have an answer to..
+    </p>
+  </ion-row>
+  <ion-row>
+    <div class="buttons">
+      <ion-button routerLink="/static/faq">Check out answers</ion-button>          
+      <ion-button routerLink="/static/contact">Contact</ion-button>      
+    </div>
+  </ion-row>
+  <ion-row class="mt-4">
+    <ion-col size="12">
+      <h1>Check out our latest blog post</h1>
+    </ion-col>
+  </ion-row>
+  <ion-row class="blog-row">
+    <ion-col size-md="6" size="12">
+      <h5 class="text-light-blue text-center">
+        Increasing your restaurant efficiency
+      </h5>
+      <div class="text-center">
+        <img src="assets/home/restaurant.png" alt="Restaurant" />
+      </div>
+      <div class="text-center">
+        <ion-button routerLink="/static/blog-post/2">More</ion-button>
+      </div>
+    </ion-col>
+    <ion-col size-md="6" size="12">
+      <h5 class="text-light-blue text-center">
+        How to streamline operations and improve your customer services with CaPOS
+      </h5>
+      <div class="text-center">
+        <img src="assets/home/streamline.png" alt="Streamline" />
+      </div>
+      <div class="text-center">
+        <ion-button routerLink="/static/blog-post/1">More</ion-button>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-content>

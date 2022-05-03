@@ -1,0 +1,12 @@
+.status {
+	color: white;
+	padding: 2px 5px;	
+	margin-bottom: 2px;
+}
+.status.awaiting {color: black; background-color: rgb(255, 232, 100);}
+.status.allocated {background-color: rgb(3, 52, 189);}
+.status.shipped {background-color: rgb(3, 189, 59);}
+.status.quote {background-color: rgb(189, 3, 3);}
+.status.not_paid{background-color: rgb(189, 3, 3);}
+.status.full_paid{background-color: rgb(3, 189, 59);}
+.status.partial_paid{background-color: rgb(3, 52, 159);}

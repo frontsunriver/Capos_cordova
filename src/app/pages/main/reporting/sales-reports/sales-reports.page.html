@@ -1,0 +1,17 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+  <app-table 
+    [tb_name]="'sales_reports'" 
+    [rows]="rows" 
+    [all_columns]="all_columns" 
+    [show_columns]="show_columns"
+    [show_search]="true"
+    [loading]="loading"   
+    [summary]="summary"     
+    [external_sort]="true"
+    [limit]="10"
+    (sortEvent)="onSort($event)"
+    (searchEvent)="openSearch()"
+    (reloadEvent)="search()"        
+  ></app-table>  
+</ion-content>

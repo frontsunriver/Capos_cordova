@@ -1,0 +1,84 @@
+<div class="box">
+  <h4>Search Order</h4>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="search()" class="search-form">    
+    <div class="form-fields">
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="floating">Invoice / Order Number</ion-label>
+            <ion-input formControlName="keyword"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">Order Type</ion-label>
+            <ion-select formControlName="type">
+              <ion-select-option value="">All orders</ion-select-option>
+              <ion-select-option *ngFor="let type of orderTypes" [value]="type">{{util.toUppercase(type)}} orders</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">Outlet</ion-label>
+            <ion-select formControlName="outlet">
+              <ion-select-option value="">All Outlets</ion-select-option>
+              <ion-select-option *ngFor="let outlet of outlets" [value]="outlet._id">{{outlet.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">Supplier</ion-label>
+            <ion-select formControlName="supplier">
+              <ion-select-option value="">All Suppliers</ion-select-option>
+              <ion-select-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">From Created At</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="date_from"></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">To Created At</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="date_to"></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">From Due Date</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="due_from"></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size="12">
+          <ion-item lines="full">
+            <ion-label position="stacked">To Due Date</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="due_to"></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Search</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="button" color="warning" expand="block" (click)="clearFilter()">Clear</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

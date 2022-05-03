@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+<ion-content class="edit-bundle">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Bundle Details</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Bundle ID</ion-label>
+              <ion-input [(ngModel)]="bundle.bundle_id" [ngModelOptions]="{standalone: true}" readonly></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Bundle Count <span class="require">*</span></ion-label>
+              <ion-input type="number" formControlName="count" (ionChange)="hintName()" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && countInput.invalid">{{countInputError}}</span>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Bundle Price($) <span class="require">*</span></ion-label>
+              <ion-input type="number" formControlName="price" (ionChange)="hintName()" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && priceInput.invalid">{{priceInputError}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Bundle Name <span class="require">*</span></ion-label>
+              <ion-input type="text" formControlName="name" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && nameInput.invalid">{{nameInputError}}</span>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label position="floating">Discount Amount($) <span class="require">*</span></ion-label>
+              <ion-input type="number" formControlName="discount" (ionChange)="hintName()" required></ion-input>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && discountInput.invalid">{{discountInputError}}</span>
+          </ion-col>
+          <ion-col size-md="4" size="12">
+            <ion-item lines="full">
+              <ion-label>Active</ion-label>
+              <ion-checkbox slot="start" [(ngModel)]="bundle.active" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </form>
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="products">
+    <ion-card-header>
+      <ion-card-title>Products ({{bundle.products.length}})</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="search">
+        <ion-col>
+          <ion-auto-complete 
+            [(model)]="keyword"
+            [multi]="false" 
+            [dataProvider]="providerProduct" 
+            [options]="optionAutoComplete" 
+            [maxResults]="5" 
+            (itemSelected)="selProduct($event)" #searchbar></ion-auto-complete>      
+          <ion-button size="small" fill="clear" (click)="openAddToBundle()"><ion-icon name="list-sharp" color="primary"></ion-icon></ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-list class="products">        
+        <ion-item *ngFor="let p of bundle.products;let p_index=index;" ion-long-press [interval]="400" (longPressed)="removeProduct(p_index)">
+          <ion-label>
+            <span [innerHTML]="bundle.getProductName(p)"></span><span class="barcode">{{p.product.data.barcode}}</span>
+          </ion-label>
+          <ion-note slot="end">{{bundle.getProductPrice(p)}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" (click)="back()" expand="block">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" (click)="submit()" expand="block">Save</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

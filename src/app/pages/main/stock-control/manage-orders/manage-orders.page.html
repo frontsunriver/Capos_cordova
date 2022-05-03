@@ -1,0 +1,32 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+  <app-table 
+    [tb_name]="'orders'" 
+    [rows]="rows" 
+    [all_columns]="all_columns" 
+    [show_columns]="show_columns"
+    [show_search]="true"
+    [loading]="loading"
+    [external_sort]="true"    
+    [limit]="10"
+    [add_new]="true" 
+    [add_new_button]="'Order Stock'"
+    [summary]="summary"
+    (searchEvent)="openSearch()"
+    (reloadEvent)="initTable()"
+    (addRowEvent)="addNew()"
+    (sortEvent)="onSort($event)"
+    (editRowEvent)="edit($event)"
+    (deleteRowEvent)="delete($event)"
+  ></app-table> 
+</ion-content>
+<ion-footer>
+  <ion-row>    
+    <ion-col>
+      <ion-button color="success" expand="block" (click)="goto('receive-stock')">Receive Stock</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button expand="block" (click)="goto('return-stock')">Return Stock</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

@@ -1,0 +1,38 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+  <ion-row>
+    <ion-col size-md="6" size="12">
+      <ion-card class="mb-0">
+        <ion-card-header>Turn On/Off Customer Screen Sharing</ion-card-header>
+        <ion-card-content>
+          <div class="text-center">
+            <ion-toggle [(ngModel)]="store.preferences.messagebox" (ionChange)="save()"></ion-toggle>
+            <p>Customer Screen Sharing is turned {{getStatusString()}}</p>
+          </div>          
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col size-md="6" size="12">
+      <ion-card>
+        <ion-card-header>Popup for confirm</ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <ion-toggle slot="start" [(ngModel)]="store.preferences.confirm_delete_product" (ionChange)="save()"></ion-toggle>
+              <ion-label class="ion-text-wrap">Always confirm when delete product on sale</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-toggle slot="start" [(ngModel)]="store.preferences.confirm_discard_sale" (ionChange)="save()"></ion-toggle>
+              <ion-label class="ion-text-wrap">Always confirm when discard sale</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-toggle slot="start" [(ngModel)]="store.preferences.confirm_pay" (ionChange)="save()"></ion-toggle>
+              <ion-label class="ion-text-wrap">Always confirm when pay with credit/debit/layby/account</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  
+</ion-content>

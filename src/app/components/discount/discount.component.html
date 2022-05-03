@@ -1,0 +1,26 @@
+<div class="box">
+  <h4>{{mode}} Discount</h4>  
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="doAction()">
+    <ion-item>
+      <ion-label position="stacked">Apply a discount</ion-label>
+      <ion-select formControlName="mode">
+        <ion-select-option value="percent">Percent (%)</ion-select-option>
+        <ion-select-option value="amount">Amount ($)</ion-select-option>
+      </ion-select>
+    </ion-item> 
+    <ion-item>
+      <ion-label position="floating">Value ({{mode_label}})</ion-label>
+      <ion-input type="number" formControlName="value"></ion-input>      
+    </ion-item>     
+    <div *ngIf="is_global" class="hint">This discount will be applied to all items</div>    
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>      
+      <ion-col>
+        <ion-button type="submit" expand="block">{{mode}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

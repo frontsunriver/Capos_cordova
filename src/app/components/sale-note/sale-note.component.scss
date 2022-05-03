@@ -1,0 +1,15 @@
+.sale-note{
+    ion-item{
+        --padding-start: 0;
+    }
+    .hint{
+        font-size: 13px;
+        color: #666;
+        line-height: 1;    
+    }
+    .msg{
+        margin-bottom: 0;
+        text-align: left;
+        padding: 0.75rem 0.75rem 0;
+    }
+}

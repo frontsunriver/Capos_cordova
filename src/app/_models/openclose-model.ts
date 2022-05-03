@@ -1,0 +1,21 @@
+export class OpencloseModel {
+    _id: string = '';
+    private_web_address: string = '';
+    uid: string = '';
+    user_id: string = '';
+    outlet: string = '';
+    register: string = '';
+    opening_time: number = 0;
+    closing_time: number = 0;
+    open_value: number = 0;
+    open_note: string = '';
+    close_note: string = '';
+    counted_cash: number = 0;
+    counted_credit: number = 0;
+    counted_debit: number = 0;
+    status: string = '';
+    closure_status: string = '';
+    created_at: number = 0;
+    is_new: number = 0;
+    is_update: number = 0;
+}

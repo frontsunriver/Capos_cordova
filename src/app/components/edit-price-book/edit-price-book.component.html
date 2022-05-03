@@ -1,0 +1,41 @@
+<div class="box">
+  <h4>{{title}}</h4>
+  <ion-button fill="clear" class="close-button" size="small" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <form [formGroup]="form" (ngSubmit)="submit()">  
+    <ion-item lines="full">
+      <ion-label position="floating">Name <span class="require">*</span></ion-label>
+      <ion-input type="text" formControlName="name" required></ion-input>
+    </ion-item>
+    <span class="error" *ngIf="isSubmitted && (nameInput.invalid || dup_error)">{{nameInputError}}</span>            
+    <ion-item lines="full">
+      <ion-label position="stacked">Customer Group</ion-label>
+      <ion-select formControlName="groupId">
+        <ion-select-option value="">All Customers</ion-select-option>
+        <ion-select-option *ngFor="let s of groups" [value]="s._id">{{s.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>    
+    <ion-item lines="full">
+      <ion-label position="stacked">Outlet</ion-label>
+      <ion-select formControlName="outletId">
+        <ion-select-option value="">All Outlets</ion-select-option>
+        <ion-select-option *ngFor="let s of outlets" [value]="s._id">{{s.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>    
+    <ion-item lines="full">
+      <ion-label position="stacked">Valid From</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="validFrom"></ion-datetime>
+    </ion-item> 
+    <ion-item lines="full">
+      <ion-label position="stacked">Valid To</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" placeholder="Select Date" formControlName="validTo"></ion-datetime>
+    </ion-item> 
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" color="danger" expand="block" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

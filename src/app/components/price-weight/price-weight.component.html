@@ -1,0 +1,33 @@
+<div class="box">
+  <h4>{{mode}} {{msg}}</h4>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <h6>Please enter {{msg}} of this product.</h6>
+  <form [formGroup]="form" (ngSubmit)="doAction()" *ngIf="form">
+    <ion-item *ngIf="is_price">                  
+      <ion-label position="floating">Price($) <span class="require">*</span></ion-label>      
+      <ion-input type="number" formControlName="prompt_price" required></ion-input>
+    </ion-item>
+    <span class="error" *ngIf="isSubmitted && priceInput && priceInput.invalid">{{priceInputError}}</span>
+    <ion-item *ngIf="is_serial">
+      <ion-label position="floating">Product Serial <span class="require">*</span></ion-label>      
+      <ion-input type="text" formControlName="serial" required></ion-input>      
+    </ion-item>
+    <span class="error" *ngIf="isSubmitted && serialInput && serialInput.invalid">{{serialInputError}}</span>
+    <ng-container  *ngIf="is_weight">
+      <h6 class="mb-2">Blank Cup Weight: <span class="font-weight-bold">{{data.blank_cup_weight}}</span> (g or oz)</h6>  
+      <ion-item class="w-100">
+        <ion-label position="floating">Weight(g or oz) <span class="require">*</span></ion-label>      
+        <ion-input type="number" formControlName="weight" required></ion-input>                
+      </ion-item>    
+      <span class="error" *ngIf="isSubmitted && weightInput && weightInput.invalid">{{weightInputError}}</span>
+    </ng-container> 
+    <ion-row>
+      <ion-col>
+        <ion-button type="button" expand="block" color="danger" (click)="dismiss()">Cancel</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" expand="block">{{mode}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>

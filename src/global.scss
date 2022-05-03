@@ -1,0 +1,257 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+@import '~@swimlane/ngx-datatable/index.css';
+// @import '~@swimlane/ngx-datatable/themes/material.scss';
+@import './packages/themes/material.scss';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
+@import "~ionic4-auto-complete/auto-complete";
+
+.text-light-blue {
+    color: #5fcef9;
+}
+.text-black{
+    color: #000;
+}
+span.error {
+    color: red;
+    font-size: 0.9em;
+}
+.hidden{
+	display: none !important;
+}
+ion-card-header{
+    font-weight: 700;
+    color: black;
+}
+ion-header.fullscreen-header{
+	ion-toolbar{
+		--background: transparent;
+		--ion-toolbar-border-color: transparent;
+	}
+	&.header-md::after{
+		background-image: none;
+	}
+}
+ion-header.back-opacity{
+	ion-toolbar{
+		--background: rgba(255, 255, 255, .7);	
+	}
+}
+
+.box {
+	text-align: center;
+	padding: 1rem 0;
+	z-index: 1;
+	position: relative;
+	& > h4 {
+		padding-left: 0.75rem;
+		padding-right: 0.75rem;
+	}
+	.close-button {
+		position:absolute;
+		top: 0px; right: 0px;
+	}
+	form {        
+		padding: 0 0.75rem;
+		text-align: left;		
+		ion-item{
+			position: relative;
+			--ion-item-background: transparent;			
+			.suffix-icon{
+				position: absolute;
+				top: 60%;
+				right: 0;
+				font-size: 1em;
+			}
+			ion-label{
+				color: var(--ion-color-medium) !important;
+			}
+		}
+		ion-label {			
+			span{color: red;}
+		}  		
+		.form-fields{
+			max-height: calc(100vh - 212px);
+			overflow-y: auto;
+		}  
+	}  
+	h1{
+		margin-bottom: 0;
+	}
+}
+
+.auth-content-wrapper {	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 100%; 
+	&::after {
+    content: "";
+    background: url("assets/auth/bg.jpg") no-repeat;
+    background-size: cover;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    z-index: 0;
+  }
+	.box {
+		position: relative;    
+		width: 100%;    	
+		max-width: 330px;
+		h1{
+			font-weight: 700;
+		}
+	}  	
+}
+
+.popover_custom {
+	--backdrop-opacity: 0.3;
+	.popover-wrapper{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.popover-content{
+		--width: 100%;
+		--max-width: 85vw;
+		background: white !important;		
+		&.sc-ion-popover-ios {
+			top: unset !important;
+			left: unset !important;
+			transform-origin: unset !important;
+		}
+	}	
+	&.fixed-width{
+		.popover-content{
+			--max-width: 330px;
+		}
+	}
+	&.position-bottom{
+		.popover-content{
+			bottom: 10px;
+		}
+	}
+}
+
+.ngx-table-wrapper{
+	&:not(.variant_products),
+	&:not(.order_detail_products) {
+		max-height: calc(100vh - 98px);
+	}
+}
+
+.custom-action-sheet{	
+	.action-sheet-group:not(.action-sheet-group-cancel){		
+		display: flex;
+		flex-wrap: wrap;
+		padding: 1rem;
+		.action-sheet-title{
+			width: 100%;
+		}
+		button{
+			width: 90px;
+            height: 70px;
+            margin: 0;
+            font-size: 13px;
+            font-weight: 700;
+            white-space:pre-wrap;
+			border:1px solid #03befc;                        
+            color: #000;        
+            background: #bbf8b5;
+			text-align: center;
+			&:active, &:hover, &:focus{
+				background: #87ff7c;	
+			}
+			.action-sheet-button-inner{
+				justify-content: center !important;
+			}
+			&.orange{
+                background: #f8ecb5;
+				&:active, &:hover, &:focus{
+                	background: #ffeb7c;
+				}
+            }
+            &.danger{
+                background: #f8b5b5;
+				&:active, &:hover, &:focus{
+                	background: #ff7c7c;
+				}
+            }
+			&.blue{
+                background: #b0e7f9;
+				&:active, &:hover, &:focus{
+                	background: #9be3fc;
+				}
+            }
+			&.disabled{
+				opacity: 0.6;
+    			pointer-events: none;
+			}			
+		}
+	}
+}
+.success{
+	color: green;
+}
+.danger {
+	color: #eb445a;
+}
+ion-row.search{
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 5px;
+	ion-col{
+		padding-bottom: 0;
+		padding-top: 0;
+		display: flex;
+	}
+	ion-auto-complete{
+		width: 100%;
+		.loading input.searchbar-input{
+			background-color: #f2f2f2;
+			background-size: 20px 20px;
+		}
+	}
+	ion-searchbar{  
+		--background: #f2f2f2;    		
+		padding:0;
+		.searchbar-input.sc-ion-searchbar-ios, .searchbar-input.sc-ion-searchbar-md{
+				font-size: 14px;
+				padding-inline-start: 38px;   		
+		}    
+		.searchbar-search-icon.sc-ion-searchbar-md, .searchbar-search-icon.sc-ion-searchbar-ios{
+			left: 10px;
+		}		
+	}	
+	ion-button{
+		font-size: 16px;
+	}
+}
+span.require{color: red;}

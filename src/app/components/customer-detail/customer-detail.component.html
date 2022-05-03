@@ -1,0 +1,73 @@
+<ion-row class="customer-detail">
+  <ion-col size-md="4" size="12">
+    <ion-list>
+      <ion-list-header>Contact Info</ion-list-header>
+      <ion-item>
+        <ion-label>Mobile</ion-label>
+        <ion-note slot="end">{{customer.data.mobile}}</ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>Phone</ion-label>
+        <ion-note slot="end">{{customer.data.phone}}</ion-note>
+      </ion-item>
+      <ion-item *ngIf="customer.data.fax">
+        <ion-label>Fax</ion-label>
+        <ion-note slot="end">{{customer.data.fax}}</ion-note>
+      </ion-item>
+      <ion-item *ngIf="customer.data.twitter">
+        <ion-label>Twitter</ion-label>
+        <ion-note slot="end">{{customer.data.twitter}}</ion-note>
+      </ion-item>
+    </ion-list>
+  </ion-col>
+  <ion-col size-md="4" size="12">
+    <ion-list>
+      <ion-list-header>Balance</ion-list-header>
+      <ion-item class="header">
+        <ion-label>Account</ion-label>
+        <ion-note slot="end">{{customer.balance_str}}</ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>Total spent</ion-label>
+        <ion-note slot="end">{{customer.total_spent_str}}</ion-note>
+      </ion-item>
+      <ion-item class="header">
+        <ion-label>Store Credit</ion-label>
+        <ion-note slot="end">{{customer.credit_str}}</ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>Total Issued</ion-label>
+        <ion-note slot="end">{{customer.total_issued_str}}</ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>Total Redeemed</ion-label>
+        <ion-note slot="end">{{customer.total_redeemed_str}}</ion-note>
+      </ion-item>
+      <ion-item class="header">
+        <ion-label>Point</ion-label>
+        <ion-note slot="end">{{customer.point_str}}</ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>Total Issued</ion-label>
+        <ion-note slot="end">{{customer.point_issued_str}}</ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>Total Redeemed</ion-label>
+        <ion-note slot="end">{{customer.point_redeemed_str}}</ion-note>
+      </ion-item>
+    </ion-list>
+  </ion-col>
+  <ion-col size-md="4" size="12">
+    <ion-list>
+      <ion-list-header>More Actions</ion-list-header>
+      <ion-item button>
+        <ion-label color="primary">View Sale</ion-label>
+        <ion-icon name="list-outline" slot="start" color="primary"></ion-icon>
+      </ion-item>
+      <ion-item button>
+        <ion-label color="primary">Pay Account Balance</ion-label>
+        <ion-icon name="cash-outline" slot="start" color="primary"></ion-icon>
+      </ion-item>
+    </ion-list>
+  </ion-col>
+</ion-row>

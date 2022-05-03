@@ -1,0 +1,24 @@
+.chk_payments {    
+    & div{
+        margin: 0.5rem 1rem 0.5rem 1.5rem; 
+        display: flex;       
+    }
+    label {
+        font-weight: 500;         
+        font-size: 0.9em; 
+        margin:0.25rem 0.75rem 0;       
+    }  
+    input {width: 100px;}
+    ion-item{
+        --padding-start: 0;
+    }
+}
+.point_rates {
+    table{
+        width: 100%;
+        td, th{padding: 0.5rem; font-size: 0.8em;}
+        th{border-bottom: 1px solid #333;}
+        td{border-bottom: 1px solid #ddd;}
+        input{width: 50px; text-align: right;}
+    }
+}

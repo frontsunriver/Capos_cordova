@@ -1,0 +1,16 @@
+<app-header [title]="title"></app-header>
+<ion-content>
+	<ion-list>
+		<ion-list-header>
+			<ion-label>Sales Taxes</ion-label>
+  		<ion-button *ngIf="permission" (click)="openEditDialog(null)">Add New</ion-button>
+		</ion-list-header>
+		<ion-item *ngFor="let t of taxes" ion-long-press [interval]="400" (longPressed)="deleteTax(t)">
+			<ion-label class="ion-text-wrap">{{t.name}}</ion-label>
+			<ion-note slot="end">{{t.rate}}%</ion-note>
+			<ion-button slot="end" shape="round" fill="clear" size="small" *ngIf="permission" (click)="openEditDialog(t)">
+				<ion-icon slot="icon-only" name="create-outline" color="primary"></ion-icon>
+			</ion-button>
+		</ion-item>
+	</ion-list>
+</ion-content>

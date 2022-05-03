@@ -1,0 +1,32 @@
+export class CustomerModel {
+    _id: string = '';
+    private_web_address: string = '';
+    name: string = '';
+    groupId: string = '';
+    email: string = '';
+    code: string = '';
+    company: string = '';
+    birthday: number = 0;
+    gender: string = '';
+    website: string = '';
+    twitter: string = '';
+    mobile: string = '';
+    phone: string = '';
+    fax: string = '';
+    exist_postal_address: number = 0;
+    note: string = '';
+    custom_information1: string = '';
+    custom_information2: string = '';
+    total_spent: number = 0;
+    debit: number = 0;
+    credit: number;
+    total_issued: number = 0;
+    total_redeemed: number = 0;
+    point: number = 0;
+    point_issued: number = 0;
+    point_redeemed: number = 0;
+    created_at: number = 0;
+    is_new:number = 0;
+    is_update:number = 0;
+    is_delete:number = 0;
+}

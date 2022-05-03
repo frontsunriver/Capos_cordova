@@ -1,0 +1,84 @@
+.edit-product{
+    ion-card-header{
+        padding-bottom: 0;
+    }
+    ion-card-title{
+        font-size: 16px;
+    }
+    ion-card-subtitle{
+        font-size: 13px;
+        text-transform: inherit;
+        line-height: 1.2;
+    }
+    ion-item{
+        --min-height: 40px;
+        --padding-start: 0;
+        ion-label{
+            font-size: 14px !important;
+            &.with-hint{
+                display: flex !important;
+                flex-direction: column;
+                small{
+                    color: #666;
+                }
+            }        
+        }
+        ion-input{
+            font-size: 15px;
+        }
+        ion-button.suffix{
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            z-index: 3;
+        }
+        tag-input{
+            width: 100%;
+        }   
+        &.attr_values{
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }        
+    }
+    div.variants-desc{
+        font-size: 13px;
+    }
+    .tag__text{
+        font-size: .9em;
+        line-height: 32px;
+    }
+    .ng2-tag-input__text-input{
+        font-size: .9em !important;
+        height: 35px !important;
+    }
+    .thumbnail{
+        height: 50px;
+        width: auto;
+    }
+    div.preview_images {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 10px;
+        .preview{
+            margin: 5px;
+            padding: 3px;
+            border: 1px solid #ccc;
+            height: 130px;
+            width: 130px;
+            overflow: hidden;
+            position: relative;
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            ion-button{
+                position: absolute;
+                right: -5px; top: -2px;
+            }
+        }
+    }  
+}
