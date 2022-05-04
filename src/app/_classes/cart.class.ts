@@ -25,15 +25,15 @@ export interface IBundleProduct{
 @Injectable({
   providedIn: 'root'
 })
-export class Cart{			
+export class Cart{
 	_id: string = '';
 	id_cart: string = '';
-	sale_number:string = '';  
+	sale_number:string = '';
 	products: CartProduct[] = [];
 	payments: IPayment[] = [];
 	voided_payments: IPayment[] = [];
 	payment_status: string = 'not paid';
-	sale_status: string = 'new';    
+	sale_status: string = 'new';
 	origin_status: string = '';
 	note: string = '';
 	customer: Customer;
@@ -42,7 +42,7 @@ export class Cart{
 	discount: {
 			mode: string,
 			value: number
-	};    
+	};
 	fulfillment: {
 		mode: string,
 		customer: any,
@@ -60,15 +60,15 @@ export class Cart{
 	util = UtilFunc;
 	all_products:CartProduct[] = [];
 	main_outlet: any;
-	user: any;  
+	user: any;
 	store_info: Store = null;
-	allBundles:Bundle[] = [];    	
-	bundle_products:IBundleProduct[] = [];	
+	allBundles:Bundle[] = [];
+	bundle_products:IBundleProduct[] = [];
 	register_obj:any = null;
 
 	constructor(
 		private authService: AuthService,
-		private utilService: UtilService)	{	
+		private utilService: UtilService)	{
 
 		this.user = this.authService.getCurrentUser;
 		this.store_info = new Store(this.authService, this.utilService);
@@ -76,10 +76,10 @@ export class Cart{
 
 		if(this.user) {
 			this.utilService.get('auth/user?_id=' + this.user._id).subscribe(result => {
-				this.user.outlet = result.body.outlet;        
+				this.user.outlet = result.body.outlet;
 			})
 		}
-		
+
 		this.utilService.get('sell/outlet', {is_main: true}).subscribe(result => {
 			if(result && result.body) {
 				this.main_outlet = result.body[0];
@@ -93,7 +93,7 @@ export class Cart{
 							bundle.loadDetails(b);
 							this.allBundles.push(bundle);
 					}
-			}            
+			}
 		})
 
 		this.init();
@@ -101,12 +101,12 @@ export class Cart{
 
 	init() {
 		this._id = '';
-		this.sale_number = this.util.genRandomOrderString(8);		
+		this.sale_number = this.util.genRandomOrderString(8);
 		this.products = [];
 		this.payments = [];
 		this.voided_payments = [];
 		this.payment_status = 'not paid';
-		this.sale_status = 'new';    
+		this.sale_status = 'new';
 		this.origin_status = '';
 		this.origin_customer = '';
 		this.note = '';
@@ -128,9 +128,9 @@ export class Cart{
       private_web_address: this.store_info.private_web_address,
 			user_id: this.user._id
     };
-		this.utilService.get('sell/cart', data).subscribe(result => {			
+		this.utilService.get('sell/cart', data).subscribe(result => {
 			if(result && result.body) {
-				const cart = result.body;				
+				const cart = result.body;
 				this.id_cart = cart._id;
 				if(cart.sale) {
 					this.loadByCart(cart.sale);
@@ -138,7 +138,7 @@ export class Cart{
 				} else {
 					if(noexist) noexist();
 				}
-			} else {				
+			} else {
 				if(noexist) noexist();
 			}
 		}, error => {
@@ -146,11 +146,11 @@ export class Cart{
 		});
 	}
 
-	loadFromSale(id_sale:string, success?:Function, noexist?:Function) {				
-		this.utilService.get('sale/sale', {_id: id_sale}).subscribe(result => {  
-			if(result && result.body) {				
+	loadFromSale(id_sale:string, success?:Function, noexist?:Function) {
+		this.utilService.get('sale/sale', {_id: id_sale}).subscribe(result => {
+			if(result && result.body) {
 				if(success) success(result.body);
-			} else {				
+			} else {
 				if(noexist) noexist();
 			}
 		}, error => {
@@ -158,7 +158,7 @@ export class Cart{
 		});
 	}
 
-	loadByCart(cart: any) {	
+	loadByCart(cart: any) {
 		this._id = cart._id;
 		this.sale_number = cart.sale_number;
 		this.payments = cart.payments;
@@ -169,10 +169,10 @@ export class Cart{
 		this.discount = cart.discount;
 		if(cart.customer) {
 			this.customer = new Customer(this.authService, this.utilService);
-			this.customer.loadDetails(cart.customer);			
+			this.customer.loadDetails(cart.customer);
 		} else {
 			this.customer = null;
-		}		
+		}
 		if(cart.origin_status) this.origin_status = cart.origin_status;
 		this.note = cart.note;
 		if(cart.fulfillment) {
@@ -195,8 +195,8 @@ export class Cart{
 		if(cart.cart_mode) {
 			this.cart_mode = cart.cart_mode;
 		}
-		this.origin_customer = cart.origin_customer;	
-		this.origin_sale_number = cart.origin_sale_number;	
+		this.origin_customer = cart.origin_customer;
+		this.origin_sale_number = cart.origin_sale_number;
 		if(typeof cart.voided != 'undefined') {
 			this.voided = cart.voided;
 		}
@@ -211,7 +211,7 @@ export class Cart{
 	addProduct(product: CartProduct, qty:number=1) {
 		let index = this.products.findIndex(item => {
       return item.product_id == product.product_id && item.variant_id == product.variant_id
-    });    
+    });
 		if(product.product.data.minus_price) {
 			product.sign = -1;
 		}
@@ -219,7 +219,7 @@ export class Cart{
 			product.blank_cup_weight = product.product.data.blank_cup_weight;
 		}
 		if(index > -1) {
-			this.products[index].qty += qty;  
+			this.products[index].qty += qty;
 		} else {
 			product.qty = qty;
 			this.products.push(product);
@@ -232,51 +232,51 @@ export class Cart{
 		this.products.splice(index, 1);
 	}
 
-	save(callback?:Function) {		
-		const data = this.saleData; 				
+	save(callback?:Function) {
+		const data = this.saleData;
 		if(!data._id) {
 			delete data._id;
 			delete data.created_at;
 		}
-    this.utilService.post('sale/sale', data).subscribe(result => {	
-			const cart = result.body;
+    this.utilService.post('sale/sale', data).subscribe(result => {
+			const cart = result.body.result;
 			let saved_cart = this._id == cart._id;
 			this._id = cart._id;
 			this.payments = cart.payments;
 			this.voided_payments = cart.voided_payments;
 			this.getBundleProducts();
-			if(!saved_cart || this.isVoid) {				
+			if(!saved_cart || this.isVoid) {
 				this.utilService.post('sell/cart', this.cartData).subscribe(cart => {
-					this.id_cart = cart.body._id;					
+					this.id_cart = cart.body._id;
 					this._saveCallback(callback);
 				})
 			} else {
 				this._saveCallback(callback);
 			}
-    })   
+    })
 	}
 
 	_saveCallback(callback?:Function) {
 		if(this.sale_status == 'return_completed') {
 			this.utilService.post('sale/set_returned_sale', {sale_number: this.origin_sale_number}).subscribe(result => {
-				if(callback) callback(result);		
+				if(callback) callback(result);
 			})
 		} else {
 			if(callback) callback();
 		}
 	}
 
-	delete(callback?:Function) {		
+	delete(callback?:Function) {
 		if(this.id_cart) {
-			this.utilService.put('sell/cart', {_id: this.id_cart, sell: null}).subscribe(result => {			
+			this.utilService.put('sell/cart', {_id: this.id_cart, sell: null}).subscribe(result => {
 				if(callback) callback(result);
 			})
-		} 		
+		}
 	}
 
 	deleteSale(callback?:Function) {
 		if(this._id) {
-			this.utilService.delete('sale/sale?_id=' + this._id).subscribe(result => {			
+			this.utilService.delete('sale/sale?_id=' + this._id).subscribe(result => {
 				this.delete(callback)
 			})
 		}
@@ -292,10 +292,10 @@ export class Cart{
 		if(!this.id_cart) delete data._id;
 		return data;
 	}
-	
-	public get saleData():any {		
+
+	public get saleData():any {
 		const data = {
-			user_id: this.user?this.user._id:null,			
+			user_id: this.user?this.user._id:null,
 			private_web_address: this.store_info.private_web_address,
 			store_name: this.store_info.store_name,
 			outlet: (this.user && this.user.outlet) ? this.user.outlet._id : this.main_outlet._id,
@@ -307,7 +307,7 @@ export class Cart{
 			note: this.note,
 			customer: this.customer ? this.customer._id: null,
 			total: this.totalIncl,
-      subtotal: this.subTotal, 
+      subtotal: this.subTotal,
       total_items: this.total_items,
 			tax: this.taxAmount,
 			discount: this.discount,
@@ -324,12 +324,12 @@ export class Cart{
 			fulfillment: {},
 			_id: this._id,
 			sale_number: this.sale_number,
-		};				
+		};
 		if(this.register_obj) {
 			data.register = this.register_obj._id;
 		} else if (this.user && this.user.outlet) {
 			data.register = this.user.outlet.register[0];
-		} else { 
+		} else {
 			data.register = this.main_outlet.register[0];
 		}
 
@@ -351,54 +351,54 @@ export class Cart{
 
 	public get isOutletTax():boolean {
     let f = false;
-    if(this.store_info && this.store_info.default_tax == 'outlet') {      
+    if(this.store_info && this.store_info.default_tax == 'outlet') {
       f = true;
     }
     return f;
   }
 
 	getProductTax(product:any) {
-    let tax = 0;    
+    let tax = 0;
     if(this.isOutletTax) {
       let outlet = this.user ? this.user.outlet : null;
       if(outlet && outlet.defaultTax && outlet.defaultTax.rate)
         tax = this.user.outlet.defaultTax.rate;
-    } else {      
+    } else {
       if(product.tax && product.tax.rate){
         tax = product.tax.rate;
       }
-    }    
+    }
     return tax;
   }
-	
+
 	public get discountItems(): number {
 		let sum = this.products.reduce((a, b) => a + b.discountAmount, 0);
 		return parseFloat(sum.toFixed(2));
 	}
 
-	public get discountItems_str(): string {		
+	public get discountItems_str(): string {
 		return this.util.getPriceWithCurrency(this.discountItems);
 	}
 
 	public get total_discount_sale():number {
 		let sum = 0;
-    if(this.discount.mode === 'percent') {			
+    if(this.discount.mode === 'percent') {
       sum = this.subTotal * this.discount.value / 100;
     } else {
       sum = this.discount.value;
     }
 		return parseFloat(sum.toFixed(2));
 	}
-	
-  public get discount_str(): string {  //getDiscount()    
+
+  public get discount_str(): string {  //getDiscount()
     return this.util.getPriceWithCurrency(-this.total_discount_sale);
   }
 
 	public get discount_rate(): string {
 		let str = '';
-    if(this.discount.mode === 'percent' && this.discount.value>0) {			      
+    if(this.discount.mode === 'percent' && this.discount.value>0) {
       str = '(-' + Math.abs(this.discount.value).toFixed(2) + '%)';
-    } 
+    }
     return str;
 	}
 
@@ -421,7 +421,7 @@ export class Cart{
       subtotal = subtotal - parseFloat((subtotal * this.discount.value / 100).toFixed(2));
     } else {
       subtotal = subtotal - this.discount.value;
-    }    
+    }
 		subtotal -= this.total_bundle_discount;
     return subtotal.toFixed(2);
   }
@@ -440,14 +440,14 @@ export class Cart{
     let sum = 0;
     for(let product of this.products){
 			if(!product.voided) sum += product.discountedTotalWithoutGlobal;
-    }    
+    }
     return sum;
   }
 
 	public get subTotal_str():string {
 		return this.util.getPriceWithCurrency(this.subTotal);
 	}
-	
+
 	public get taxAmount(): string { // getTaxAmount()
     let sum = 0;
 		if(!this.isOutletTax) {
@@ -459,10 +459,10 @@ export class Cart{
 			}
 		} else {
 			if(this.user && this.user.outlet && this.user.outlet.defaultTax) {
-				let tax = this.user.outlet.defaultTax.rate;      
+				let tax = this.user.outlet.defaultTax.rate;
 				sum = parseFloat(this.totalExcl) * tax / 100;
 			}
-		}			
+		}
 		return sum.toFixed(2);
   }
 
@@ -471,8 +471,8 @@ export class Cart{
 		if(sum == 0 && parseFloat(this.totalExcl)!=0) {
 			result = 'Free';
 		} else {
-			result = this.util.getPriceWithCurrency(sum);  
-		}    
+			result = this.util.getPriceWithCurrency(sum);
+		}
     return result;
   }
 
@@ -493,7 +493,7 @@ export class Cart{
 			}
 		}
 		return parseFloat(sum.toFixed(2));
-	} 
+	}
 
 	public get total_bundle_discount_str():string {
 		return this.util.getPriceWithCurrency(-this.total_bundle_discount);
@@ -515,7 +515,7 @@ export class Cart{
     let rate = this.discount.value;
     if(this.discount.mode == 'amount') {
       rate = this.discount.value * 100 / this.subTotal;
-    } 
+    }
     for(let product of this.products) {
       product.global_discount = rate;
       // product.discount.mode = this.discount.mode;
@@ -527,17 +527,17 @@ export class Cart{
   }
 
 	public get total_paid(): number {
-		let sum = 0;		
+		let sum = 0;
 		for(let payment of this.payments) {
 			sum += payment.amount;
-		}		
+		}
 		for(let payment of this.voided_payments) {
 			sum -= payment.amount;
 		}
 		return sum;
 	}
 
-	public get total_to_pay(): number {		
+	public get total_to_pay(): number {
 		let a = this.totalIncl - this.total_paid;
 		if(!this.isRefund && a<0) a = 0;
 		return parseFloat(a.toFixed(2));
@@ -576,7 +576,7 @@ export class Cart{
 	}
 
 	public get able_to_pay(): boolean {
-		if(this.products.length>0 && ((this.isRefund && this.total_to_pay < 0) || (!this.isRefund && this.total_to_pay>0) || 
+		if(this.products.length>0 && ((this.isRefund && this.total_to_pay < 0) || (!this.isRefund && this.total_to_pay>0) ||
 			(this.isVoid && this.able_to_void))) {
 			return true;
 		}
@@ -589,14 +589,14 @@ export class Cart{
 		if(status) {
 			result = status.label;
 			if(this.cart_mode == 'return'){
-				if(status.value == 'parked') result += ' Return';			
+				if(status.value == 'parked') result += ' Return';
 				if(status.value == 'new') result = 'Return Sale';
 			}
 		}
 		return result;
 	}
 
-	pay(pay_mode: string, amount:number) {		
+	pay(pay_mode: string, amount:number) {
 		let payment: IPayment = {
 			type: pay_mode,
 			amount: amount,
@@ -609,14 +609,14 @@ export class Cart{
 			} else {
 				this.payments.push(payment);
 			}
-		} 
+		}
 	}
 
 	saveToSale(sale_status: string, callback?:Function) {
-		const data = this.saleData; 		
+		const data = this.saleData;
 		if(data.sale_status == 'new' || data.sale_status != sale_status) {
 			delete data.created_at;
-		}		
+		}
 		if(sale_status == 'completed') {
 			if(data.sale_status == 'layby' || data.sale_status == 'on_account'){
 				data.sale_status = data.sale_status + '_completed';
@@ -625,41 +625,41 @@ export class Cart{
 			}
 			if(data.cart_mode == 'return') {
 				data.sale_status = 'return_completed';
-			}			
+			}
 		} else {
 			data.sale_status = sale_status;
-		} 
-    this.utilService.post('sale/sale', data).subscribe(result => {			
+		}
+    this.utilService.post('sale/sale', data).subscribe(result => {
 			this.delete(() => {
 				//this.toastService.showSuccess(Constants.message.sale[sale_status]);
 				if(callback) callback(result);
-			});      
+			});
     }, error => {
       //this.toastService.showFailedSave();
-    })   
+    })
 	}
 
 	voidSale(callback?:Function) {
 		if(this.sale_status == 'on_account' || this.sale_status.endsWith('completed')) {
-			for(let p of this.products) {				
+			for(let p of this.products) {
 				let pp = new CartProduct(p.product, p.variant_id);
 				pp.loadDetails(p);
 				pp.qty *= -1;
 				pp.updateInventory();
 			}
-			
+
 			for(let payment of this.payments) {
 				if(payment.type == 'store_credit' && this.customer) {
-					this.customer.data.credit += payment.amount;					
+					this.customer.data.credit += payment.amount;
 				}
 			}
 			if('on_account' == this.sale_status && this.customer) {
 				this.customer.data.debit -= this.totalIncl;
 			}
 			if(this.customer) this.customer.save();
-		} 		
+		}
 		this.voided = true;
-		this.save(callback);		
+		this.save(callback);
 	}
 
 	public get isVoid():boolean {
@@ -700,7 +700,7 @@ export class Cart{
 		}
 		if(this.isOutletTax) {
 			if(this.user && this.user.outlet && this.user.outlet.defaultTax) {
-				let tax = this.user.outlet.defaultTax.rate;      
+				let tax = this.user.outlet.defaultTax.rate;
 				pay_amount = pay_amount * (1 + tax / 100);
 			}
 		}
@@ -739,8 +739,8 @@ export class Cart{
 		} else {
 			if(product.data.variant_inv) {
 				for(let vp of product.data.variant_products) {
-					let index = this.products.findIndex(item => item.product_id == product._id && item.variant_id == vp._id);					
-					if(index > -1) {						
+					let index = this.products.findIndex(item => item.product_id == product._id && item.variant_id == vp._id);
+					if(index > -1) {
 						if(vp.inventory > this.products[index].qty) return true;
 					}
 				}
@@ -764,7 +764,7 @@ export class Cart{
 	}
 
 	public getBundleProducts() {
-		let bundleProduct: IBundleProduct[] = [];		
+		let bundleProduct: IBundleProduct[] = [];
 		let singleProduct: IBundleProduct[] = [];
 		for(let bundle of this.allBundles) {
 				let bp:IBundleProduct[] = this.getBundleCartProduct(bundleProduct, bundle);
@@ -784,8 +784,8 @@ export class Cart{
 							qty: qty
 						}
 						singleProduct.push(bp);
-				}				
-		}		
+				}
+		}
 		this.bundle_products = bundleProduct.concat(singleProduct);
 	}
 
@@ -815,12 +815,12 @@ export class Cart{
 		return qty;
 	}
 
-	private getBundleCartProduct(bundleProducts:IBundleProduct[], bundle: Bundle):IBundleProduct[] {        
+	private getBundleCartProduct(bundleProducts:IBundleProduct[], bundle: Bundle):IBundleProduct[] {
 		let result:IBundleProduct[] = [];
 		let qty = 0, cart_products:CartProduct[] = [], i = 0;
-		for(let p of bundle.products) {            
+		for(let p of bundle.products) {
 			let index = this.products.findIndex(item => item.product_id == p.product._id && item.variant_id == p.variant_id);
-			if(index > -1) {                
+			if(index > -1) {
 				let p:CartProduct = this.products[index];
 				let q = this.getSingleProductQty(bundleProducts, p);
 				let qq = 0;
@@ -854,7 +854,7 @@ export class Cart{
 			let qty = 0; let c_products:CartProduct[] = [];
 			for(let i=0;i<cart_products.length;i++) {
 				let p = cart_products[i];
-				qty += cart_products[i].qty;				
+				qty += cart_products[i].qty;
 				if(qty<bundle.count) {
 					c_products.push(cart_products[i]);
 				} else {
