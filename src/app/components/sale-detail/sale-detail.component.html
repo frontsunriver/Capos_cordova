@@ -1,6 +1,8 @@
 <div class="box sale_details">
   <h4>Sale Details</h4>
-  <ion-button fill="clear" class="close-button" (click)="dismiss()"><ion-icon name="close-circle-outline" color="primary"></ion-icon></ion-button>
+  <ion-button fill="clear" class="close-button" (click)="dismiss()">
+    <ion-icon name="close-circle-outline" color="primary"></ion-icon>
+  </ion-button>
   <div class="detail-wrapper">
     <ion-list>
       <ng-container *ngFor="let p of cart.products">
@@ -11,8 +13,9 @@
         </ion-item>
         <ion-item color="light">
           <ion-label>
-            <span [ngClass]="{'text-decoration':p.voided}">{{util.getPriceWithCurrency(p.price)}} 
-              <ng-container *ngIf="!cart.isOutletTax && !cart.isRefund">+Tax {{p.taxAmount}}{{p.taxRate_str}}</ng-container>
+            <span [ngClass]="{'text-decoration':p.voided}">{{util.getPriceWithCurrency(p.price)}}
+              <ng-container *ngIf="!cart.isOutletTax && !cart.isRefund">+Tax {{p.taxAmount}}{{p.taxRate_str}}
+              </ng-container>
             </span>
             <span [ngClass]="{'text-decoration':p.voided}"> x {{p.qty}}</span>
           </ion-label>
@@ -41,7 +44,7 @@
         <ion-label>
           <span class="mr-3">{{cart.getPaymentType(payment)}}</span>
           <span>{{util.handleDate(payment.created_at)}}</span>
-        </ion-label>      
+        </ion-label>
         <ion-note slot="end">{{util.getPriceWithCurrency(payment.amount)}}</ion-note>
       </ion-item>
       <ion-item *ngIf="cart.voidedAmount>0">
@@ -67,19 +70,25 @@
     </ng-container>
     <ng-container *ngIf="!cart.voided">
       <ng-container *ngIf="cart.voided_payments.length==0">
-        <ion-button (click)="handleAction(cart)" fill="clear" size="small"
-          *ngIf="!cart.returned && (completed_status.includes(cart.sale_status) 
+        <ion-button (click)="handleAction(cart)" fill="clear" size="small" *ngIf="!cart.returned && (completed_status.includes(cart.sale_status) 
               || continue_status.includes(cart.sale_status) 
               || unfulfilled_status.includes(cart.sale_status))">
-            <ng-container *ngIf="continue_status.includes(cart.sale_status)"><ion-icon name="arrow-redo-outline"></ion-icon> {{getTooltip(cart)}}</ng-container>
-            <ng-container *ngIf="completed_status.includes(cart.sale_status)"><ion-icon name="arrow-undo-outline"></ion-icon> {{getTooltip(cart)}}</ng-container>
-            <ng-container *ngIf="unfulfilled_status.includes(cart.sale_status)"><ion-icon name="checkmark-outline"></ion-icon> {{getTooltip(cart)}}</ng-container>
-          </ion-button>
+          <ng-container *ngIf="continue_status.includes(cart.sale_status)">
+            <ion-icon name="arrow-redo-outline"></ion-icon> {{getTooltip(cart)}}
+          </ng-container>
+          <ng-container *ngIf="completed_status.includes(cart.sale_status)">
+            <ion-icon name="arrow-undo-outline"></ion-icon> {{getTooltip(cart)}}
+          </ng-container>
+          <ng-container *ngIf="unfulfilled_status.includes(cart.sale_status)">
+            <ion-icon name="checkmark-outline"></ion-icon> {{getTooltip(cart)}}
+          </ng-container>
+        </ion-button>
       </ng-container>
-      <ion-button fill="clear" size="small" (click)="viewOriginalSale(cart.origin_sale_number)" *ngIf="cart.cart_mode=='return'">
+      <ion-button fill="clear" size="small" (click)="viewOriginalSale(cart.origin_sale_number)"
+        *ngIf="cart.cart_mode=='return'">
         <ion-icon name="list-outline"></ion-icon> View Original Sale
-      </ion-button>	
-      <ion-button fill="clear" size="small">
+      </ion-button>
+      <ion-button (click)="printSale()" fill="clear" size="small">
         <ion-icon name="print-outline"></ion-icon> Print Receipt
       </ion-button>
       <ion-button fill="clear" size="small" (click)="voidSale(cart)" *ngIf="cart.voided_payments.length==0">
@@ -89,5 +98,65 @@
         <ion-icon name="ban-outline"></ion-icon> Void Items
       </ion-button>
     </ng-container>
+  </div>
+</div>
+
+
+<div style="padding: 10px; display: flex; justify-content: center; display: none; position: fixed; width: 100%;">
+  <div id="sale-detail-print">
+    <div *ngFor="let p of cart.products">
+      <h1 style="text-align: center;">
+        {{p.product_name}}
+        <span *ngIf="p.variant_name">/{{p.variant_name}}</span>
+      </h1>
+      <hr style="border-top: 1px solid;" />
+      <div class="sale-detail-row">
+        <p>
+          <span [ngClass]="{'text-decoration':p.voided}">{{util.getPriceWithCurrency(p.price)}}
+            <ng-container *ngIf="!cart.isOutletTax && !cart.isRefund">+Tax {{p.taxAmount}}{{p.taxRate_str}}
+            </ng-container>
+          </span>
+          <span [ngClass]="{'text-decoration':p.voided}"> x {{p.qty}}</span>
+        </p>
+        <p>
+          <span [ngClass]="{'text-decoration':p.voided}">{{p.discountedTotalWithoutGlobal_str}}</span>
+        </p>
+      </div>
+    </div>
+    <div class="sale-detail-row">
+      <p>Subtotal</p>
+      <p>{{cart.subTotal_str}}</p>
+    </div>
+    <div class="sale-detail-row" *ngIf="cart.discount.value<0">
+      <p>Discount{{cart.discount_rate}}</p>
+      <p>{{cart.discount_str}}</p>
+    </div>
+    <div class="sale-detail-row" *ngIf="!cart.isRefund">
+      <p>Total Tax{{cart.taxRate_str}}</p>
+      <p>{{cart.taxAmount_str}}</p>
+    </div>
+    <div class="sale-detail-row font-weight-bold">
+      <p>Sale Total</p>
+      <p>{{cart.totalIncl_str}}</p>
+    </div>
+    <div class="sale-detail-row" *ngFor="let payment of cart.payments">
+      <p>
+        <span class="mr-3">{{cart.getPaymentType(payment)}}</span>
+        <span>{{util.handleDate(payment.created_at)}}</span>
+      </p>
+      <p>{{util.getPriceWithCurrency(payment.amount)}}</p>
+    </div>
+    <div class="sale-detail-row" *ngIf="cart.voidedAmount>0">
+      <p>Voided</p>
+      <p slot="end">{{cart.voidedAmount_str}}</p>
+    </div>
+    <div class="sale-detail-row" *ngIf="cart.change>0">
+      <p>Change</p>
+      <p>{{util.getPriceWithCurrency(cart.change)}}</p>
+    </div>
+    <div class="sale-detail-row font-weight-bold" *ngIf="!cart.isRefund">
+      <p>Balance</p>
+      <p>{{util.getPriceWithCurrency(cart.total_to_pay)}}</p>
+    </div>
   </div>
 </div>

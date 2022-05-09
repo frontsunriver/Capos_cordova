@@ -30,3 +30,14 @@
         }     
     }
 }
+
+#sale-detail-print {
+    width: 100%;
+
+    .sale-detail-row {
+        display: flex; 
+        justify-content: 
+        space-between; 
+        font-size: 24px;
+    }
+}
